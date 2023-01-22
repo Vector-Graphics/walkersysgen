@@ -557,6 +557,22 @@ var startypes = [
     "B-type main sequence star"
 ]
 
+var bgcolors = [
+    "rgb(0,0,0)",
+    "rgb(0,36,72)",
+    "rgb(72,36,0)",
+
+]
+
+var surfaceliquidcolors = [
+    "rgb(0,0,0)",
+    "rgb(0,0,90)",
+    "rgb(90,90,0)",
+    "rgb(35,35,35)",
+    "rgb(0,90,45)",
+
+]
+
 var startypessizes = [
     20,
     50,
@@ -662,7 +678,83 @@ function placePlanets(starid) {
     }
 }
 
+function drawCircle(color,x,y,radius,ctx){
+    ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0,6.28);
+        ctx.fill();
+        ctx.closePath();
+}
 
+function drawPlanets(ctx,i,planets){
+    if (planets[i].parentbody < 0 && planets[i].type==0){
+        if(planets[i].atmothickness>=3){
+                drawCircle(bgcolors[planets[i].atmobasegas],planets[i].orbit * 20+90,250,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale)+6,ctx);
+            }
+            drawCircle(compcolors[planets[i].composition],planets[i].orbit * 20+90,250,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),ctx);
+            if(planets[i].liquid>=1){
+                drawCircle(surfaceliquidcolors[planets[i].liquid],planets[i].orbit * 20+90,250,Math.ceil(((planets[i].size/planets[i].density)**(rexp)*rscale)/2),ctx);
+            }
+
+        }
+        
+
+        if (planets[i].parentbody >=0 && planets[planets[i].parentbody].type==0){
+            moonIndexIterator++;
+            if(parentbodycheck != planets[i].parentbody){
+                parentbodycheck = planets[i].parentbody;
+                moonIndexIterator=0;
+            }
+            if(planets[i].atmothickness>=3){
+                drawCircle(bgcolors[planets[i].atmobasegas],planets[i].orbit * 20+90,290+moonIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale)+6,ctx);
+            }
+            drawCircle(compcolors[planets[i].composition],planets[i].orbit * 20+90,290+moonIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),ctx);
+            if(planets[i].liquid>=1){
+                drawCircle(surfaceliquidcolors[planets[i].liquid],planets[i].orbit * 20+90,290+moonIndexIterator*25,Math.ceil(((planets[i].size/planets[i].density)**(rexp)*rscale)/2),ctx);
+            }
+
+        }
+        if ((planets[i].type == 1)){
+            unterIndexIterator++;
+            if(orbitcheck != planets[i].orbit){
+                orbitcheck = planets[i].orbit;
+                unterIndexIterator=0;
+            }
+            if(planets[i].atmothickness>=3){
+                drawCircle(bgcolors[planets[i].atmobasegas],planets[i].orbit * 20+90,(250-(planets[i].beltlength-1)*12.5)+unterIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale)+6,ctx);
+            }
+            drawCircle(compcolors[planets[i].composition],planets[i].orbit * 20+90,(250-(planets[i].beltlength-1)*12.5)+unterIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),ctx);
+            if(planets[i].liquid>=1){
+                drawCircle(surfaceliquidcolors[planets[i].liquid],planets[i].orbit * 20+90,(250-(planets[i].beltlength-1)*12.5)+unterIndexIterator*25,Math.ceil(((planets[i].size/planets[i].density)**(rexp)*rscale)/2),ctx);
+            }
+            
+        }
+        if ((planets[i].type == 2)){
+            untermoonIndex++;
+            if(orbitcheck2 != planets[i].orbit){
+                orbitcheck2 = planets[i].orbit;
+                untermoonIndex=0;
+            }
+            if(planets[i].atmothickness>=3){
+                drawCircle(bgcolors[planets[i].atmobasegas],planets[i].orbit * 20+90,(250+(planets[planets[i].parentbody].beltlength-1)*12.5+50)+untermoonIndex*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale)+6,ctx);
+            }
+            drawCircle(compcolors[planets[i].composition],planets[i].orbit * 20+90,(250+(planets[planets[i].parentbody].beltlength-1)*12.5+50)+untermoonIndex*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),ctx);
+            if(planets[i].liquid>=1){
+                drawCircle(surfaceliquidcolors[planets[i].liquid],planets[i].orbit * 20+90,(250+(planets[planets[i].parentbody].beltlength-1)*12.5+50)+untermoonIndex*25,Math.ceil(((planets[i].size/planets[i].density)**(rexp)*rscale)/2),ctx);
+            }
+            
+        }
+}
+var parentbodycheck = 0;
+    var rexp = 0.14
+    var rscale = 7
+    var moonIndexIterator = 0;
+    var orbitcheck = -1;
+    var orbitcheck2 = -1;
+    var unterIndexIterator = 0;
+    var unterIndexBuffer = 0;
+    var untermoonIndex = 0;
+    var unterplanetbelt = [];
 function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype,div){
     
     var canvas = addline("",".systemcontainer","canvas");
@@ -671,41 +763,13 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgb(0,255,0)";
     if(closecompanionpresent == 0){
-        ctx.fillStyle = startypesoutercolors[primarystartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[primarystartype],250,startypessizes[primarystartype],0,6.28);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.fillStyle = startypescolors[primarystartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[primarystartype],250,startypessizes[primarystartype]-10,0,6.28);
-        ctx.fill();
-        ctx.closePath();
+        drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype],ctx);
+        drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype]-10,ctx);
     } else{
-        ctx.fillStyle = startypesoutercolors[primarystartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[primarystartype],125,startypessizes[primarystartype],0,6.28);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.fillStyle = startypescolors[primarystartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[primarystartype],125,startypessizes[primarystartype]-10,0,6.28);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.fillStyle = startypesoutercolors[closecompanionstartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype],0,6.28);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.fillStyle = startypescolors[closecompanionstartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]-10,0,6.28);
-        ctx.fill();
-        ctx.closePath();
+        drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype],ctx);
+        drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype]-10,ctx);
+        drawCircle(startypesoutercolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype],ctx);
+        drawCircle(startypescolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]-10,ctx);
     }
     
     ctx.strokeStyle = "rgb(63,0,0)";
@@ -748,64 +812,20 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
         ctx.stroke();
         ctx.closePath();
     }
-    var parentbodycheck = 0;
-    var rexp = 0.14
-    var rscale = 7
-    var moonIndexIterator = 0;
-    var orbitcheck = -1;
-    var orbitcheck2 = -1;
-    var unterIndexIterator = 0;
-    var unterIndexBuffer = 0;
-    var untermoonIndex = 0;
-    var unterplanetbelt = [];
+    parentbodycheck = 0;
+    rexp = 0.14
+    rscale = 7
+    moonIndexIterator = 0;
+    orbitcheck = -1;
+    orbitcheck2 = -1;
+    unterIndexIterator = 0;
+    unterIndexBuffer = 0;
+    untermoonIndex = 0;
+    unterplanetbelt = [];
     for(var i = 0; i < planets.length; i++) {
-        if (planets[i].parentbody == -1 && planets[i].type==0){
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,250,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-        }
-        
-
-        if (planets[i].starsystem == 1 && planets[i].parentbody >=0 && planets[planets[i].parentbody].type==0){
-            moonIndexIterator++;
-            if(parentbodycheck != planets[i].parentbody){
-                parentbodycheck = planets[i].parentbody;
-                moonIndexIterator=0;
-            }
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,290+moonIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-        }
-        if (planets[i].starsystem == 1 && (planets[i].type == 1)){
-            unterIndexIterator++;
-            if(orbitcheck != planets[i].orbit){
-                orbitcheck = planets[i].orbit;
-                unterIndexIterator=0;
-            }
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,(250-(planets[i].beltlength-1)*12.5)+unterIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-            
-        }
-        if (planets[i].starsystem == 1 && (planets[i].type == 2)){
-            untermoonIndex++;
-            if(orbitcheck2 != planets[i].orbit){
-                orbitcheck2 = planets[i].orbit;
-                untermoonIndex=0;
-            }
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,(250+(planets[planets[i].parentbody].beltlength-1)*12.5+50)+untermoonIndex*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-            
-        }
+        if(planets[i].starsystem == 1){
+        drawPlanets(ctx,i,planets);
+    }
     }
     if(distantcompanionpresent){
         var canvas = addline("",".systemcontainer","canvas");
@@ -813,17 +833,8 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     $(canvas).prop("height","650")
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgb(0,255,0)";
-        ctx.fillStyle = startypesoutercolors[distantcompanionstartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype],0,6.28);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.fillStyle = startypescolors[distantcompanionstartype];
-        ctx.beginPath();
-        ctx.arc(50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]-10,0,6.28);
-        ctx.fill();
-        ctx.closePath();
+    drawCircle(startypesoutercolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype],ctx);
+        drawCircle(startypescolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]-10,ctx);
 
     
         ctx.strokeStyle = "rgb(63,0,0)";
@@ -850,62 +861,18 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
         ctx.stroke();
         ctx.closePath();
     }
-    var parentbodycheck = 0;
-    var moonIndexIterator = 0;
-    var orbitcheck = -1;
-    var orbitcheck2 = -1;
-    var unterIndexIterator = 0;
-    var unterIndexBuffer = 0;
-    var untermoonIndex = 0;
-    var unterplanetbelt = [];
+    parentbodycheck = 0;
+    moonIndexIterator = 0;
+    orbitcheck = -1;
+    orbitcheck2 = -1;
+    unterIndexIterator = 0;
+    unterIndexBuffer = 0;
+    untermoonIndex = 0;
+    unterplanetbelt = [];
     for(var i = 0; i < planets.length; i++) {
-        if (planets[i].parentbody == -2 && planets[i].type==0){
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,250,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-        }
-        
-
-        if (planets[i].starsystem == 2 && planets[i].parentbody != -2 && planets[planets[i].parentbody].type==0){
-            moonIndexIterator++;
-            if(parentbodycheck != planets[i].parentbody){
-                parentbodycheck = planets[i].parentbody;
-                moonIndexIterator=0;
-            }
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,290+moonIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-        }
-        if (planets[i].starsystem == 2 && (planets[i].type == 1)){
-            unterIndexIterator++;
-            if(orbitcheck != planets[i].orbit){
-                orbitcheck = planets[i].orbit;
-                unterIndexIterator=0;
-            }
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,(250-(planets[i].beltlength-1)*12.5)+unterIndexIterator*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-            
-        }
-        if (planets[i].starsystem == 2 && (planets[i].type == 2)){
-            untermoonIndex++;
-            if(orbitcheck2 != planets[i].orbit){
-                orbitcheck2 = planets[i].orbit;
-                untermoonIndex=0;
-            }
-            ctx.fillStyle = compcolors[planets[i].composition];
-            ctx.beginPath();
-            ctx.arc(planets[i].orbit * 20+90,(250+(planets[planets[i].parentbody].beltlength-1)*12.5+50)+untermoonIndex*25,Math.floor((planets[i].size/planets[i].density)**(rexp)*rscale),0,6.28);
-            ctx.fill();
-            ctx.closePath();
-            
-        }
+        if(planets[i].starsystem == 2){
+        drawPlanets(ctx,i,planets);
+    }
     }
     }
 }
