@@ -101,9 +101,10 @@
 
   <body>
     <img class="titleimg" src="https://i.imgur.com/Bo59tCg.png">
-    <h1> v0.2.0 </h1>
+    <h1> v0.2.0_01 </h1>
     <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
         <p class="patchnotes">COMING SOON:<br> - hot jupiter simulation!</p>
+        <p class="patchnotes">v0.2.0_01:<br> - removed excess &lt;br> tags from csv file</p>
         <p class="patchnotes">v0.2.0:<br> - CSV DOWNLOAD FUNCTIONALITY ADDED <br> - tweaked planet sizes so now small and Earth-sized planets are a bit more common <br> - new logo that should hopefully fit the aesthetic more</p>
         <p class="patchnotes">v0.1.6:<br> - fixed the absolute mess of a patchnote from the previous version<br> - some small terminology improvements<br> - life now shows what liquid it uses<br> - more internal csv work. you can now get a csv dump of the systems by typing "fullcsv(systems)" in the debug console, but I have yet to put it in a ui usable format. 0.2 coming soon!</p>
         <p class="patchnotes">v0.1.5:<br> - made some generation of planet types, gas giants, moons somewhat more realistic<br> - internal changes to prepare for csv export functionality (that I won't bore you with explaining)<br> - updated distance display to now give you the equivalent distance from the sun</p>
@@ -1514,7 +1515,7 @@ function csv(planet){
 function systemcsv(system,ab){
     var systemcsvout = ``;
     for (let aa = 0; aa < system.planets.length; aa++){
-        systemcsvout = systemcsvout + `<br>
+        systemcsvout = systemcsvout + `
         ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,` + csv(system.planets[aa]) + ',' + system.primaryage.toFixed(1);
     }
     return systemcsvout;
