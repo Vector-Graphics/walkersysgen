@@ -94,8 +94,8 @@
     <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
         <p class="patchnotes">COMING SOON:<br> - csv export!</p>
 
-
-        <p class="patchnotes">v0.1.4:<br> - updated the language used for star types and temperatures <br> - added approximate temperature measurements in kelvin to help with reading of the temperature labels <br> - made planets more common closer to the star, and made it so larger planets tend to have thicker atmospheres <br> added another generate button for 500 systems</p>
+        <p class="patchnotes">v0.1.5:<br> - made some generation of planet types, gas giants, moons somewhat more realistic <br> - internal changes to prepare for csv export functionality (that I won't bore you with explaining)<br> - updated distance display to now give you the equivalent distance from the sun <br> added another generate button for 500 systems</p>
+        <p class="patchnotes">v0.1.4:<br> - updated the language used for star types and temperatures <br> - added approximate temperature measurements in kelvin to help with reading of the temperature labels <br> - made planets more common closer to the star, and made it so larger planets tend to have thicker atmospheres <br> - added another generate button for 500 systems</p>
         <p class="patchnotes">v0.1.3:<br> - added atmosphere and surface liquid visualization to the diagrams</p>
     <p class="patchnotes"> v0.1.2:<br> - SCROLLBARS</p>
     <p class="patchnotes"> v0.1.1:<br> - added color to system diagrams to indicate star types, composition of planets, aquatic goldilocks zone (since people seem to care about that) <br> - some star systems now just have many fewer planets <br> - finally the white dwarf temperature check works</p>
@@ -104,6 +104,12 @@
     <p class="patchnotes"> v0.0.3:<br> - style overhaul, added logo <br> - tried to add check for planets around white dwarfs to always be the coldest possible temperature</p>
     <p class="patchnotes"> v0.0.2:<br> - planet statistics now show in a more readable format</p>
     <p class="patchnotes"> v0.0.1:<br> - generator is... functional</p>
+    </div>
+    <p></p>
+    <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
+        <h1 class="patchnotes">INFORMATION</h1>
+        <p class="patchnotes">Methanum is a fancy word for liquid methane. You should probably know it.</p>
+        <p class="patchnotes">A distance from a star in AU☉ refers to the equivalent distance in AU from the Sun at which that planet would receive the same amount of stellar radiation. For example, water is usually liquid around 0.6-1.1 AU☉ (though this varies with atmosphere thickness and greenhouse effect). <br> In simpler terms, it's where you would need to put the planet in the Solar System for it to be about the same temperature.</p>
     </div>
     <p></p>
     <button onClick="GenerateSystem();" class="genbutton">Generate system</button>
@@ -151,6 +157,18 @@ class Planet{
         
     }
 }
+class System{
+    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype){
+        this.planets=planets;
+        this.primarystartype=primarystartype;
+        this.closecompanionpresent=closecompanionpresent;
+        this.closecompanionstartype=closecompanionstartype;
+        this.distantcompanionpresent=distantcompanionpresent;
+        this.distantcompanionstartype=distantcompanionstartype;
+    }
+}
+
+var systems;
 
 var startypetable = [
     6,
@@ -190,7 +208,50 @@ var startypetable = [
     1,
     1
 ]
-
+var orbittable = [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1,
+    1.2,
+    1.4,
+    1.6,
+    1.8,
+    2,
+    2.3,
+    2.6,
+    2.9,
+    3.2,
+    3.5,
+    4,
+    4.5,
+    5,
+    5.5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    23,
+    26,
+    29,
+    34,
+    38,
+    42,
+    46,
+    50
+]
 var uberplanetsizes = [0.04, 0.08, 0.1, 0.3, 0.5, 0.7, 0.9, 1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.3, 2.7, 3, 3.7, 4.3, 5, 6, 7.5, 9, 11, 14, 17, 20, 24, 35, 40, 70, 100, 200, 300, 500, 800]
 
 var unterplanetsizes = [0.00007,
@@ -634,90 +695,184 @@ function placePlanets(starid,closecompanionpresent) {
     var ptag = dice(1,10)+999;
     while (o <= 41) {
         if(starid==1){
+            if(closecompanionpresent==0||o>6){
             if(ptag>(closecompanionpresent|0)){
-            if(Math.random>0.5 && o <= 19){
-                if(dice(1,3)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(Math.random()>0.2 && o <= 12){
+                if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null));
-                    o += 1;
+                    if(primarystartype == 1 || closecompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
+                    
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
                         planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 1, null, beltl));
                     }
-                    o += 1;
+                    if(primarystartype == 1 || closecompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
             }
             }     
             }
-            else if((Math.random>0.5 || o <= 19)&& o <= 30){
-                if(dice(1,4)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+            else if(Math.random()>0.5 && o <= 22){
+                if(dice(1,3)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null));
-                    o += 1;
+                    if(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent)){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
                         planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 1, null, beltl));
                     }
-                    o += 1;
+                    if(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent)){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
+            }
+            }     
+            }
+            else if((Math.random()>0.5 || o <= 19)&& o <= 30){
+                if(dice(1,4)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,6)!=1){
+                    planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null));
+                    if(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent)){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
+                } else {
+                    var beltl = dice(2, 6)-2;
+                    for (var j=0; j < beltl; j++){
+                        planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 1, null, beltl));
+                    }
+                    if(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent)){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
             }
             }   
             } else { {
                 if(dice(1,6)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null));
-                    o += 1;
+                    if(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent)){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
                         planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 1, null, beltl));
                     }
-                    o += 1;
+                    if(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent)){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
             }
             }   
             }}
         }
+            }
         } else {
             
             if(ptag>0){
-            if(Math.random>0.5 && o <= 19){
+            if(Math.random()>0.2 && o <= 12){
+                if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,6)!=1){
+                    planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
+                } else {
+                    var beltl = dice(2, 6)-2;
+                    for (var j=0; j < beltl; j++){
+                        planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 2, null, beltl));
+                    }
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
+            }
+            }     
+            } else if(Math.random()>0.5 && o <= 19){
                 if(dice(1,3)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
-                    o += 1;
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
                         planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 2, null, beltl));
                     }
-                    o += 1;
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
             }
             }     
             }
-            else if((Math.random>0.5 || o <= 19)&& o <= 30){
+            else if((Math.random()>0.5 || o <= 19)&& o <= 30){
                 if(dice(1,4)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
-                    o += 1;
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
                         planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 2, null, beltl));
                     }
-                    o += 1;
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
             }
             }   
             } else { {
                 if(dice(1,6)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
-                    o += 1;
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
                         planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 2, null, beltl));
                     }
-                    o += 1;
+                    if(distantcompanionstartype == 1){
+                        o += 2;
+                    } else {
+                        o += 1;
+                    }
             }
             }   
             }} 
@@ -934,30 +1089,47 @@ function generatePlanet(id) {
     var type = planetbuffer.type;
     var parentbody = planetbuffer.parentbody;
     if(type == 0) {
-        planetbuffer.sizeindex = dice(1,36)
-        planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
-    }
+        if (planetbuffer.starsystem == 1) {
+            if (dice(1,15) <= planetbuffer.orbit - 5 && !(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent))) {
+            planetbuffer.sizeindex = dice(1,36);
+            planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
+            } else {
+            planetbuffer.sizeindex = dice(1,16);
+            planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
+            }
+        } else {
+            if (dice(1,15) <= planetbuffer.orbit - 5 && !(distantcompanionstartype == 1)) {
+            planetbuffer.sizeindex = dice(1,36);
+            planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
+            } else {
+            planetbuffer.sizeindex = dice(1,16);
+            planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
+            }
+        }
+       
+       
+    } 
     if(type == 1) {
-        planetbuffer.sizeindex = dice(1,36)
+        planetbuffer.sizeindex = dice(1,36);
         planetbuffer.size = unterplanetsizes[planetbuffer.sizeindex]
     }
     if(type == 2) {
-        planetbuffer.sizeindex = dice(1,6)
+        planetbuffer.sizeindex = dice(1,6);
         planetbuffer.size = untermoonsizes[planetbuffer.sizeindex]
     }
     if(type == 3) {
-        planetbuffer.sizeindex = dice(1,12)
+        planetbuffer.sizeindex = dice(1,12);
         planetbuffer.size = smubermoonsizes[planetbuffer.sizeindex]
     }
     if(type == 4) {
-        planetbuffer.sizeindex = dice(1,12)
+        planetbuffer.sizeindex = dice(1,12);
         planetbuffer.size = meubermoonsizes[planetbuffer.sizeindex]
     }
     if(type == 5) {
-        planetbuffer.sizeindex = dice(1,18)
+        planetbuffer.sizeindex = dice(1,18);
         planetbuffer.size = laubermoonsizes[planetbuffer.sizeindex]
     }
-    planetbuffer.sizeclass=Math.floor(planetbuffer.sizeindex/12)
+    planetbuffer.sizeclass=Math.floor(planetbuffer.sizeindex/12);
     planetbuffer.moons=0;
     if(type == 0 || type == 1 && ((planetbuffer.starsystem==1&&(primarystartype>1||closecompanionstartype>1||orbit>5))||(planetbuffer.starsystem==2&&(distantcompanionstartype>1||orbit>5)))) {
 
@@ -969,7 +1141,7 @@ function generatePlanet(id) {
         }
         if(type == 0 && planetbuffer.sizeclass == 0){
             for (var m = 0; m < planetbuffer.sizeindex; m++){
-                if (dice(1, 12)>=11) {
+                if (dice(1, 24)>=23) {
                 planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 3, null, planetbuffer.starsystem, null,null));
                 planetbuffer.moons++;
             }
@@ -978,7 +1150,7 @@ function generatePlanet(id) {
         }
         if(type == 0 && planetbuffer.sizeclass == 1){
             for (var m = 0; m < planetbuffer.sizeindex; m++){
-                if (dice(1, 12)>=11) {
+                if (dice(1, 15)>=14) {
                 planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null,null));
                 planetbuffer.moons++;
             }
@@ -1015,8 +1187,8 @@ function generatePlanet(id) {
     else
     {planetbuffer.basetemp = 0}
     
-    if (dice(1,12) >= (12 - Math.floor(planetbuffer.size))) {
-        if (planetbuffer.size <= 50 && Math.random() > 0.5) {
+    if (dice(1,12) >= (13 - Math.floor(planetbuffer.size))) {
+        if ((planetbuffer.size <= 35 && Math.random() > 0.2) && planetbuffer.orbit > 20) {
             planetbuffer.composition = 4;
         } else {
             planetbuffer.composition = 5;
@@ -1051,7 +1223,7 @@ function generatePlanet(id) {
             planetbuffer.atmothickness = 0;
         }
         if ( planetbuffer.atmothickness > 0){
-            if (dice(1,6)==5 && planetbuffer.basetemp > 5){
+            if (dice(1,10)>=planetbuffer.orbit && planetbuffer.basetemp > 5){
                 planetbuffer.atmobasegas = 2;
                 planetbuffer.greenhouse = planetbuffer.atmothickness;
                 if (planetbuffer.greenhouse > 5) {
@@ -1085,7 +1257,7 @@ function generatePlanet(id) {
         planetbuffer.density = (dice(1,6)/10) + 0.6
     }
     if (planetbuffer.atmothickness >= 0) {
-        if (((9 <= planetbuffer.temperature) && (planetbuffer.temperature <= (8+planetbuffer.atmothickness))) && planetbuffer.atmothickness >= 3) {
+        if (((9 <= planetbuffer.temperature) && (planetbuffer.temperature <= (8+planetbuffer.atmothickness))) && planetbuffer.atmothickness >= 3 && Math.random() > 0.33) {
             planetbuffer.liquid = 1;
         } else
         if (((((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 7)) && planetbuffer.atmothickness >= 3) || (((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 8)) && planetbuffer.atmothickness >= 4)) && Math.random() > 0.95) {
@@ -1140,14 +1312,18 @@ var testPlanet;
 var n;
 var closecompanionstartype=-1;
 var distantcompanionstartype=-1;
+var closecompanionpresent;
+var distantcompanionpresent;
 var primarystartype=-1;
 
 function GenerateSystem(){
     $(".systemcontainer").empty();
+    systems = [];
     putGreeting();
 }
 function GenerateSector(){
     $(".systemcontainer").empty();
+    systems = [];
     for(let s = 0; s < 125; s++){
 
         putGreeting();
@@ -1155,11 +1331,12 @@ function GenerateSector(){
         addline("⠀");
         addline("⠀");
     }
-
+    console.log(systems[124].planets[0].orbit)
 }
 
 function GenerateAWHOLELOT(){
     $(".systemcontainer").empty();
+    systems = [];
     for(let s = 0; s < 500; s++){
 
         putGreeting();
@@ -1177,8 +1354,8 @@ function putGreeting() {
     primarystartype=-1;
     planets = [];
     age = dice(1,36)*0.3+0.1;
-    var closecompanionpresent = false;
-var distantcompanionpresent = false;
+    closecompanionpresent = false;
+    distantcompanionpresent = false;
     if(dice(1,3)==2){
         closecompanionpresent=true;
         closecompanionstartype=startypetable[dice(1,36)];
@@ -1220,7 +1397,7 @@ var distantcompanionpresent = false;
         planets[k]=generatePlanet(k);
         n = k;
     }
-
+systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype))
 drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype);
 div=addline('','.systemcontainer','div','','');
 addline(`SYSTEM AGE: `+age.toFixed(1),div,"h3");
@@ -1276,7 +1453,7 @@ function generateplanetdesc(l) {
     addline(``,div, "hr");
     addline(parentbodynames2[planets[l].parentbody>=0] + `PLANET `+planets[l].id +`:`,div,"h3") 
     addline(parentbodynames[planets[l].parentbody>=0] + `Size: ` + planets[l].size + `x the size of Earth`,div,"p");
-    addline(parentbodynames[planets[l].parentbody>=0] + `Distance index from star(s): ` + planets[l].orbit,div);
+    addline(parentbodynames[planets[l].parentbody>=0] + `Distance from star: ` + orbittable[planets[l].orbit] + " AU☉",div);
     addline(parentbodynames[planets[l].parentbody>=0] + `Temperature: ` + temperaturenames[planets[l].temperature],div);
                 if(planets[l].composition <= 3) {
                     addline(parentbodynames[planets[l].parentbody>=0] + `Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth`,div);
