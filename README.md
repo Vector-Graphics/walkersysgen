@@ -15,7 +15,15 @@ Use this for your RPG settings, please!
 
 "Generate 500 systems" does exactly what you'd expect.
 
-| Syntax      | Description |
+CSV TABLES:
+
+`composition`:
+
+|`composition`| Meaning     |
 | ----------- | ----------- |
-| Header      | Title       |
-| Paragraph   | Text        |
+| 0           | rocky       |
+| 1           | icy         |
+| 2           | carbonaceous|
+| 3           | metallic    |
+| 4           | ice giant   |
+| 5           | gas giant   |
