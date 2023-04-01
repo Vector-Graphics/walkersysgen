@@ -17,6 +17,25 @@ Use this for your RPG settings, please!
 
 CSV TABLES:
 
+`... star type`:
+
+|`star type`  | Meaning     |
+| ----------- | ----------- |
+| -1          | not present |
+| 0           | white dwarf |
+| 1           | M dwarf     |
+| 2           | K dwarf     |
+| 3           | G dwarf     |
+| 4           | F dwarf     |
+| 5           | A dwarf     |
+| 6           | B dwarf     |
+
+`parent body`:
+
+|`parent body`| Meaning     |
+| ----------- | ----------- |
+| -1          | orbits star(s) |
+
 `composition`:
 
 |`composition`| Meaning     |
@@ -27,3 +46,5 @@ CSV TABLES:
 | 3           | metallic    |
 | 4           | ice giant   |
 | 5           | gas giant   |
+
+
