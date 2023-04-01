@@ -101,9 +101,10 @@
 
   <body>
     <img class="titleimg" src="https://i.imgur.com/Bo59tCg.png">
-    <h1> v0.2.0_01 </h1>
+    <h1> v0.2.1 </h1>
     <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
         <p class="patchnotes">COMING SOON:<br> - hot jupiter simulation!</p>
+        <p class="patchnotes">v0.2.1:<br> - radius and density are now displayed in traditional units, and temperature is displayed in C as well as K<br> - planets now specify their type (uberplanet, dwarf planet, satellite planet)</p>
         <p class="patchnotes">v0.2.0_01:<br> - removed excess &lt;br> tags from csv file</p>
         <p class="patchnotes">v0.2.0:<br> - CSV DOWNLOAD FUNCTIONALITY ADDED <br> - tweaked planet sizes so now small and Earth-sized planets are a bit more common <br> - new logo that should hopefully fit the aesthetic more</p>
         <p class="patchnotes">v0.1.6:<br> - fixed the absolute mess of a patchnote from the previous version<br> - some small terminology improvements<br> - life now shows what liquid it uses<br> - more internal csv work. you can now get a csv dump of the systems by typing "fullcsv(systems)" in the debug console, but I have yet to put it in a ui usable format. 0.2 coming soon!</p>
@@ -132,6 +133,9 @@
         <p class="patchnotes">Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) <br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
         <p class="patchnotes">Q: Why is all my life aquatic? <br> A: In this app's terminology, 'aquatic' refers to life that uses water as the main solvent in its biochemistry (like Earth life), not a marine ecosystem. In simple terms, aquatic lifeforms drink water. Compare this to 'methanic' and 'ammonic' (yes, ammonia based life is a possibility!)</p>
         <p class="patchnotes">Q: Why is life so common? <br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
+        <p class="patchnotes">Q: Uberplanet? What's that? <br> A: An uberplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
+        <p class="patchnotes">Q: Dwarf planets aren't planets! <br> A: I disagree.</p>
+        <p class="patchnotes">Q: Moons aren't planets! <br> A: I disagree.</p>
         <p class="patchnotes">Q: How is there life with no water? <br> A: It's probably either subglacial - meaning it's in the subsurface ocean under the crust of an icy planet - or it's methanic or ammonic.</p>
         <p class="patchnotes">Q: Why is there no oxygen in the atmosphere? <br> A: Oxygen requires photosynthetic producers like plants, so I've simulated the presence of oxygen based on multicellular life.</p>
         <p class="patchnotes">Q: Why are Earth-like planets so rare? <br> A: Minsharic (Earth-like) planets are rare because the set of 'Earth-like' conditions are very precise. However, habitability doesn't require a planet to be precisely like Earth.</p>
@@ -139,7 +143,8 @@
         <p class="patchnotes">Q: Well ackshually, from 0.95 AU☉ and closer the planet has a runaway greenhouse effect- <br> A: I've seen these claims and I acknowledge them. However, I choose a more optimistic approach for this generator: the chance of a runaway greenhouse effect increases as you get closer to the star, but is never quite certain, and certainly not 0.05 AU☉ closer than the Earth.</p>
         <p class="patchnotes">Q: Why are my dwarf planet moons ordered weirdly? <br> A: Dwarf planet moons are positioned after the entire asteroid belt due to a technical limitation. This may or may not be fixed in the future. I personally don't see it as too big of an issue.</p>
         <p class="patchnotes">Q: What the heck is methanum? <br> A: Liquid methane. It's a term Astro Pro uses for liquid methane, and that I like.</p>
-        <p class="patchnotes">Q: How do I export to CSV? <br> A: You can export to CSV by clicking "Display CSV" and selecting and copying the FULL CSV data that appears. Alternatively, run fullcsv(systems) in the debug console.</p>
+        <p class="patchnotes">Q: How do I export to CSV? <br> A: Hit 'download generated CSV' and save the file.</p>
+        <p class="patchnotes">Q: What do all the numbers in the CSV mean? <br> A: The numbers under 'composition', 'temperature', etc are usually internal IDs for the respective classes. I might make a table of them later.</p>
         <p class="patchnotes">Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?<br> A: I use 'bepis' for unintended values in certain arrays. You can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
         <p class="patchnotes">Q: How do I suggest a feature? <br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
     </div>
@@ -164,7 +169,7 @@
         </script>
     <script> 
 class Planet{
-    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag,beltlength) {
+    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag,beltlength,moonnumber=-1) {
         this.size=size;
         this.composition=composition;
         this.density=density;
@@ -187,7 +192,7 @@ class Planet{
         this.starsystem=starsystem;
         this.oxygentag=oxygentag;
         this.beltlength=beltlength;
-        
+        this.moonnumber=moonnumber;
     }
 }
 class System{
@@ -288,7 +293,7 @@ var orbittable = [
     50
 ]
 var uberplanetsizes = [0.04, 0.06, 0.1, 0.15, 0.2, 0.3, 0.4, 0.55, 0.7, 0.85, 1, 1.1, 1.25, 1.5, 1.8, 2.3, 2.9, 3.5, 4.3, 5, 6, 7.5, 9, 11, 14, 17, 20, 24, 35, 40, 70, 100, 200, 300, 500, 800]
-
+var letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",]
 var unterplanetsizes = [0.00007,
 0.00008,
 0.00009,
@@ -640,27 +645,34 @@ var atmothicknessnames = [
     "thick",
     "very thick"
 ]
-
+var typenames = [
+    "UBERPLANET",
+    "DWARF PLANET",
+    "SATELLITE PLANET",
+    "SATELLITE PLANET",
+    "SATELLITE PLANET",
+    "SATELLITE PLANET"
+]
 var temperaturenames = [
-    "frigid (~50K)",
-    "frozen (~70K)",
-    "gelid (~100K)",
-    "cold (~120K)",
-    "chilly (~150K)",
-    "cool (~170K)",
-    "aretian (~190K)",
-    "huronian (~220K)",
-    "sturtian (~250K)",
-    "temperate (~280K)",
-    "tepid (~310K)",
-    "lukewarm (~340K)",
-    "warm (~375K)",
-    "toasty (~425K)",
-    "hot (~500K)",
-    "sweltering (~600K)",
-    "veneran (~750K)",
-    "scorched (~900K)",
-    "torrid (~1200K)"
+    "frigid (~50K, ~-220C)",
+    "frozen (~70K, ~-200C)",
+    "gelid (~100K, ~-170C)",
+    "cold (~120K, ~-150C)",
+    "chilly (~150K, ~-120C)",
+    "cool (~170K, ~-100C)",
+    "aretian (~190K, ~-80C)",
+    "huronian (~220K, ~-50C)",
+    "sturtian (~250K, ~-20C)",
+    "temperate (~280K, ~10C)",
+    "tepid (~310K, ~40C)",
+    "lukewarm (~340K, ~70C)",
+    "warm (~375K, ~105C)",
+    "toasty (~425K, ~155C)",
+    "hot (~500K, ~230C)",
+    "sweltering (~600K, ~330C)",
+    "veneran (~750K, ~480C)",
+    "scorched (~900K, ~630C)",
+    "torrid (~1200K, ~930C)"
 ]
 
 var lifenames = [
@@ -1194,14 +1206,14 @@ function generatePlanet(id) {
 
         if(type == 1 && planetbuffer.sizeclass == 2){
             if (dice(1, 6)>=2) {
-                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 2, null, planetbuffer.starsystem, null,null));
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 2, null, planetbuffer.starsystem, null,null,planetbuffer.moons));
                 planetbuffer.moons++;
             }
         }
         if(type == 0 && planetbuffer.sizeclass == 0){
             for (var m = 0; m < planetbuffer.sizeindex; m++){
                 if (dice(1, 24)>=23) {
-                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 3, null, planetbuffer.starsystem, null,null));
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 3, null, planetbuffer.starsystem, null,null,planetbuffer.moons));
                 planetbuffer.moons++;
             }
             }
@@ -1210,7 +1222,7 @@ function generatePlanet(id) {
         if(type == 0 && planetbuffer.sizeclass == 1){
             for (var m = 0; m < planetbuffer.sizeindex; m++){
                 if (dice(1, 15)>=14) {
-                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null,null));
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null,null,planetbuffer.moons));
                 planetbuffer.moons++;
             }
             }
@@ -1219,7 +1231,7 @@ function generatePlanet(id) {
         if(type == 0 && planetbuffer.sizeclass == 2){
             for (var m = 0; m < planetbuffer.sizeindex; m++){
                 if (dice(1, 6)>=5) {
-                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null,null));
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null,null,planetbuffer.moons));
                 planetbuffer.moons++;
             }
             }
@@ -1507,16 +1519,16 @@ function addline(text,parent= ".systemcontainer",style = "p",classes = "",img = 
     return(txt3);
 }
 
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,age"
+var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index"
 function csv(planet){
     return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
-    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2);
+    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber;
 }
 function systemcsv(system,ab){
     var systemcsvout = ``;
     for (let aa = 0; aa < system.planets.length; aa++){
         systemcsvout = systemcsvout + `
-        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,` + csv(system.planets[aa]) + ',' + system.primaryage.toFixed(1);
+        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + ',' + system.primaryage.toFixed(1) + `,` + csv(system.planets[aa]);
     }
     return systemcsvout;
 }
@@ -1548,12 +1560,17 @@ function download(filename, text) {
 function generateplanetdesc(l) {
     addline(``,div,"p");
     addline(``,div, "hr");
-    addline(parentbodynames2[planets[l].parentbody>=0] + `PLANET `+planets[l].id +`:`,div,"h3") 
+    if(planets[l].parentbody<0){
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].id+`:`,div,"h3") 
+    }else{
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber],div,"h3") 
+    }
+
     addline(parentbodynames[planets[l].parentbody>=0] + `Mass: ` + planets[l].size + `x the size of Earth`,div,"p");
     addline(parentbodynames[planets[l].parentbody>=0] + `Distance from star: ` + orbittable[planets[l].orbit] + " AU☉",div);
     addline(parentbodynames[planets[l].parentbody>=0] + `Temperature: ` + temperaturenames[planets[l].temperature],div);
                 if(planets[l].composition <= 3) {
-                    addline(parentbodynames[planets[l].parentbody>=0] + `Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth`,div);
+                    addline(parentbodynames[planets[l].parentbody>=0] + `Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3",div);
                     if(planets[l].atmobasegas == 2) {
                         addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, carbon dioxide` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
                     } else if(planets[l].atmothickness>0) {
@@ -1598,7 +1615,7 @@ function generateplanetdesc(l) {
                 
                 
                 } else {
-                    addline(parentbodynames[planets[l].parentbody>=0] + `Composition: A` + compositionnames[planets[l].composition] + ` with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth`,div);
+                    addline(parentbodynames[planets[l].parentbody>=0] + `Composition: A` + compositionnames[planets[l].composition] + ` with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3",div);
                 }
                 if(planets[l].parentbody < 0){
                     if(planets[l].starsystem == 1) {
@@ -1610,7 +1627,7 @@ function generateplanetdesc(l) {
                 } else {
                     addline(parentbodynames[planets[l].parentbody>=0] + `Orbits: planet ` + planets[l].parentbody,div);
                 }
-                addline(parentbodynames[planets[l].parentbody>=0] + `Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii`,div);
+                addline(parentbodynames[planets[l].parentbody>=0] + `Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii (`+ (((planets[l].size/planets[l].density)**(0.3333))*6371).toFixed(0) +` km)`,div);
                 addline(parentbodynames[planets[l].parentbody>=0] + `Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g`,div);
 
                 
