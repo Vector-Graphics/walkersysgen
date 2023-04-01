@@ -47,4 +47,14 @@ CSV TABLES:
 | 4           | ice giant   |
 | 5           | gas giant   |
 
+`type`:
+
+|`type`       | Meaning     |
+| ----------- | ----------- |
+| 0           | uberplanet  |
+| 1           | unterplanet |
+| 2           | moon of unterplanet|
+| 3           | moon of uberplanet with size index between 0-11|
+| 4           | moon of uberplanet with size index between 12-23   |
+| 5           | moon of uberplanet with size index between 24-35   |
 
