@@ -9,6 +9,9 @@
             font-size: larger;
             color: rgb(0, 255, 0);
         }
+        .systemcontainer p {
+            color: white;
+        }
         .patchnotes {
             text-align: center;
         }
@@ -95,15 +98,64 @@
         ::-webkit-scrollbar-thumb {
             background-color:rgb(0,127,0)
         }
+        .red {
+            color: #ff4500
+        }
+        .orange {
+            color: #ffa800
+        }
+        .yellow {
+            color: #ffd636
+        }
+        .darkgreen {
+            color: #00a468
+        }
+        .lightgreen {
+            color: #7fed56
+        }
+        .darkblue {
+            color: #235083
+        }
+        .blue {
+            color: #368fe9
+        }
+        .lightblue {
+            color: #51e9f4
+        }
+        .darkpurple {
+            color: #811e9f
+        }
+        .purple {
+            color: #b34ac0
+        }
+        .pink {
+            color: #ff98a9
+        }
+        .brown {
+            color: #9c6927
+        }
+        .black {
+            color: #000000
+        }
+        .darkgray {
+            color: #898d90
+        }
+        .lightgray {
+            color: #d3d7da
+        }
+        .white {
+            color: #ffffff
+        }
         
     </style>
   </head>
 
   <body>
     <img class="titleimg" src="https://i.imgur.com/Bo59tCg.png">
-    <h1> v0.2.1 </h1>
+    <h1> v0.2.2 </h1>
     <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
         <p class="patchnotes">COMING SOON:<br> - hot jupiter simulation!</p>
+        <p class="patchnotes">v0.2.2:<br> - planet info is now color coded<br> - lmn if this looks ugly</p>
         <p class="patchnotes">v0.2.1:<br> - radius and density are now displayed in traditional units, and temperature is displayed in C as well as K<br> - planets now specify their type (uberplanet, dwarf planet, satellite planet)</p>
         <p class="patchnotes">v0.2.0_01:<br> - removed excess &lt;br> tags from csv file</p>
         <p class="patchnotes">v0.2.0:<br> - CSV DOWNLOAD FUNCTIONALITY ADDED <br> - tweaked planet sizes so now small and Earth-sized planets are a bit more common <br> - new logo that should hopefully fit the aesthetic more</p>
@@ -249,48 +301,48 @@ var startypetable = [
     1
 ]
 var orbittable = [
-    0.1,
-    0.2,
-    0.3,
-    0.4,
-    0.5,
-    0.6,
-    0.7,
-    0.8,
-    0.9,
-    1,
-    1.2,
-    1.4,
-    1.6,
-    1.8,
-    2,
-    2.3,
-    2.6,
-    2.9,
-    3.2,
-    3.5,
-    4,
-    4.5,
-    5,
-    5.5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    12,
-    14,
-    16,
-    18,
-    20,
-    23,
-    26,
-    29,
-    34,
-    38,
-    42,
-    46,
-    50
+    "<span class='red'>0.1</span>",
+    "<span class='red'>0.2</span>",
+    "<span class='red'>0.3</span>",
+    "<span class='orange'>0.4</span>",
+    "<span class='orange'>0.5</span>",
+    "<span class='darkgreen'>0.6</span>",
+    "<span class='darkgreen'>0.7</span>",
+    "<span class='darkgreen'>0.8</span>",
+    "<span class='darkgreen'>0.9</span>",
+    "<span class='darkgreen'>1</span>",
+    "<span class='darkgreen'>1.2</span>",
+    "<span class='lightblue'>1.4</span>",
+    "<span class='lightblue'>1.6</span>",
+    "<span class='lightblue'>1.8</span>",
+    "<span class='lightblue'>2</span>",
+    "<span class='lightblue'>2.3</span>",
+    "<span class='lightblue'>2.6</span>",
+    "<span class='lightblue'>2.9</span>",
+    "<span class='blue'>3.2</span>",
+    "<span class='blue'>3.5</span>",
+    "<span class='blue'>4</span>",
+    "<span class='blue'>4.5</span>",
+    "<span class='blue'>5</span>",
+    "<span class='blue'>5.5</span>",
+    "<span class='blue'>6</span>",
+    "<span class='blue'>7</span>",
+    "<span class='blue'>8</span>",
+    "<span class='blue'>9</span>",
+    "<span class='blue'>10</span>",
+    "<span class='blue'>12</span>",
+    "<span class='blue'>14</span>",
+    "<span class='blue'>16</span>",
+    "<span class='blue'>18</span>",
+    "<span class='blue'>20</span>",
+    "<span class='blue'>23</span>",
+    "<span class='blue'>26</span>",
+    "<span class='blue'>29</span>",
+    "<span class='blue'>34</span>",
+    "<span class='blue'>38</span>",
+    "<span class='blue'>42</span>",
+    "<span class='blue'>46</span>",
+    "<span class='blue'>50</span>"
 ]
 var uberplanetsizes = [0.04, 0.06, 0.1, 0.15, 0.2, 0.3, 0.4, 0.55, 0.7, 0.85, 1, 1.1, 1.25, 1.5, 1.8, 2.3, 2.9, 3.5, 4.3, 5, 6, 7.5, 9, 11, 14, 17, 20, 24, 35, 40, 70, 100, 200, 300, 500, 800]
 var letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",]
@@ -570,18 +622,18 @@ var liquidcoveragetable = [
 ]
 
 var compositionnames = [
-    "rocky",
-    "icy",
-    "carbonaceous",
-    "metallic",
-    "n ice giant",
-    " gas giant"
+    "<span class='orange'>rocky</span>",
+    "<span class='lightblue'>icy</span>",
+    "<span class='red'>carbonaceous</span>",
+    "<span class='darkgray'>metallic</span>",
+    "n <span class='blue'>ice giant</span>",
+    " <span class='yellow'>gas giant</span>"
 ]
 
 var lifenames_atmo = [
     "",
     "",    
-    ", oxygen"
+    ", <span class='red'>oxygen</span>"
 ]
 
 var parentbodynames = {
@@ -596,9 +648,9 @@ var parentbodynames2 = {
 
 var vapornames = [
     "",
-    ", water vapor",
-    ", ammonia",
-    ", methane",
+    ", <span class='blue'>water vapor</span>",
+    ", <span class='yellow'>ammonia</span>",
+    ", <span class='darkgray'>methane</span>",
     ""
 ]
 
@@ -613,19 +665,19 @@ var compcolors = [
 
 var greenhousenames = [
     ", negligible",
-    ", mild",
-    ", moderate",
-    ", strong",
-    ", severe",
-    ", runaway",
+    ", <span class='yellow'>mild</span>",
+    ", <span class='yellow'>moderate</span>",
+    ", <span class='orange'>strong</span>",
+    ", <span class='orange'>severe</span>",
+    ", <span class='red'>runaway</span>",
 ]
 
 var liquidnames = [
     "",
-    "water",
-    "ammonia",
-    "methanum",
-    "nitrogen"
+    "<span class='blue'>water</span>",
+    "<span class='yellow'>ammonia</span>",
+    "<span class='darkgray'>methanum</span>",
+    "<span class='lightblue'>nitrogen</span>"
 ]
 
 var liquidnameslife = [
@@ -636,14 +688,22 @@ var liquidnameslife = [
     "aquatic (subglacial)"
 ]
 
+var spancolorslife = [
+    "<span class='purple'>",
+        "<span class='blue'>",
+            "<span class='yellow'>",
+                "<span class='darkgray'>",
+                    "<span class='purple'>"
+]
+
 var atmothicknessnames = [
     "none",
-    "very thin",
-    "thin",
-    "somewhat thin",
-    "medium",
-    "thick",
-    "very thick"
+    "<span class='darkblue'>very thin</span>",
+    "<span class='darkblue'>thin</span>",
+    "<span class='blue'>somewhat thin</span>",
+    "<span class='blue'>medium</span>",
+    "<span class='lightblue'>thick</span>",
+    "<span class='lightblue'>very thick</span>"
 ]
 var typenames = [
     "UBERPLANET",
@@ -654,25 +714,25 @@ var typenames = [
     "SATELLITE PLANET"
 ]
 var temperaturenames = [
-    "frigid (~50K, ~-220C)",
-    "frozen (~70K, ~-200C)",
-    "gelid (~100K, ~-170C)",
-    "cold (~120K, ~-150C)",
-    "chilly (~150K, ~-120C)",
-    "cool (~170K, ~-100C)",
-    "aretian (~190K, ~-80C)",
-    "huronian (~220K, ~-50C)",
-    "sturtian (~250K, ~-20C)",
-    "temperate (~280K, ~10C)",
-    "tepid (~310K, ~40C)",
-    "lukewarm (~340K, ~70C)",
-    "warm (~375K, ~105C)",
-    "toasty (~425K, ~155C)",
-    "hot (~500K, ~230C)",
-    "sweltering (~600K, ~330C)",
-    "veneran (~750K, ~480C)",
-    "scorched (~900K, ~630C)",
-    "torrid (~1200K, ~930C)"
+    "<span class='purple'>frigid</span> (~50K, ~-220C)",
+    "<span class='purple'>frozen</span> (~70K, ~-200C)",
+    "<span class='blue'>gelid</span> (~100K, ~-170C)",
+    "<span class='blue'>cold</span> (~120K, ~-150C)",
+    "<span class='blue'>chilly</span> (~150K, ~-120C)",
+    "<span class='lightblue'>cool</span> (~170K, ~-100C)",
+    "<span class='lightblue'>aretian</span> (~190K, ~-80C)",
+    "<span class='lightblue'>huronian</span> (~220K, ~-50C)",
+    "<span class='lightgreen'>sturtian</span> (~250K, ~-20C)",
+    "<span class='lightgreen'>temperate</span> (~280K, ~10C)",
+    "<span class='lightgreen'>tepid</span> (~310K, ~40C)",
+    "<span class='yellow'>lukewarm</span> (~340K, ~70C)",
+    "<span class='yellow'>warm</span> (~375K, ~105C)",
+    "<span class='yellow'>toasty</span> (~425K, ~155C)",
+    "<span class='orange'>hot</span> (~500K, ~230C)",
+    "<span class='orange'>sweltering</span> (~600K, ~330C)",
+    "<span class='orange'>veneran</span> (~750K, ~480C)",
+    "<span class='red'>scorched</span> (~900K, ~630C)",
+    "<span class='red'>torrid</span> (~1200K, ~930C)"
 ]
 
 var lifenames = [
@@ -682,13 +742,13 @@ var lifenames = [
 ]
 
 var startypes = [
-    "white dwarf",
-    "M-type main sequence star",
-    "K-type main sequence star",
-    "G-type main sequence star",
-    "F-type main sequence star",
-    "A-type main sequence star",
-    "B-type main sequence star"
+    "<span class='darkgray'>white dwarf</span>",
+    "<span class='orange'>M-type main sequence star",
+    "<span class='yellow'>K-type main sequence star",
+    "<span class='white'>G-type main sequence star",
+    "<span class='lightblue'>F-type main sequence star",
+    "<span class='blue'>A-type main sequence star",
+    "<span class='purple'>B-type main sequence star"
 ]
 
 var bgcolors = [
@@ -1511,7 +1571,7 @@ for (var q = 0; q < 41; q++) {
 
 function addline(text,parent= ".systemcontainer",style = "p",classes = "",img = "",) {
     var txt3 = document.createElement(style); 
-    $(txt3).text(text);
+    $(txt3).html(text);
     if(classes != ""){
         $(txt3).addClass(classes);
     }
@@ -1572,12 +1632,12 @@ function generateplanetdesc(l) {
                 if(planets[l].composition <= 3) {
                     addline(parentbodynames[planets[l].parentbody>=0] + `Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3",div);
                     if(planets[l].atmobasegas == 2) {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, carbon dioxide` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
+                        addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <span class='orange'>carbon dioxide</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
                     } else if(planets[l].atmothickness>0) {
                         if(planets[l].greenhouse > 0 && planets[l].basetemp > 5) {
-                            addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, nitrogen` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + ', carbon dioxide' + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
+                            addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <span class='lightblue'>nitrogen</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + ', carbon dioxide' + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
                         } else {
-                            addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, nitrogen` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
+                            addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <span class='lightblue'>nitrogen</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
                         }
                     } else {
                         addline(parentbodynames[planets[l].parentbody>=0] + `Atmosphere: none`,div);
@@ -1596,7 +1656,7 @@ function generateplanetdesc(l) {
                     }
 
                     if(planets[l].geoactive) {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `Geologically active: yes`,div);
+                        addline(parentbodynames[planets[l].parentbody>=0] + `Geologically active: <span class='orange'>yes</span>`,div);
                     }
                     if(!planets[l].geoactive) {
                         addline(parentbodynames[planets[l].parentbody>=0] + `Geologically active: no`,div);
@@ -1605,7 +1665,7 @@ function generateplanetdesc(l) {
                         if(planets[l].life == 0){
                         addline(parentbodynames[planets[l].parentbody>=0] + `Life: none`,div);
                         }else{
-                        addline(parentbodynames[planets[l].parentbody>=0] + `Life: ` + lifenames[planets[l].life] +" "+ liquidnameslife[planets[l].liquid],div);
+                        addline(parentbodynames[planets[l].parentbody>=0] + `Life: ` + spancolorslife[planets[l].liquid]+ lifenames[planets[l].life] +" "+ liquidnameslife[planets[l].liquid]+"</span>",div);
                         }
 
                     
