@@ -14,3 +14,8 @@ Use this for your RPG settings, please!
 
 
 "Generate 500 systems" does exactly what you'd expect.
+
+| Syntax      | Description |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |
