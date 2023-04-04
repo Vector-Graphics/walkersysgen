@@ -41,10 +41,10 @@
             background-color: black;
         }
         body {
-            width: 1800px;
+            width: 1850px;
             margin: auto;
             overflow-y: scroll;
-            overflow-x: hidden;
+            overflow-x: scroll;
         }
         hr{
             color:rgb(0, 255, 0);
@@ -74,7 +74,7 @@
         }
         .titleimg{
             margin: 0 auto;
-            width: 1800px;
+            width: 1850px;
             display:block;
         }
         div{
@@ -238,9 +238,10 @@
     ""-->
   <body>
     <img class="titleimg" src="https://i.imgur.com/Bo59tCg.png">
-    <h1> v0.2.4 </h1>
+    <h1> v0.2.5 </h1>
     <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
         <p class="patchnotes">COMING SOON:<br> - hot jupiter simulation!</p>
+        <p class="patchnotes">v0.2.5:<br> - uberplanet changed to euplanet at Azi's suggestion <br> - added rings to planets<br> - added a new seecret feature<br> </p>
         <p class="patchnotes">v0.2.4:<br> - improved planet rendering! <br> - performance fixes and progress indicator for bulk generating systems<br> - added icons for EVERYTHING <br> </p>
         <p class="patchnotes">v0.2.3:<br> - graphical updates: <br> - changed the font to the one I use for google docs<br> - added icons for EVERYTHING <br> </p>
         <p class="patchnotes">v0.2.2:<br> - planet info is now color coded<br> - lmn if this looks ugly</p>
@@ -301,7 +302,7 @@
         </script>
     <script> 
 class Planet{
-    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag,beltlength,moonnumber=-1) {
+    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag,beltlength,moonnumber=-1,displayseed=0,rings=0,civ=0) {
         this.size=size;
         this.composition=composition;
         this.density=density;
@@ -324,7 +325,10 @@ class Planet{
         this.starsystem=starsystem;
         this.oxygentag=oxygentag;
         this.beltlength=beltlength;
-        this.moonnumber=moonnumber;
+        this.moonnumber=moonnumber; 
+        this.displayseed=displayseed;
+        this.rings=rings;
+        this.civ=civ;
     }
 }
 class System{
@@ -789,7 +793,7 @@ var atmothicknessnames = [
     "<img class='icon' src='img/iconAtmo6.png'><span class='typef'>very thick</span>"
 ]
 var typenames = [
-    "<img class='icon' src='img/iconUberplanet.png'> UBERPLANET",
+    "<img class='icon' src='img/iconUberplanet.png'> EUPLANET",
     "<img class='icon' src='img/iconUnterplanet.png'> DWARF PLANET",
     "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET",
     "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET",
@@ -1174,6 +1178,10 @@ function drawPlanet(planet,x,y,ctx){
                     image(imgs[i],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
                 
             }
+            if(planet.rings){
+                ctx.fillStyle=("rgb(127,127,127)")
+                ctx.fillRect(x-displayRadius(planet,rexp,rscale)*2,y-displayRadius(planet,rexp,rscale)*0.1,displayRadius(planet,rexp,rscale)*4,displayRadius(planet,rexp,rscale)*0.2)
+            }
             });
 }
 
@@ -1182,7 +1190,7 @@ function drawPlanet2(planet,x,y,ctx){
     let promises = [];
     var imgscounter = 0;
     if(planet.atmothickness>=3){
-                drawCircle(bgcolors[planet.atmobasegas],x,y,displayRadius(planet,rexp,rscale)+6,ctx);
+                drawCircle(bgcolors[planet.atmobasegas],x,y,displayRadius(planet,rexp,rscale)+15,ctx);
             }
             //image(compcolors[planet.composition],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             promises.push(add_image_to_list(imgs, compcolors[planet.composition]));
@@ -1224,6 +1232,10 @@ function drawPlanet2(planet,x,y,ctx){
                 rscale=42;
                     image(imgs[i],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
                 
+            }
+            if(planet.rings){
+                ctx.fillStyle=("rgb(127,127,127)")
+                ctx.fillRect(x-displayRadius(planet,rexp,rscale)*2,y-displayRadius(planet,rexp,rscale)*0.05,displayRadius(planet,rexp,rscale)*4,displayRadius(planet,rexp,rscale)*0.1)
             }
             });
 }
@@ -1277,7 +1289,7 @@ var parentbodycheck = 0;
 function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype,div){
     
     var canvas = addline("",systemcontainerinterior,"canvas");
-    $(canvas).prop("width","1800");
+    $(canvas).prop("width","1850");
     $(canvas).prop("height","650")
     var ctx = canvas.getContext("2d");
     ctx.imageSmoothingQuality="high";
@@ -1349,7 +1361,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
     if(distantcompanionpresent){
         var canvas = addline("",systemcontainerinterior,"canvas");
-    $(canvas).prop("width","1800");
+    $(canvas).prop("width","1850");
     $(canvas).prop("height","650")
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgb(0,255,0)";
@@ -1437,12 +1449,17 @@ function generatePlanet(id) {
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
             }
         }
-       
+        if(dice(1,6)==5||planetbuffer.size>=11){
+            planetbuffer.rings=1;
+        }
        
     } 
     if(type == 1) {
         planetbuffer.sizeindex = dice(1,36);
         planetbuffer.size = unterplanetsizes[planetbuffer.sizeindex]
+        if(dice(1,2)==1){
+            planetbuffer.rings=1;
+        }
     }
     if(type == 2) {
         planetbuffer.sizeindex = dice(1,6);
@@ -1624,6 +1641,9 @@ function generatePlanet(id) {
     if (planetbuffer.geoactive = true && dice(1,6)>0 && (planetbuffer.composition == 1 || (planetbuffer.liquid >= 1 && planetbuffer.liquid <= 3))) {
         if (dice(1,12)*0.3<=age-3){
             planetbuffer.life = 2;
+            if(Math.random()<=1/2500 ){
+                planetbuffer.civ = 1;
+            }
         } else{
             planetbuffer.life = 1;
         }
@@ -1800,10 +1820,10 @@ function addline(text,parent= systemcontainer,style = "p",classes = "",img = "",
     return(txt3);
 }
 
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index"
+var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ"
 function csv(planet){
     return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
-    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber;
+    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ;
 }
 function systemcsv(system,ab){
     var systemcsvout = ``;
@@ -1923,6 +1943,15 @@ function generateplanetdesc(l) {
                 }
                 addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRadius.png"> Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii (`+ (((planets[l].size/planets[l].density)**(0.3333))*6371).toFixed(0) +` km)`,div);
                 addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconGravity.png"> Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g`,div);
+                if(planets[l].rings){
+                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRings.png"> Rings: <span class='yellow'>Yes</span>`,div);
+                }else{
+                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRings.png"> Rings: No`,div);
+                }
+
+                if(planets[l].civ){
+                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld</span>`,div);
+                }
 
                 
                 
