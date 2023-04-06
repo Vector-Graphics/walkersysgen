@@ -1779,7 +1779,12 @@ function generatePlanet(id) {
     var orbit = planetbuffer.orbit;
     var type = planetbuffer.type;
     var parentbody = planetbuffer.parentbody;
-    planetbuffer.name = generatePlanetName();
+    if(salibe){
+        planetbuffer.name = generatePlanetName();
+    } else {
+        planetbuffer.name = "Salibe";
+    }
+
     if(type == 0) {
         if (planetbuffer.size==null){
             if (planetbuffer.starsystem == 1) {
@@ -2037,6 +2042,7 @@ var primarystartype=-1;
 var primarystarname;
 var closecompanionname;
 var distantcompanionname;
+var salibe;
 
 function GenerateSystem(){
     systemcontainerinterior=document.createElement('div');
@@ -2092,6 +2098,7 @@ var closecompanionname;
 var distantcompanionname;
 
 function putGreeting() {
+    salibe = dice(1,1000);
     systemcontainer=[];
     closecompanionstartype=-1;
     distantcompanionstartype=-1;
@@ -2137,7 +2144,12 @@ function putGreeting() {
         
         placePlanets(2,closecompanionpresent);
     }
-    var tmp4 = generatePlanetName();
+    if(salibe){
+        var tmp4 = generatePlanetName();
+    } else {
+        var tmp4 = "Salibe";
+    }
+    
     if(closecompanionpresent){
         if(distantcompanionpresent){
             primaryname=tmp4+" Aa";
