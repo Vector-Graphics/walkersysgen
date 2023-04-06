@@ -143,8 +143,6 @@
             padding: 15px;
             border-radius: 16px;
         }
-        #csvout {
-        }
         #csvout p {
             font-family: monospace;
             font-size: medium;
@@ -313,7 +311,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.2.7 </h1>
+    <h1> v0.2.8 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <button onClick="GenerateSector();" class="genbutton">Generate sector</button>
@@ -321,9 +319,11 @@
     <a download="" id="download"><button onClick="download(`systems.csv`,fullcsv(systems));" class="genbutton">Download generated CSV</button></a>
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
-        <p class="patchnotes">COMING SOON:<br> - mouseover<br> - names</p>
+        <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.2.8 - what's in a name:</h3>
+        <p class="patchnotes">- fixed csv export<br> - gave everything randomly generated names</p>
         <h3 class="patchnotes">v0.2.7 - hot jupiters:</h3>
-        <p class="patchnotes">-Added Hot Jupiters<br> - Made moons not generate close to the star <br> - Added Traveller's universal """world""" profile (hint: it tells you next to nothing about the world)<br> - More UI upgrades<br> - Made icy planets way more common</p>
+        <p class="patchnotes">- Added Hot Jupiters<br> - Made moons not generate close to the star <br> - Added Traveller's universal """world""" profile (hint: it tells you next to nothing about the world)<br> - More UI upgrades<br> - Made icy planets way more common</p>
         <h3 class="patchnotes">v0.2.6 - a bug:</h3>
         <p class="patchnotes">- GAS GIANT MOONS ARE FINALLY THE RIGHT SIZE, THIS BUG HAS BEEN IN THE APP SINCE 0.0.1<br> - added a sidebar so that you don't have to scroll down a bunch to find everything <br> - probably just ruined things for mobile users<br> - ah well<br> </p>
         <h3 class="patchnotes">v0.2.5 - rings and other things:</h3>
@@ -383,7 +383,7 @@
         <p class="patchnotes">Q: What the heck is methanum? <br> A: Liquid methane. It's a term Astro Pro uses for liquid methane, and that I like.</p>
         <p class="patchnotes">Q: How do I export to CSV? <br> A: Hit 'download generated CSV' and save the file.</p>
         <p class="patchnotes">Q: What do all the numbers in the CSV mean? <br> A: The numbers under 'composition', 'temperature', etc are usually internal IDs for the respective classes. There is a table of what the numbers mean at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>.</p>
-        <p class="patchnotes">Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?<br> A: I use 'bepis' for unintended values in certain arrays. You can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
+        <p class="patchnotes">Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?<br> A: I use 'bepis' for unintended values in certain arrays. 'Bepis' appearing in CSVs for names of stars that don't exist is intentional. If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
         <p class="patchnotes">Q: How do I suggest a feature? <br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
     </div>
     <p></p>
@@ -400,7 +400,7 @@
         </script>
     <script> 
 class Planet{
-    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag,beltlength,moonnumber=-1,displayseed=0,rings=0,civ=0) {
+    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag,beltlength,moonnumber=-1,displayseed=0,rings=0,civ=0,name="bepis") {
         this.size=size;
         this.composition=composition;
         this.density=density;
@@ -427,10 +427,11 @@ class Planet{
         this.displayseed=displayseed;
         this.rings=rings;
         this.civ=civ;
+        this.name=name;
     }
 }
 class System{
-    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,primaryage,secondaryage){
+    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,primaryage,secondaryage,primaryname="bepis",closecompanionname="bepis",distantcompanionname="bepis"){
         this.planets=planets;
         this.primarystartype=primarystartype;
         this.closecompanionpresent=closecompanionpresent;
@@ -439,6 +440,9 @@ class System{
         this.distantcompanionstartype=distantcompanionstartype;
         this.primaryage=primaryage;
         this.secondaryage=secondaryage;
+        this.primaryname=primaryname;
+        this.closecompanionname=closecompanionname;
+        this.distantcompanionname=distantcompanionname
     }
 }
 
@@ -616,6 +620,79 @@ var orbittable = [
     "<span class='blue'>42</span>",
     "<span class='blue'>46</span>",
     "<span class='blue'>50</span>"
+]
+
+
+var consonants = [
+    "m", "t", "c", "b", "k", "l", "r", "n", "v", "th", "f", "j", "p", "d", "g", "st", "m", "t", "c", "b", "k", "l", "n", "v", "th", "f", "j", "p", "d", "g", "st", "rh", "br", "tr", "", "pl", "s", "sh", "sc", "h", "ch", "ph", "gl", "fl", "cl", "bl", "sch", "", "", "", "", ""
+]
+var vowels = [
+    "a", "e", "i", "o", "u",
+]
+var glides = [
+    "r", "", ""
+]
+function syllable(){
+    if(Math.random >= 0.5){
+        return consonants[dice(1,consonants.length)]+vowels[dice(1,vowels.length)]+glides[dice(1,glides.length)];
+    }else{
+        return namepenul[dice(1,namepenul.length)];
+    }
+    
+    
+}
+var nameparts = [
+    "mer", "tar", "mar", "cur", "mur", "cer", "ter", "bur", "ber", "bir", "cir", "ker", "cu", "la", "lar", "bar", "ba", "me", "ry", "re", "ro", "ra", "nu", "ve", "va", "var", "ra", "ce", "re", "sa", "tha", "fa", "tur", "ju", "pi", "da", "i", "o", "pa", "par", "ga", "ny", "cal", "li", "sto", "la", "ti", "ta", "te", "thy", "di", "rhe", "a", "pe", "tu", "ri", "bri", "ni", "be", "ro", "tri", "to", "u", "ra", "e", "ne", "p", "tu", "ne", "plu", "ri", "ma", "ke", "qua", "ar", "se", "na", "tasci", "ti", "sci", "fer", "n", "lar", "sta", "ste", "re", "plo", "cha", "ro", "bi", "mo", "ho", "du", "na", "mi", "mu", "ty", "lo", "bor",  
+]
+var namepenul = [
+"mer", "tar", "mar", "cur", "mur", "cer", "ter", "bur", "ber", "bir", "cir", "ker", "cu", "la", "lar", "bar", "ba", "me", "ry", "re", "ro", "ra", "nu", "ve", "va", "var", "ra", "ce", "re", "sa", "tha", "fa", "tur", "ju", "pi", "da", "i", "o", "pa", "par", "ga", "ny", "cal", "li", "sto", "la", "ti", "ta", "te", "thy", "di", "rhe", "a", "pe", "tu", "ri", "bri", "ni", "be", "ro", "tri", "to", "u", "ra", "e", "ne", "tu", "ne", "plu", "ri", "ma", "ke", "qua", "ar", "se", "na", "tasci", "ti", "sci", "fer", "lar", "sta", "ste", "re", "plo", "cha", "ro", "bi", "mo", "ho", "du", "na", "mi", "mu", "ty", "lo", "bor", 
+]
+var nameends = [
+    "s", "", "", "n", "t"
+]
+var orbittable2 = [
+    "0.1",
+    "0.2",
+    "0.3",
+    "0.4",
+    "0.5",
+    "0.6",
+    "0.7",
+    "0.8",
+    "0.9",
+    "1",
+    "1.2",
+    "1.4",
+    "1.6",
+    "1.8",
+    "2",
+    "2.3",
+    "2.6",
+    "2.9",
+    "3.2",
+    "3.5",
+    "4",
+    "4.5",
+    "5",
+    "5.5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "12",
+    "14",
+    "16",
+    "18",
+    "20",
+    "23",
+    "26",
+    "29",
+    "34",
+    "38",
+    "42",
+    "46",
+    "50",
 ]
 var imagesources = [
 
@@ -1693,13 +1770,16 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
     }
 }
-
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 var hotjupiter = 0;
 function generatePlanet(id) {
     var planetbuffer = planets[id];
     var orbit = planetbuffer.orbit;
     var type = planetbuffer.type;
     var parentbody = planetbuffer.parentbody;
+    planetbuffer.name = generatePlanetName();
     if(type == 0) {
         if (planetbuffer.size==null){
             if (planetbuffer.starsystem == 1) {
@@ -1954,6 +2034,9 @@ var distantcompanionstartype=-1;
 var closecompanionpresent;
 var distantcompanionpresent;
 var primarystartype=-1;
+var primarystarname;
+var closecompanionname;
+var distantcompanionname;
 
 function GenerateSystem(){
     systemcontainerinterior=document.createElement('div');
@@ -2004,6 +2087,9 @@ $(systemcontainerinterior).addClass("systemcontainerinterior")
 
 var div;
 var systemcontainerinterior;
+var primaryname;
+var closecompanionname;
+var distantcompanionname;
 
 function putGreeting() {
     systemcontainer=[];
@@ -2051,23 +2137,43 @@ function putGreeting() {
         
         placePlanets(2,closecompanionpresent);
     }
+    var tmp4 = generatePlanetName();
+    if(closecompanionpresent){
+        if(distantcompanionpresent){
+            primaryname=tmp4+" Aa";
+            closecompanionname=tmp4+" Ab";
+            distantcompanionname=tmp4+" B";
+        } else {
+            primaryname=tmp4+" A";
+            closecompanionname=tmp4+" B";
+        }
+    } else {
+        if(distantcompanionpresent){
+            primaryname=tmp4+" A";
+            distantcompanionname=tmp4+" B";
+        } else {
+            primaryname=tmp4;
+        }
+    }
     for (var k = 0; k < planets.length; k++){
 
         planets[k]=generatePlanet(k);
         n = k;
     }
-systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age))
+systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname))
 
 drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype);
 
 div=document.createElement('div');
 $(div).addClass("system");
+addline(tmp4.toUpperCase() + ` SYSTEM `,div,'h3');
 addline(`SYSTEM AGE: `+age.toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
-addline(startypes[primarystartype],div,"h3");
+addline(primaryname+" - "+startypes[primarystartype],div,"h3");
 if(closecompanionpresent) {
-    addline(startypes[closecompanionstartype],div,"h3");
+    addline(closecompanionname+" - "+startypes[closecompanionstartype],div,"h3");
+
 }
 
 
@@ -2082,7 +2188,7 @@ for (var q = 0; q < 42; q++) {
 if(distantcompanionpresent) {
     addline('',div,"h3");
     addline('SECONDARY STAR:',div,"h3");
-    addline(startypes[distantcompanionstartype],div,"h3");
+    addline(distantcompanionname+" - "+startypes[distantcompanionstartype],div,"h3");
 }
 
 for (var q = 0; q < 42; q++) {
@@ -2100,6 +2206,25 @@ for (var q = 0; q < 42; q++) {
 $(systemcontainerinterior).append(div);
 }
 
+
+function generatePlanetName() {
+    var tmp3;
+    if(Math.random()>=0.5){
+        if(Math.random()>=0.5){
+            if(Math.random()>=0.3){
+                tmp3 = capitalizeFirstLetter(syllable()+syllable()+nameends[dice(1,nameends.length)]);
+    } else {
+        tmp3 = capitalizeFirstLetter(syllable()+syllable()+syllable()+syllable()+nameends[dice(1,nameends.length)]);
+    }
+            
+    } else {
+        tmp3 = capitalizeFirstLetter(syllable()+syllable()+syllable()+nameends[dice(1,nameends.length)]);
+    }
+    } else {
+        tmp3 = capitalizeFirstLetter(syllable()+syllable()+nameends[dice(1,nameends.length)]);
+    }
+    return tmp3;
+}
 function addline(text,parent= systemcontainer,style = "p",classes = "",img = "",) {
     var txt3 = document.createElement(style); 
     $(txt3).html(text);
@@ -2110,16 +2235,16 @@ function addline(text,parent= systemcontainer,style = "p",classes = "",img = "",
     return(txt3);
 }
 
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ"
+var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name"
 function csv(planet){
-    return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
-    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ;
+    return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable2[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
+    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ+","+planet.name;
 }
 function systemcsv(system,ab){
     var systemcsvout = ``;
     for (let aa = 0; aa < system.planets.length; aa++){
         systemcsvout = systemcsvout + `
-        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + ',' + system.primaryage.toFixed(1) + `,` + csv(system.planets[aa]);
+        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,`+ system.primaryname+  `,`+ system.closecompanionname+  `,`+ system.distantcompanionname+ ',' + system.primaryage.toFixed(1) + `,` + csv(system.planets[aa]);
     }
     return systemcsvout;
 }
@@ -2165,9 +2290,9 @@ function generateplanetdesc(l) {
     drawPlanet2(planets[l],150,150,ctx);
     rscale=14;
     if(planets[l].parentbody<0){
-        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].id+`:`,div,"h3") 
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].id+` - `+planets[l].name+`:`,div,"h3") 
     }else{
-        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber],div,"h3") 
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber]+` - `+planets[l].name+`:`,div,"h3") 
     }
     var tmp2;
     if(planets[l].atmothickness == 0){
@@ -2249,7 +2374,7 @@ function generateplanetdesc(l) {
                     }
                    
                 } else {
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconSystem.png"> Orbits: planet ` + planets[l].parentbody,div);
+                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconSystem.png"> Orbits: planet ` + planets[planets[l].parentbody].name,div);
                 }
                 addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRadius.png"> Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii (`+ (((planets[l].size/planets[l].density)**(0.3333))*6371).toFixed(0) +` km)`,div);
                 addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconGravity.png"> Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g`,div);
@@ -2259,7 +2384,7 @@ function generateplanetdesc(l) {
                     addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRings.png"> Rings: No`,div);
                 }
 
-                addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconUWP.png"> Traveller profile: Name xxyy q` + hexadecimalDigits[Math.floor(Math.min(((planets[l].size/planets[l].density)**(0.3333)).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z",div)
+                addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconUWP.png"> Traveller profile: `+planets[l].name+` xxyy q` + hexadecimalDigits[Math.floor(Math.min(((planets[l].size/planets[l].density)**(0.3333)).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z",div)
                 if(planets[l].civ){
                     addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld</span>`,div);
                 }
@@ -2283,53 +2408,54 @@ $(systemcontainerinterior).addClass("systemcontainerinterior")
     age = 4.6;
     closecompanionpresent = false;
     distantcompanionpresent = false;
-    planets.push(new Planet(0.06,3,1,0,0,0,0,0,1,0,0,0,3,13,13,-1,0,0,0,1,0,-1,-1,0,0,0));
-    planets.push(new Planet(0.85,0,0.9,2,6,5,0,0,9,0,1,0,6,9,16,-1,1,0,0,1,0,-1,-1,0,0,0));
-    planets.push(new Planet(1,0,1,1,4,2,1,0.7,10,0,1,2,9,8,9,-1,2,0,1,1,2,-1,-1,0,0,1));
-    planets.push(new Planet(0.1,0,0.7,2,1,0,0,0,2,0,1,0,12,6,6,-1,3,0,0,1,0,-1,-1,0,0,0));
-    planets.push(new Planet(0.00016,1,0.4,0,0,0,0,0,1,0,0,0,17,4,4,-1,4,1,0,1,0,1,-1,0,0,0));
-    planets.push(new Planet(300,5,0.2,0,0,0,0,0,1,0,0,0,22,3,3,-1,5,0,0,1,0,-1,-1,0,1,0));
-    planets.push(new Planet(100,5,0.2,0,0,0,0,0,1,0,0,0,28,1,1,-1,6,0,0,1,0,-1,-1,0,1,0));
-    planets.push(new Planet(14,4,0.2,0,0,0,0,0,1,0,0,0,33,0,0,-1,7,0,0,1,0,-1,-1,0,1,0));
-    planets.push(new Planet(17,4,0.2,0,0,0,0,0,1,0,0,0,36,0,0,-1,8,0,0,1,0,-1,-1,0,1,0));
-    planets.push(new Planet(0.002,1,0.4,1,1,0,0,0,1,0,1,2,39,0,0,-1,9,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.003,1,0.5,1,1,0,0,0,1,0,1,2,39,0,0,-1,10,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.0006,1,0.5,1,1,0,0,0,1,0,1,2,39,0,0,-1,11,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.0005,1,0.3,1,1,0,0,0,1,0,1,2,39,0,0,-1,12,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.0003,1,0.3,1,1,0,0,0,1,0,1,2,39,0,0,-1,13,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.0002,1,0.4,1,1,0,0,0,1,0,1,1,39,0,0,-1,14,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.00015,1,0.4,1,1,0,0,0,1,0,1,0,39,0,0,-1,15,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.00008,1,0.4,1,1,0,0,0,1,0,0,0,39,0,0,-1,16,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.0001,1,0.3,1,1,0,0,0,1,0,0,0,39,0,0,-1,17,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.0001,1,0.3,1,1,0,0,0,1,0,0,0,39,0,0,-1,18,1,0,1,0,10,-1,0,0,0));
-    planets.push(new Planet(0.2,1,0.4,1,6,4,0,0,2,0,1,2,41,0,1,-1,19,0,0,1,0,-1,-1,0,0,0));
-    planets.push(new Planet(0.01,0,0.6,0,0,0,0,0,2,0,0,0,9,8,8,2,20,3,0,1,0,-1,0,0,0,0));
-    planets.push(new Planet(0.015,0,0.7,0,0,0,0,0,2,0,1,0,22,3,3,5,21,5,0,1,0,-1,0,0,0,0));
-    planets.push(new Planet(0.008,1,0.5,0,0,0,0,0,2,0,1,2,22,3,3,5,22,5,0,1,0,-1,1,0,0,0));
-    planets.push(new Planet(0.025,1,0.4,0,0,0,0,0,2,0,1,1,22,3,3,5,23,5,0,1,0,-1,2,0,0,0));
-    planets.push(new Planet(0.018,1,0.3,0,0,0,0,0,2,0,0,0,22,3,3,5,24,5,0,1,0,-1,3,0,0,0));
-    planets.push(new Planet(0.0001,1,0.2,0,0,0,0,0,2,0,0,0,28,1,1,6,25,5,0,1,0,-1,0,0,0,0));
-    planets.push(new Planet(0.0002,1,0.3,0,0,0,0,0,2,0,0,0,28,1,1,6,26,5,0,1,0,-1,1,0,0,0));
-    planets.push(new Planet(0.0004,1,0.2,0,0,0,0,0,2,0,0,0,28,1,1,6,27,5,0,1,0,-1,2,0,0,0));
-    planets.push(new Planet(0.025,1,0.3,1,4,4,3,0.02,2,0,1,2,28,1,2,6,28,5,0,1,0,-1,3,0,0,0));
-    planets.push(new Planet(0.0003,1,0.2,0,0,0,0,0,2,0,0,0,28,1,1,6,29,5,0,1,0,-1,4,0,0,0));  
-    planets.push(new Planet(0.0002,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,30,5,0,1,0,-1,0,0,0,0));
-    planets.push(new Planet(0.0002,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,31,5,0,1,0,-1,1,0,0,0));
-    planets.push(new Planet(0.0006,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,32,5,0,1,0,-1,2,0,0,0));
-    planets.push(new Planet(0.0005,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,33,5,0,1,0,-1,3,0,0,0));
-    planets.push(new Planet(0.003,1,0.4,0,0,0,0,0,2,0,1,2,36,0,0,8,34,5,0,1,0,-1,0,0,0,0));
-    planets.push(new Planet(0.00025,1,0.3,0,0,0,0,0,2,0,0,0,39,0,0,9,35,2,0,1,0,-1,0,0,0,0));
-    planets.push(new Planet(0.00007,1,0.4,0,0,0,0,0,2,0,0,0,39,0,0,10,36,2,0,1,0,-1,0,0,0,0));
+    planets.push(new Planet(0.06,3,1,0,0,0,0,0,1,0,0,0,3,13,13,-1,0,0,0,1,0,-1,-1,0,0,0,"Mercury"));
+    planets.push(new Planet(0.85,0,0.9,2,6,5,0,0,9,0,1,0,6,9,16,-1,1,0,0,1,0,-1,-1,0,0,0,"Venus"));
+    planets.push(new Planet(1,0,1,1,4,2,1,0.7,10,0,1,2,9,8,9,-1,2,0,1,1,2,-1,-1,0,0,1,"Earth"));
+    planets.push(new Planet(0.1,0,0.7,2,1,0,0,0,2,0,1,0,12,6,6,-1,3,0,0,1,0,-1,-1,0,0,0,"Mars"));
+    planets.push(new Planet(0.00016,1,0.4,0,0,0,0,0,1,0,0,0,17,4,4,-1,4,1,0,1,0,1,-1,0,0,0,"Ceres"));
+    planets.push(new Planet(300,5,0.2,0,0,0,0,0,1,0,0,0,22,3,3,-1,5,0,0,1,0,-1,-1,0,1,0,"Jupiter"));
+    planets.push(new Planet(100,5,0.2,0,0,0,0,0,1,0,0,0,28,1,1,-1,6,0,0,1,0,-1,-1,0,1,0,"Saturn"));
+    planets.push(new Planet(14,4,0.2,0,0,0,0,0,1,0,0,0,33,0,0,-1,7,0,0,1,0,-1,-1,0,1,0,"Uranus"));
+    planets.push(new Planet(17,4,0.2,0,0,0,0,0,1,0,0,0,36,0,0,-1,8,0,0,1,0,-1,-1,0,1,0,"Neptune"));
+    planets.push(new Planet(0.002,1,0.4,1,1,0,0,0,1,0,1,2,39,0,0,-1,9,1,0,1,0,10,-1,0,0,0,"Pluto"));
+    planets.push(new Planet(0.003,1,0.5,1,1,0,0,0,1,0,1,2,39,0,0,-1,10,1,0,1,0,10,-1,0,0,0,"Eris"));
+    planets.push(new Planet(0.0006,1,0.5,1,1,0,0,0,1,0,1,2,39,0,0,-1,11,1,0,1,0,10,-1,0,0,0,"Haumea"));
+    planets.push(new Planet(0.0005,1,0.3,1,1,0,0,0,1,0,1,2,39,0,0,-1,12,1,0,1,0,10,-1,0,0,0,"Makemake"));
+    planets.push(new Planet(0.0003,1,0.3,1,1,0,0,0,1,0,1,2,39,0,0,-1,13,1,0,1,0,10,-1,0,0,0,"Gonggong"));
+    planets.push(new Planet(0.0002,1,0.4,1,1,0,0,0,1,0,1,1,39,0,0,-1,14,1,0,1,0,10,-1,0,0,0,"Quaoar"));
+    planets.push(new Planet(0.00015,1,0.4,1,1,0,0,0,1,0,1,0,39,0,0,-1,15,1,0,1,0,10,-1,0,0,0,"Sedna"));
+    planets.push(new Planet(0.00008,1,0.4,1,1,0,0,0,1,0,0,0,39,0,0,-1,16,1,0,1,0,10,-1,0,0,0,"Mandos"));
+    planets.push(new Planet(0.0001,1,0.3,1,1,0,0,0,1,0,0,0,39,0,0,-1,17,1,0,1,0,10,-1,0,0,0,"Orcus"));
+    planets.push(new Planet(0.0001,1,0.3,1,1,0,0,0,1,0,0,0,39,0,0,-1,18,1,0,1,0,10,-1,0,0,0,"Salacia"));
+    planets.push(new Planet(0.2,1,0.4,1,6,4,0,0,2,0,1,2,41,0,1,-1,19,0,0,1,0,-1,-1,0,0,0,"Khione (hypothetical)"));
+    planets.push(new Planet(0.01,0,0.6,0,0,0,0,0,2,0,0,0,9,8,8,2,20,3,0,1,0,-1,0,0,0,0,"Luna"));
+    planets.push(new Planet(0.015,0,0.7,0,0,0,0,0,2,0,1,0,22,3,3,5,21,5,0,1,0,-1,0,0,0,0,"Io"));
+    planets.push(new Planet(0.008,1,0.5,0,0,0,0,0,2,0,1,2,22,3,3,5,22,5,0,1,0,-1,1,0,0,0,"Europa"));
+    planets.push(new Planet(0.025,1,0.4,0,0,0,0,0,2,0,1,1,22,3,3,5,23,5,0,1,0,-1,2,0,0,0,"Ganymede"));
+    planets.push(new Planet(0.018,1,0.3,0,0,0,0,0,2,0,0,0,22,3,3,5,24,5,0,1,0,-1,3,0,0,0,"Callisto"));
+    planets.push(new Planet(0.0001,1,0.2,0,0,0,0,0,2,0,0,0,28,1,1,6,25,5,0,1,0,-1,0,0,0,0,"Tethys"));
+    planets.push(new Planet(0.0002,1,0.3,0,0,0,0,0,2,0,0,0,28,1,1,6,26,5,0,1,0,-1,1,0,0,0,"Dione"));
+    planets.push(new Planet(0.0004,1,0.2,0,0,0,0,0,2,0,0,0,28,1,1,6,27,5,0,1,0,-1,2,0,0,0,"Rhea"));
+    planets.push(new Planet(0.025,1,0.3,1,4,4,3,0.02,2,0,1,2,28,1,2,6,28,5,0,1,0,-1,3,0,0,0,"Titan"));
+    planets.push(new Planet(0.0003,1,0.2,0,0,0,0,0,2,0,0,0,28,1,1,6,29,5,0,1,0,-1,4,0,0,0,"Iapetus"));  
+    planets.push(new Planet(0.0002,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,30,5,0,1,0,-1,0,0,0,0,"Ariel"));
+    planets.push(new Planet(0.0002,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,31,5,0,1,0,-1,1,0,0,0,"Umbriel"));
+    planets.push(new Planet(0.0006,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,32,5,0,1,0,-1,2,0,0,0,"Titania"));
+    planets.push(new Planet(0.0005,1,0.3,0,0,0,0,0,2,0,0,0,33,0,0,7,33,5,0,1,0,-1,3,0,0,0,"Oberon"));
+    planets.push(new Planet(0.003,1,0.4,0,0,0,0,0,2,0,1,2,36,0,0,8,34,5,0,1,0,-1,0,0,0,0,"Triton"));
+    planets.push(new Planet(0.00025,1,0.3,0,0,0,0,0,2,0,0,0,39,0,0,9,35,2,0,1,0,-1,0,0,0,0,"Charon"));
+    planets.push(new Planet(0.00007,1,0.4,0,0,0,0,0,2,0,0,0,39,0,0,10,36,2,0,1,0,-1,0,0,0,0,"Dysnomia"));
 systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age));
 
 drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype);
 
 div=document.createElement('div');
 $(div).addClass("system");
+addline(`SOL SYSTEM`,div,`h3`);
 addline(`SYSTEM AGE: `+age.toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
-addline(startypes[primarystartype],div,"h3");
+addline('Sol - ' + startypes[primarystartype],div,"h3");
 if(closecompanionpresent) {
     addline(startypes[closecompanionstartype],div,"h3");
 }
