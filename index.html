@@ -9,7 +9,7 @@
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
             font-size: larger;
-            color: rgb(0, 255, 0);
+            color: rgb(255, 255, 255);
         }
         .systemcontainer p {
             color: white;
@@ -24,7 +24,7 @@
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
             font-size: x-large;
-            color: rgb(0, 255, 0);
+            color: rgb(255, 255, 255);
         }
         .systemcontainer h3 {
             color: white;
@@ -33,12 +33,12 @@
 
         h1 {
             font-family: Eras BQ, sans-serif;
-            color: rgb(0, 255, 0);
+            color: rgb(255, 255, 255);
             font-size: 50;
             text-align: center;
         }
         html {
-            background-color: black;
+            background-color: rgb(16,16,16);
         }
         body {
             width: 80%;
@@ -55,15 +55,15 @@
             overflow-x: scroll;
         }
         hr{
-            color:rgb(0, 255, 0);
-            border-color:rgb(0, 255, 0);
+            color:rgb(255, 255, 255);
+            border-color:rgb(255, 255, 255);
 
         }
         .systemcontainer hr {
             border-color: white;
         }
         .genbutton {
-            background-color: rgb(0,96,0);
+            background: rgb(64,64,64);
             padding:10px;
             padding-right:15px;
             padding-left:15px;
@@ -72,15 +72,49 @@
             width:80%;
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
-            font-size: larger;
-            color: rgb(0, 255, 0);
+            font-size: 1.25em;
+            color: rgb(255, 255, 255);
             border: 0px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: 0.15s;
+            height: 50px;
         }
         .genbutton:hover {
-            background-color: rgb(0,128,0);
+            background: rgb(96,96,96);
+            font-size: 1.3em;
+
         }
         .genbutton:active {
-            background-color: rgb(0,64,0);
+            background: rgb(48,48,48);
+            font-size: 1.2em;
+        }
+        .genbutton2 {
+            background: rgb(64,64,64);
+            padding:30px;
+            padding-right:0px;
+            padding-left:0px;
+            display: block;
+            margin: auto;
+            width:80%;
+            height: 150px;
+            font-family: Metrophobic, sans-serif;
+            font-weight:bold;
+            font-size: xx-large;
+            color: rgb(255, 255, 255);
+            border: 0px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .genbutton2:hover {
+            background: rgb(96,96,96);
+            
+            font-size: 2.1em;
+        }
+        .genbutton2:active {
+            background: rgb(48,48,48);
+            font-size: 1.9em;
         }
         .titleimg{
             margin: 0 auto;
@@ -89,53 +123,57 @@
         }
         .infocontainer{
             scrollbar-width:thin;
-            scrollbar-color:black,rgb(0, 128, 0);
+            scrollbar-color:black,rgb(96, 96, 96);
             overflow-y:scroll; 
             overflow-x:hidden;
             height:1000px; 
-            background-color:rgb(34, 34, 34);
+            background-image: linear-gradient(to bottom right,rgb(32,32,32),rgb(48,48,48));
             padding: 15px;
             width: 80%;
             margin: auto;
+            border-radius: 16px;
         }
         .system{
             scrollbar-width:thin;
-            scrollbar-color:black,rgb(0, 128, 0);
+            scrollbar-color:black,rgb(96, 96, 96);
             overflow-y:scroll; 
             overflow-x:hidden;
             height:1000px; 
-            background-color:rgb(34, 34, 34);
+            background-image: linear-gradient(to bottom right, rgb(32,32,32), rgb(48,48,48));
             padding: 15px;
+            border-radius: 16px;
         }
         #csvout {
-            background-color: black;
         }
         #csvout p {
             font-family: monospace;
             font-size: medium;
         }
         a{
-            color:rgb(0, 255, 0);
+            color:rgb(0, 127, 255);
         }
         .systemcontainer{
             height: auto;
             background-color:rgb(0,0,0);
-            
+            border-radius: 16px;
         }
 
         .systemcontainerinterior{
             height: auto;
             background-color:rgb(0,0,0);
+            border-radius: 16px;
         }
         ::-webkit-scrollbar {
             width: 8px;
             min-width: 8px;
+
         }
         ::-webkit-scrollbar-track {
             background-color:rgb(0,0,0)
         }
         ::-webkit-scrollbar-thumb {
-            background-color:rgb(0, 128, 0)
+            background-color:rgb(96, 96, 96);
+            border-radius:4px;
         }
         .red {
             color: #ff4500
@@ -261,6 +299,7 @@
 }
     .systemdisplay {
         width: 100%;
+        border-radius: 16px;
     }
         
     </style>
@@ -273,50 +312,66 @@
     ""-->
   <body>
     <div class="navbar">
-    <img class="titleimg" src="https://i.imgur.com/Bo59tCg.png">
-    <h1> v0.2.5 </h1>
-    <button onClick="GenerateSystem();" class="genbutton">Generate system</button>
-    <button onClick="GenerateSector();" class="genbutton">Generate entire sector (may be slow)</button>
-    <button onClick="GenerateAWHOLELOT();" class="genbutton">Generate 500 systems (takes a long time)</button>
+    <img class="titleimg" src="img/titleimg.png">
+    <h1> v0.2.7 </h1>
+    <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
+    <p></p>
+    <button onClick="GenerateSector();" class="genbutton">Generate sector</button>
+    <p></p>
     <a download="" id="download"><button onClick="download(`systems.csv`,fullcsv(systems));" class="genbutton">Download generated CSV</button></a>
-    <p class="progress"></p>
-    <div class="infocontainer" style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
-        <p class="patchnotes">COMING SOON:<br> - hot jupiter simulation!</p>
-        <p class="patchnotes">v0.2.6:<br> - GAS GIANT MOONS ARE FINALLY THE RIGHT SIZE, THIS BUG HAS BEEN IN THE APP SINCE 0.0.1<br> - added a sidebar so that you don't have to scroll down a bunch to find everything <br> - probably just ruined things for mobile users<br> - ah well<br> </p>
-        <p class="patchnotes">v0.2.5:<br> - uberplanet changed to euplanet at Azi's suggestion <br> - added rings to planets<br> - added a new seecret feature<br> </p>
-        <p class="patchnotes">v0.2.4:<br> - improved planet rendering! <br> - performance fixes and progress indicator for bulk generating systems<br> - added icons for EVERYTHING <br> </p>
-        <p class="patchnotes">v0.2.3:<br> - graphical updates: <br> - changed the font to the one I use for google docs<br> - added icons for EVERYTHING <br> </p>
-        <p class="patchnotes">v0.2.2:<br> - planet info is now color coded<br> - lmn if this looks ugly</p>
-        <p class="patchnotes">v0.2.1:<br> - radius and density are now displayed in traditional units, and temperature is displayed in C as well as K<br> - planets now specify their type (uberplanet, dwarf planet, satellite planet)</p>
-        <p class="patchnotes">v0.2.0_01:<br> - removed excess &lt;br> tags from csv file</p>
-        <p class="patchnotes">v0.2.0:<br> - CSV DOWNLOAD FUNCTIONALITY ADDED <br> - tweaked planet sizes so now small and Earth-sized planets are a bit more common <br> - new logo that should hopefully fit the aesthetic more</p>
-        <p class="patchnotes">v0.1.6:<br> - fixed the absolute mess of a patchnote from the previous version<br> - some small terminology improvements<br> - life now shows what liquid it uses<br> - more internal csv work. you can now get a csv dump of the systems by typing "fullcsv(systems)" in the debug console, but I have yet to put it in a ui usable format. 0.2 coming soon!</p>
-        <p class="patchnotes">v0.1.5:<br> - made some generation of planet types, gas giants, moons somewhat more realistic<br> - internal changes to prepare for csv export functionality (that I won't bore you with explaining)<br> - updated distance display to now give you the equivalent distance from the sun</p>
-        <p class="patchnotes">v0.1.4:<br> - updated the language used for star types and temperatures <br> - added approximate temperature measurements in kelvin to help with reading of the temperature labels <br> - made planets more common closer to the star, and made it so larger planets tend to have thicker atmospheres <br> - added another generate button for 500 systems</p>
-        <p class="patchnotes">v0.1.3:<br> - added atmosphere and surface liquid visualization to the diagrams</p>
-    <p class="patchnotes"> v0.1.2:<br> - SCROLLBARS</p>
-    <p class="patchnotes"> v0.1.1:<br> - added color to system diagrams to indicate star types, composition of planets, aquatic goldilocks zone (since people seem to care about that) <br> - some star systems now just have many fewer planets <br> - finally the white dwarf temperature check works</p>
-    <p class="patchnotes"> v0.1.0:<br> - system diagrams added</p>
-    <p class="patchnotes"> v0.0.4:<br> - formatting improvements <br> - 'generate sector' button generates 125 systems <br> - attempted to fix white dwarf planets</p>
-    <p class="patchnotes"> v0.0.3:<br> - style overhaul, added logo <br> - tried to add check for planets around white dwarfs to always be the coldest possible temperature</p>
-    <p class="patchnotes"> v0.0.2:<br> - planet statistics now show in a more readable format</p>
-    <p class="patchnotes"> v0.0.1:<br> - generator is... functional</p>
+    <p class="progress patchnotes"></p>
+    <div class="infocontainer" style="overflow-y:scroll; height:500px;">
+        <p class="patchnotes">COMING SOON:<br> - mouseover<br> - names</p>
+        <h3 class="patchnotes">v0.2.7 - hot jupiters:</h3>
+        <p class="patchnotes">-Added Hot Jupiters<br> - Made moons not generate close to the star <br> - Added Traveller's universal """world""" profile (hint: it tells you next to nothing about the world)<br> - More UI upgrades<br> - Made icy planets way more common</p>
+        <h3 class="patchnotes">v0.2.6 - a bug:</h3>
+        <p class="patchnotes">- GAS GIANT MOONS ARE FINALLY THE RIGHT SIZE, THIS BUG HAS BEEN IN THE APP SINCE 0.0.1<br> - added a sidebar so that you don't have to scroll down a bunch to find everything <br> - probably just ruined things for mobile users<br> - ah well<br> </p>
+        <h3 class="patchnotes">v0.2.5 - rings and other things:</h3>
+        <p class="patchnotes">- uberplanet changed to euplanet at Azi's suggestion <br> - added rings to planets<br> - added a new seecret feature<br> </p>
+        <h3 class="patchnotes">v0.2.4 - omg the planets:</h3>
+        <p class="patchnotes">- improved planet rendering! <br> - performance fixes and progress indicator for bulk generating systems</p>
+        <h3 class="patchnotes">v0.2.3 - icons:</h3>
+        <p class="patchnotes">- graphical updates: <br> - changed the font to the one I use for google docs<br> - added icons for EVERYTHING <br> </p>
+        <h3 class="patchnotes">v0.2.2 - colorful update:</h3>
+        <p class="patchnotes">- planet info is now color coded<br> - lmn if this looks ugly</p>
+        <h3 class="patchnotes">v0.2.1 - units:</h3>
+        <p class="patchnotes">- radius and density are now displayed in traditional units, and temperature is displayed in C as well as K<br> - planets now specify their type (uberplanet, dwarf planet, satellite planet)</p>
+        <h3 class="patchnotes">hotfix:</h3>
+        <p class="patchnotes">- removed excess &lt;br> tags from csv file</p>
+        <h3 class="patchnotes">v0.2.0 - csv update:</h3>
+        <p class="patchnotes">- CSV DOWNLOAD FUNCTIONALITY ADDED <br> - tweaked planet sizes so now small and Earth-sized planets are a bit more common <br> - new logo that should hopefully fit the aesthetic more</p>
+        <h3 class="patchnotes">v0.1.6 - more csv progress:</h3>
+        <p class="patchnotes">- fixed the absolute mess of a patchnote from the previous version<br> - some small terminology improvements<br> - life now shows what liquid it uses<br> - more internal csv work. you can now get a csv dump of the systems by typing "fullcsv(systems)" in the debug console, but I have yet to put it in a ui usable format. 0.2 coming soon!</p>
+        <h3 class="patchnotes">v0.1.5 - au-sun:</h3>
+        <p class="patchnotes">- made some generation of planet types, gas giants, moons somewhat more realistic<br> - internal changes to prepare for csv export functionality (that I won't bore you with explaining)<br> - updated distance display to now give you the equivalent distance from the sun</p>
+        <h3 class="patchnotes">v0.1.4 - speak english please:</h3>
+        <p class="patchnotes">- updated the language used for star types and temperatures <br> - added approximate temperature measurements in kelvin to help with reading of the temperature labels <br> - made planets more common closer to the star, and made it so larger planets tend to have thicker atmospheres <br> - added another generate button for 500 systems</p>
+        <h3 class="patchnotes">v0.1.3 - cloudy cove:</h3>
+        <p class="patchnotes">- added atmosphere and surface liquid visualization to the diagrams</p>
+        <h3 class="patchnotes">v0.1.2 - scrolllllll:</h3>
+    <p class="patchnotes">- added scrollbars to things</p>
+    <h3 class="patchnotes">v0.1.1 - look ma:</h3>
+    <p class="patchnotes">- added color to system diagrams to indicate star types, composition of planets, aquatic goldilocks zone (since people seem to care about that) <br> - some star systems now just have many fewer planets <br> - finally the white dwarf temperature check works</p>
+    <h3 class="patchnotes">v0.1.0 - diagrams:</h3>
+    <p class="patchnotes">- system diagrams added</p>
+    <h3 class="patchnotes">v0.0.4 - sector four:</h3>
+    <p class="patchnotes">- formatting improvements <br> - 'generate sector' button generates 125 systems <br> - attempted to fix white dwarf planets</p>
+    <h3 class="patchnotes">v0.0.3 - look at this logo:</h3>
+    <p class="patchnotes">- style overhaul, added logo <br> - tried to add check for planets around white dwarfs to always be the coldest possible temperature</p>
+    <h3 class="patchnotes">v0.0.2 - the update after the beginning:</h3>
+    <p class="patchnotes">- planet statistics now show in a more readable format</p>
+    <h3 class="patchnotes">v0.0.1 - the beginning:</h3>
+    <p class="patchnotes">- generator is... functional</p>
     </div>
     <p></p>
-    <!-- <div style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
-        <h1 class="patchnotes">INFORMATION</h1>
-        <p class="patchnotes">You can export to CSV currently only by running the function "fullcsv(systems)" in the debug console, and then right clicking the resulting string and clicking "Copy string contents". DO NOT click the copy button at the bottom of the string output, it results in an incorrectly formatted CSV file.</p>
-        <p class="patchnotes">Methanum is a fancy word for liquid methane. You should probably know it.</p>
-        <p class="patchnotes">A distance from a star in AU☉ refers to the equivalent distance in AU from the Sun at which that planet would receive the same amount of stellar radiation. For example, water is usually liquid around 0.6-1.1 AU☉ (though this varies with atmosphere thickness and greenhouse effect). <br> In simpler terms, it's where you would need to put the planet in the Solar System for it to be about the same temperature.</p>
-        <p class="patchnotes">"Aquatic" in reference to life does not refer to a marine ecosystem, but rather to life that is based on water (like Earth life), as opposed to something else like ammonia or methane.</p>
-    </div> !-->
-    <div class="infocontainer" style="overflow-y:scroll; height:500px; background-color:rgb(0,32,0);">
+    <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <h1 class="patchnotes">FAQ</h1>
         <p class="patchnotes">Q: What's an AU☉?<br> A: Equivalent distance from the star to 1 AU from the Sun. As in, a distance in AU☉ means that if the planet were in our Solar System, it would need to be placed that distance in AU away from the Sun to stay the same temperature as it is in its system.</p>
         <p class="patchnotes">Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) <br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
         <p class="patchnotes">Q: Why is all my life aquatic? <br> A: In this app's terminology, 'aquatic' refers to life that uses water as the main solvent in its biochemistry (like Earth life), not a marine ecosystem. In simple terms, aquatic lifeforms drink water. Compare this to 'methanic' and 'ammonic' (yes, ammonia based life is a possibility!)</p>
         <p class="patchnotes">Q: Why is life so common? <br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
-        <p class="patchnotes">Q: Uberplanet? What's that? <br> A: An uberplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
+        <p class="patchnotes">Q: Euplanet? What's that? <br> A: A euplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
+        <p class="patchnotes">Q: Why are there so few planets in my system? <br> A: Is there a gas giant close to the star? If so, it's because the gas giant migrated inward and destroyed or ejected any planets in its path.</p>
         <p class="patchnotes">Q: Dwarf planets aren't planets! <br> A: I disagree.</p>
         <p class="patchnotes">Q: Moons aren't planets! <br> A: I disagree.</p>
         <p class="patchnotes">Q: How is there life with no water? <br> A: It's probably either subglacial - meaning it's in the subsurface ocean under the crust of an icy planet - or it's methanic or ammonic.</p>
@@ -426,6 +481,97 @@ var startypetable = [
     1,
     1,
     1
+]
+
+var hexadecimalDigits = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+    'F',
+
 ]
 var orbittable = [
     "<span class='red'>0.1</span>",
@@ -919,6 +1065,16 @@ var startypes = [
     "<img class='icon2' src='img/iconClassB.png'><span class='typeb'>B-type main sequence star"
 ]
 
+var moonprohibition = [
+10,
+16,
+8,
+3,
+1,
+0,
+0
+]
+
 var bgcolors = [
     "rgb(0,0,0)",
     "rgb(0,36,72)",
@@ -946,6 +1102,24 @@ var liquidcoveragefilenames = {
     0.97: "3.png",
     1: "3.png",
     '-1': "3.png"
+}
+
+var liquidcoverageuwp = {
+    0.02: "1",
+    0.05: "1",
+    0.1: "1",
+    0.3: "3",
+    0.7: "6",
+    0.8: "8",
+    0.9: "9",
+    0.97: "A",
+    1: "A",
+    '-1': "A",
+    0: "0",
+    null: "0",
+    '': "0",
+    undefined: "0",
+    NaN: "0",
 }
 
 var startypessizes = [
@@ -996,12 +1170,19 @@ function placePlanets(starid,closecompanionpresent) {
                 if(Math.random()>0.2 && o <= 12){
                 if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
-                    planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null));
+                    if(o <= 1 && Math.random()>=0.6){
+                        var tmp1 = dice(1,12)+24;
+                        planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null))
+                        o += 12;
+                    } else {
+                        planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null));
                     if(primarystartype == 1 || closecompanionstartype == 1){
                         o += 2;
                     } else {
                         o += 1;
                     }
+                    }
+
                     
                 } else {
                     var beltl = dice(2, 6)-2;
@@ -1089,12 +1270,17 @@ function placePlanets(starid,closecompanionpresent) {
             if(Math.random()>0.2 && o <= 12){
                 if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
+                    if(o <= 1 && Math.random()>=0.6){
+                        var tmp1 = dice(1,12)+24;
+                        planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null))
+                        o += 12;
+                    } else {
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
                     if(distantcompanionstartype == 1){
                         o += 2;
                     } else {
                         o += 1;
-                    }
+                    }}
                 } else {
                     var beltl = dice(2, 6)-2;
                     for (var j=0; j < beltl; j++){
@@ -1508,20 +1694,24 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
 }
 
-
+var hotjupiter = 0;
 function generatePlanet(id) {
     var planetbuffer = planets[id];
     var orbit = planetbuffer.orbit;
     var type = planetbuffer.type;
     var parentbody = planetbuffer.parentbody;
     if(type == 0) {
-        if (planetbuffer.starsystem == 1) {
-            if (dice(1,15) <= planetbuffer.orbit - 5 && !(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent))) {
+        if (planetbuffer.size==null){
+            if (planetbuffer.starsystem == 1) {
+            if (dice(1,15) <= planetbuffer.orbit - 1 && !(primarystartype == 1 && (closecompanionstartype == 1 || !closecompanionpresent))) {
             planetbuffer.sizeindex = dice(1,36);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
             } else {
             planetbuffer.sizeindex = dice(1,16);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
+            }
+            if (planetbuffer.starsystem == 2) {
+            
             }
         } else {
             if (dice(1,15) <= planetbuffer.orbit - 1 && !(distantcompanionstartype == 1)) {
@@ -1530,8 +1720,10 @@ function generatePlanet(id) {
             } else {
             planetbuffer.sizeindex = dice(1,16);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
-            }
         }
+        } 
+        }
+
         if(dice(1,6)==5||planetbuffer.size>=11){
             planetbuffer.rings=1;
         }
@@ -1566,8 +1758,7 @@ function generatePlanet(id) {
     }
     planetbuffer.sizeclass=Math.floor(planetbuffer.sizeindex/12);
     planetbuffer.moons=0;
-    if(type == 0 || type == 1 && ((planetbuffer.starsystem==1&&(primarystartype>1||closecompanionstartype>1||orbit>5))||(planetbuffer.starsystem==2&&(distantcompanionstartype>1||orbit>5)))) {
-
+    if((type == 0 || type == 1) && ((planetbuffer.starsystem==1&&(orbit>=moonprohibition[primarystartype]||orbit>=moonprohibition[closecompanionstartype]))||(planetbuffer.starsystem==2&&(orbit>=moonprohibition[distantcompanionstartype])))) {
         if(type == 1 && planetbuffer.sizeclass == 2){
             if (dice(1, 6)>=2) {
                 planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 2, null, planetbuffer.starsystem, null,null,planetbuffer.moons));
@@ -1620,7 +1811,7 @@ function generatePlanet(id) {
     } else if(compositionindex == 10) {
         planetbuffer.composition = 2;
         planetbuffer.density = 0.7+(dice(1,6)/10)
-    } else if(orbit>17 && Math.random()>0.5) { // frostline
+    } else if(orbit>17 && Math.random()>0.1) { // frostline
         planetbuffer.composition = 1;
         planetbuffer.density = 0.3+(dice(1,3)/10)
     } else {  
@@ -1738,7 +1929,7 @@ function generatePlanet(id) {
     if (planetbuffer.geoactive = true && dice(1,6)>0 && (planetbuffer.composition == 1 || (planetbuffer.liquid >= 1 && planetbuffer.liquid <= 3))) {
         if (dice(1,12)*0.3<=age-3){
             planetbuffer.life = 2;
-            if(Math.random()<=1/2500 ){
+            if(Math.random()<=1/1000 ){
                 planetbuffer.civ = 1;
             }
         } else{
@@ -1861,6 +2052,7 @@ function putGreeting() {
         placePlanets(2,closecompanionpresent);
     }
     for (var k = 0; k < planets.length; k++){
+
         planets[k]=generatePlanet(k);
         n = k;
     }
@@ -1977,6 +2169,26 @@ function generateplanetdesc(l) {
     }else{
         addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber],div,"h3") 
     }
+    var tmp2;
+    if(planets[l].atmothickness == 0){
+            tmp2 = "0";
+        } else if (planets[l].atmothickness == 1){
+            tmp2 = "1";
+        } else 
+    if(planets[l].oxygentag){
+            if(planets[l].atmothickness == 2){
+                tmp2 = "2";
+            } else if (planets[l].atmothickness == 3){
+                tmp2 = "5";
+            }else if (planets[l].atmothickness == 4){
+                tmp2 = "6";
+            } else {
+                tmp2 = "9";
+            }
+    } else {
+        tmp2="A";
+    }
+
 
     addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconMass.png"> Mass: ` + planets[l].size + `x the size of Earth`,div,"p");
     addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉",div);
@@ -2047,9 +2259,12 @@ function generateplanetdesc(l) {
                     addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRings.png"> Rings: No`,div);
                 }
 
+                addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconUWP.png"> Traveller profile: Name xxyy q` + hexadecimalDigits[Math.floor(Math.min(((planets[l].size/planets[l].density)**(0.3333)).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z",div)
                 if(planets[l].civ){
                     addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld</span>`,div);
                 }
+
+
 
                 
                 
@@ -2147,7 +2362,7 @@ for (var q = 0; q < 42; q++) {
 }
 
 $(systemcontainerinterior).append(div);
-console.log(systemcontainerinterior);
+
 $(".systemcontainer").append(systemcontainerinterior);
 }
 $(document).ready(Initialize);
