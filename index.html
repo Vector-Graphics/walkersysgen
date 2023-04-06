@@ -5,14 +5,51 @@
     <title>walkersysgen</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Metrophobic">
     <style>
+        :root {
+            --textcolor: rgb(255,255,255);
+            --bgcolor: rgb(16,16,16);
+            --btncolorpressed: rgb(48,48,48);
+            --btncolor: rgb(64,64,64);
+            --btncolorhover: rgb(96,96,96);
+            --scrollcolor: rgb(96,96,96);
+            --insetcolor:rgb(32,32,32);
+            --typeg:rgb(255,255,255);
+            --typef:#c0e8ff;
+            --typek:#fff0c1;
+            --yellow: #ffd636;
+            --cyan: #51e9f4;
+            --lightgreen: #7fed56;
+            --typea: #89d4ff;
+            --innershadowcolor: #FFFFFF0F;
+            
+
+        }
+        [data-theme="light"] {
+            --textcolor: rgb(0,0,0);
+            --bgcolor: rgb(250,250,250);
+            --btncolorpressed: rgb(160,160,160);
+            --btncolor: rgb(192,192,192);
+            --btncolorhover: rgb(240,240,240);
+            --scrollcolor: rgb(158, 158, 158);
+            --insetcolor:rgb(240,240,240);
+            --typek:#beab71;
+            --typeg:rgb(140,140,140);
+            --typef:rgb(140,150,160);
+            --typea: #72aed1;
+            --yellow: #b89b29;
+            --cyan: #22bac5;
+            --lightgreen: #53d822;
+            --innershadowcolor: #0000004F;
+        }
         p {
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
             font-size: larger;
-            color: rgb(255, 255, 255);
+            color: var(--textcolor);
+            
         }
         .systemcontainer p {
-            color: white;
+            color: var(--textcolor);
             vertical-align: middle;
         }
 
@@ -24,21 +61,22 @@
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
             font-size: x-large;
-            color: rgb(255, 255, 255);
+            color: var(--textcolor);
         }
         .systemcontainer h3 {
-            color: white;
+            color: var(--textcolor);
             vertical-align: middle;
         }
 
         h1 {
             font-family: Eras BQ, sans-serif;
-            color: rgb(255, 255, 255);
+            color: var(--textcolor);
             font-size: 50;
             text-align: center;
         }
         html {
-            background-color: rgb(16,16,16);
+            background-color: var(--bgcolor);
+            transition: 0.15s;
         }
         body {
             width: 80%;
@@ -46,6 +84,7 @@
             overflow-y: scroll;
             overflow-x: scroll;
             margin-right: 0px;
+            
         }
         .main {
             width: 92%;
@@ -55,15 +94,15 @@
             overflow-x: scroll;
         }
         hr{
-            color:rgb(255, 255, 255);
-            border-color:rgb(255, 255, 255);
+            color:var(--textcolor);
+            border-color:var(--textcolor);
 
         }
         .systemcontainer hr {
-            border-color: white;
+            border-color: var(--textcolor);
         }
         .genbutton {
-            background: rgb(64,64,64);
+            background: var(--btncolor);
             padding:10px;
             padding-right:15px;
             padding-left:15px;
@@ -73,24 +112,25 @@
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
             font-size: 1.25em;
-            color: rgb(255, 255, 255);
+            color: var(--textcolor);
             border: 0px;
             border-radius: 16px;
             cursor: pointer;
             transition: 0.15s;
-            height: 50px;
+            height: 80px;
+            box-shadow: inset -8px -8px 16px  #0000001F;
         }
         .genbutton:hover {
-            background: rgb(96,96,96);
+            background: var(--btncolorhover);
             font-size: 1.3em;
 
         }
         .genbutton:active {
-            background: rgb(48,48,48);
+            background: var(--btncolorpressed);
             font-size: 1.2em;
         }
         .genbutton2 {
-            background: rgb(64,64,64);
+            background: var(--btncolor);
             padding:30px;
             padding-right:0px;
             padding-left:0px;
@@ -101,19 +141,20 @@
             font-family: Metrophobic, sans-serif;
             font-weight:bold;
             font-size: xx-large;
-            color: rgb(255, 255, 255);
+            color: var(--textcolor);
             border: 0px;
             border-radius: 15px;
             cursor: pointer;
             transition: 0.15s;
+            box-shadow: inset -8px -8px 16px  #0000001F;
         }
         .genbutton2:hover {
-            background: rgb(96,96,96);
+            background: var(--btncolorhover);
             
             font-size: 2.1em;
         }
         .genbutton2:active {
-            background: rgb(48,48,48);
+            background: var(--btncolorpressed);
             font-size: 1.9em;
         }
         .titleimg{
@@ -123,25 +164,29 @@
         }
         .infocontainer{
             scrollbar-width:thin;
-            scrollbar-color:black,rgb(96, 96, 96);
+            scrollbar-color:var(--bgcolor),var(--scrollcolor);
             overflow-y:scroll; 
             overflow-x:hidden;
             height:1000px; 
-            background-image: linear-gradient(to bottom right,rgb(32,32,32),rgb(48,48,48));
+            background: var(--insetcolor);
             padding: 15px;
             width: 80%;
             margin: auto;
             border-radius: 16px;
+            box-shadow: inset 8px 8px 16px  #0000004F;
+            transition: 0.15s;
         }
         .system{
             scrollbar-width:thin;
-            scrollbar-color:black,rgb(96, 96, 96);
+            scrollbar-color:var(--bgcolor),var(--scrollcolor);
             overflow-y:scroll; 
             overflow-x:hidden;
             height:1000px; 
-            background-image: linear-gradient(to bottom right, rgb(32,32,32), rgb(48,48,48));
+            background: var(--insetcolor);
             padding: 15px;
             border-radius: 16px;
+            box-shadow: inset 8px 8px 16px  #0000004F;
+            transition: 0.15s;
         }
         #csvout p {
             font-family: monospace;
@@ -154,12 +199,14 @@
             height: auto;
             background-color:rgb(0,0,0);
             border-radius: 16px;
+            transition: 0.15s;
         }
 
         .systemcontainerinterior{
             height: auto;
             background-color:rgb(0,0,0);
             border-radius: 16px;
+            transition: 0.15s;
         }
         ::-webkit-scrollbar {
             width: 8px;
@@ -167,10 +214,10 @@
 
         }
         ::-webkit-scrollbar-track {
-            background-color:rgb(0,0,0)
+            background-color:var(--bgcolor)
         }
         ::-webkit-scrollbar-thumb {
-            background-color:rgb(96, 96, 96);
+            background-color:var(--scrollcolor);
             border-radius:4px;
         }
         .red {
@@ -180,13 +227,13 @@
             color: #ffa800
         }
         .yellow {
-            color: #ffd636
+            color: var(--yellow);
         }
         .darkgreen {
             color: #00a468
         }
         .lightgreen {
-            color: #7fed56
+            color: var(--lightgreen)
         }
         .darkblue {
             color: #235083
@@ -195,7 +242,7 @@
             color: #368fe9
         }
         .lightblue {
-            color: #51e9f4
+            color: var(--cyan)
         }
         .darkpurple {
             color: #811e9f
@@ -225,22 +272,22 @@
             color: #ffb34f
         }
         .typek {
-            color: #fff0c1
+            color: var(--typek)
         }
         .typeg {
-            color: #ffffff
+            color: var(--typeg);
         }
         .typef {
-            color: #c0e8ff
+            color: var(--typef);
         }
         .typea {
-            color: #89d4ff
+            color: var(--typea);
         }
         .typeb {
             color: #4aa8ff
         }
         .typewd {
-            color: #78ff95
+            color: var(--lightgreen);
         }
         .water {
             color: #727bff
@@ -280,6 +327,10 @@
             padding: 0px;
             vertical-align: middle;
         }
+        .whiteicon {
+            background-image: url('img/imgshadow.png');
+            background-size: cover;
+        }
         .icon2 {
             height: 64px;
             padding: 0px;
@@ -311,15 +362,24 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.2.8 </h1>
+    <h1> v0.2.9 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
-    <button onClick="GenerateSector();" class="genbutton">Generate sector</button>
+    <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
+    <p></p>
+    <button onClick="GenerateSector(125);" class="genbutton">Generate sector (125 systems)</button>
+    <p></p>
+    <button onClick="GenerateSector(1000);" class="genbutton">Generate a lot of systems (1000 systems)</button>
+    <p></p>
     <p></p>
     <a download="" id="download"><button onClick="download(`systems.csv`,fullcsv(systems));" class="genbutton">Download generated CSV</button></a>
+    <p></p>
+    <button onClick="switchTheme();" class="genbutton">Toggle light/dark mode</button>
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.2.9 - dayside:</h3>
+        <p class="patchnotes">- added light mode (in case you wanted to use light mode)<br>- systems are now displayed in pages<br>- systems now generate much faster<br>- brought back 500 systems button and upgraded it to a 1000 systems button to celebrate</p>
         <h3 class="patchnotes">v0.2.8 - what's in a name:</h3>
         <p class="patchnotes">- fixed csv export<br> - gave everything randomly generated names</p>
         <h3 class="patchnotes">v0.2.7 - hot jupiters:</h3>
@@ -383,14 +443,19 @@
         <p class="patchnotes">Q: What the heck is methanum? <br> A: Liquid methane. It's a term Astro Pro uses for liquid methane, and that I like.</p>
         <p class="patchnotes">Q: How do I export to CSV? <br> A: Hit 'download generated CSV' and save the file.</p>
         <p class="patchnotes">Q: What do all the numbers in the CSV mean? <br> A: The numbers under 'composition', 'temperature', etc are usually internal IDs for the respective classes. There is a table of what the numbers mean at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>.</p>
-        <p class="patchnotes">Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?<br> A: I use 'bepis' for unintended values in certain arrays. 'Bepis' appearing in CSVs for names of stars that don't exist is intentional. If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
+        <p class="patchnotes">Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?<br> A: I use 'bepis' for unintended values in certain arrays. 'bepis' appearing in CSVs for names of stars that don't exist is intentional, and additionally, 'Bepis' capitalized is just a very rare possibility for a randomly generated name (be + pi + s). If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
         <p class="patchnotes">Q: How do I suggest a feature? <br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
     </div>
     <p></p>
 
     </div>
     <div class="main">
-
+        <button onClick="decrementPages();" class="genbutton">Previous page</button>
+        <p></p>
+        <p id="pagenumber" class="patchnotes"></p>
+        <p></p>
+        <button onClick="incrementPages();" class="genbutton">Next page</button>
+        <p></p>
         <div class="systemcontainer"></div>
     </div>
 
@@ -1096,13 +1161,13 @@ var atmothicknessnames = [
     "<img class='icon' src='img/iconAtmo6.png'><span class='typef'>very thick</span>"
 ]
 var typenames = [
-    "<img class='icon' src='img/iconUberplanet.png'> EUPLANET",
-    "<img class='icon' src='img/iconUnterplanet.png'> DWARF PLANET",
-    "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET",
-    "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET",
-    "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET",
-    "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET",
-    "<img class='icon' src='img/iconSatellite.png'> SATELLITE PLANET"
+    "<img class='icon whiteicon' src='img/iconUberplanet.png'> EUPLANET",
+    "<img class='icon whiteicon' src='img/iconUnterplanet.png'> DWARF PLANET",
+    "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET",
+    "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET",
+    "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET",
+    "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET",
+    "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET"
 ]
 var temperaturenames = [
     "<img class='icon' src='img/iconTemp1.png'><span class='purple'>frigid</span> (~50K, ~-220C)",
@@ -1136,7 +1201,7 @@ var startypes = [
     "<img class='icon2' src='img/iconClassWD.png'><span class='typewd'>white dwarf</span>",
     "<img class='icon2' src='img/iconClassM.png'><span class='typem'>M-type main sequence star",
     "<img class='icon2' src='img/iconClassK.png'><span class='typek'>K-type main sequence star",
-    "<img class='icon2' src='img/iconClassG.png'><span class='typeg'>G-type main sequence star",
+    "<img class='icon2 whiteicon' src='img/iconClassG.png'><span class='typeg'>G-type main sequence star",
     "<img class='icon2' src='img/iconClassF.png'><span class='typef'>F-type main sequence star",
     "<img class='icon2' src='img/iconClassA.png'><span class='typea'>A-type main sequence star",
     "<img class='icon2' src='img/iconClassB.png'><span class='typeb'>B-type main sequence star"
@@ -1632,10 +1697,11 @@ var parentbodycheck = 0;
     var unterplanetbelt = [];
 function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype,div){
     
-    var canvas = addline("",systemcontainerinterior,"canvas");
-    $(canvas).prop("width","1850");
-    $(canvas).prop("height","650");
-    $(canvas).addClass("systemdisplay");
+    var canvas = document.createElement("canvas");
+    var canvas2;
+    canvas.setAttribute("width","1850");
+    canvas.setAttribute("height","650");
+    canvas.classList.add("systemdisplay");
     var ctx = canvas.getContext("2d");
     ctx.imageSmoothingQuality="high";
     ctx.fillStyle = "rgb(0,255,0)";
@@ -1705,11 +1771,11 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
     }
     if(distantcompanionpresent){
-        var canvas = addline("",systemcontainerinterior,"canvas");
-    $(canvas).prop("width","1850");
-    $(canvas).prop("height","650")
-    $(canvas).addClass("systemdisplay");
-    var ctx = canvas.getContext("2d");
+        canvas2 = addline("",systemcontainerinterior,"canvas");
+        canvas2.setAttribute("width","1850");
+    canvas2.setAttribute("height","650");
+    canvas2.classList.add("systemdisplay");
+    var ctx = canvas2.getContext("2d");
     ctx.fillStyle = "rgb(0,255,0)";
     drawCircle(startypesoutercolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype],ctx);
         drawCircle(startypescolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]-10,ctx);
@@ -1769,6 +1835,13 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
     }
     }
+    var canvases = document.createElement("div");
+    canvases.appendChild(canvas);
+    if(canvas2){
+        canvases.appendChild(canvas2);
+    }
+    
+    return canvases;
 }
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -2045,50 +2118,86 @@ var distantcompanionname;
 var salibe;
 
 function GenerateSystem(){
+    syscont=document.getElementsByClassName("systemcontainer")[0];
     systemcontainerinterior=document.createElement('div');
-$(systemcontainerinterior).addClass("systemcontainerinterior")
-    $(".systemcontainer").empty();
+    systemcontainerinterior.classList.add("systemdisplay");
+    inc = 0;
+    maxinc = 1;
+    syscont.innerHTML = "";
     systems = [];
-    putGreeting();
-    $(".systemcontainer").append(systemcontainerinterior);
+    systemdivs = [];
+    GenerateSystemLoopWrapper();
 }
 
 function GenerateSystemLoopWrapper(){
     
-    $(".progress").text((inc+1)+"/"+maxinc);
+    document.getElementsByClassName("progress")[0].textContent = ((inc+1)+"/"+maxinc);
         putGreeting();
-        addline("⠀");
-        addline("⠀");
-        addline("⠀");
         inc++;
+        systemdivs.push(displaySystem(inc-1));
     if(inc < maxinc){
         setTimeout(GenerateSystemLoopWrapper,1);
+        
     }else{
-        $(".systemcontainer").append(systemcontainerinterior);
+        page=0;
+    document.getElementById("pagenumber").textContent = "Page "+(page+1);
+
+    for(let ac = page*10; ac < (page*10)+10; ac++){
+        if(systemdivs[ac]){
+            systemcontainerinterior.appendChild(systemdivs[ac]);
+        }
+    }
+    syscont.appendChild(systemcontainerinterior);
     }
     
 }
 var inc;
 var maxinc;
-function GenerateSector(){
+var page = 0;
+var systemdivs=[];
+var syscont=0;
+function GenerateSector(numberofsystems){
+    syscont=document.getElementsByClassName("systemcontainer")[0];
     systemcontainerinterior=document.createElement('div');
-$(systemcontainerinterior).addClass("systemcontainerinterior")
+    systemcontainerinterior.classList.add("systemdisplay");
     inc = 0;
-    maxinc = 125;
-    $(".systemcontainer").empty();
+    maxinc = numberofsystems;
+    syscont.innerHTML = "";
     systems = [];
+    systemdivs = [];
     GenerateSystemLoopWrapper();
+
 }
 
-function GenerateAWHOLELOT(){
+function incrementPages(){
+    page++;
+    syscont=document.getElementsByClassName("systemcontainer")[0];
+    syscont.innerHTML = "";
+    systemcontainerinterior.innerHTML = "";
+    document.getElementById("pagenumber").textContent = "Page "+(page+1);
+    for(let ac = page*10; ac < (page*10)+10; ac++){
+        if(systemdivs[ac]){
+            systemcontainerinterior.appendChild(systemdivs[ac]);
+        }
 
-    systemcontainerinterior=document.createElement('div');
-$(systemcontainerinterior).addClass("systemcontainerinterior")
-    inc = 0;
-    maxinc = 500;
-    $(".systemcontainer").empty();
-    systems = [];
-    GenerateSystemLoopWrapper();
+    }
+    syscont.appendChild(systemcontainerinterior);
+}
+
+function decrementPages(){
+    if(page>0){
+        page--;
+    }
+    syscont=document.getElementsByClassName("systemcontainer")[0];
+    syscont.innerHTML = "";
+    systemcontainerinterior.innerHTML = "";
+    document.getElementById("pagenumber").textContent = "Page "+(page+1);
+    for(let ac = page*10; ac < (page*10)+10; ac++){
+        if(systemdivs[ac]){
+            systemcontainerinterior.appendChild(systemdivs[ac]);
+        }
+    }
+    syscont.appendChild(systemcontainerinterior);
 }
 
 var div;
@@ -2174,39 +2283,45 @@ function putGreeting() {
     }
 systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname))
 
-drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype);
 
-div=document.createElement('div');
-$(div).addClass("system");
-addline(tmp4.toUpperCase() + ` SYSTEM `,div,'h3');
-addline(`SYSTEM AGE: `+age.toFixed(1),div,"h3");
+
+
+}
+
+function displaySystem(id){
+    console.log(systems[id]);
+    if(systems[id]){
+        
+        div=document.createElement('div');
+div.classList.add("system");
+addline(`SYSTEM AGE: `+systems[id].primaryage.toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
-addline(primaryname+" - "+startypes[primarystartype],div,"h3");
-if(closecompanionpresent) {
-    addline(closecompanionname+" - "+startypes[closecompanionstartype],div,"h3");
+addline(systems[id].primaryname+" - "+startypes[systems[id].primarystartype],div,"h3",true);
+if(systems[id].closecompanionpresent) {
+    addline(systems[id].closecompanionname+" - "+startypes[systems[id].closecompanionstartype],div,"h3",true);
 
 }
 
 
 for (var q = 0; q < 42; q++) {
-    for (var l = 0; l < planets.length; l++) {
-        if(planets[l].orbit == q && planets[l].starsystem==1) {
-            generateplanetdesc(l); 
+    for (var l = 0; l < systems[id].planets.length; l++) {
+        if(systems[id].planets[l].orbit == q && systems[id].planets[l].starsystem==1) {
+            generateplanetdesc(l, systems[id].planets); 
         }
     }
 }
 
-if(distantcompanionpresent) {
+if(systems[id].distantcompanionpresent) {
     addline('',div,"h3");
     addline('SECONDARY STAR:',div,"h3");
-    addline(distantcompanionname+" - "+startypes[distantcompanionstartype],div,"h3");
+    addline(systems[id].distantcompanionname+" - "+startypes[systems[id].distantcompanionstartype],div,"h3",true);
 }
 
 for (var q = 0; q < 42; q++) {
-    for (var l = 0; l < planets.length; l++) {
-        if(planets[l].orbit == q && planets[l].starsystem==2) {
-           generateplanetdesc(l);
+    for (var l = 0; l < systems[id].planets.length; l++) {
+        if(systems[id].planets[l].orbit == q && systems[id].planets[l].starsystem==2) {
+           generateplanetdesc(l,systems[id].planets);
                 
 
                 
@@ -2214,11 +2329,13 @@ for (var q = 0; q < 42; q++) {
         }
     }
 }
-
-$(systemcontainerinterior).append(div);
+div2=document.createElement('div');
+div2.appendChild(drawCanvas(systems[id].planets,systems[id].closecompanionpresent,systems[id].distantcompanionpresent,systems[id].primarystartype,systems[id].closecompanionstartype,systems[id].distantcompanionstartype));
+div2.appendChild(div);
+return div2;
+    }
+    
 }
-
-
 function generatePlanetName() {
     var tmp3;
     if(Math.random()>=0.5){
@@ -2237,13 +2354,17 @@ function generatePlanetName() {
     }
     return tmp3;
 }
-function addline(text,parent= systemcontainer,style = "p",classes = "",img = "",) {
+function addline(text,parent= systemcontainer,style = "p",html=false) {
     var txt3 = document.createElement(style); 
-    $(txt3).html(text);
-    if(classes != ""){
-        $(txt3).addClass(classes);
+
+    if(html){
+        txt3.innerHTML = (text);
+    }else{
+        txt3.textContent = (text);
+
     }
-    $(parent).append(txt3);
+
+    parent.appendChild(txt3);
     return(txt3);
 }
 
@@ -2285,13 +2406,22 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
-function generateplanetdesc(l) {
+function switchTheme() {
+    if (document.documentElement.getAttribute('data-theme')=='light') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }    
+}
+
+function generateplanetdesc(l,planets) {
     addline(``,div,"p");
     addline(``,div, "hr");
 
     var canvas = addline("",div,"canvas");
-    $(canvas).prop("width","300");
-    $(canvas).prop("height","300")
+    canvas.setAttribute("width","300");
+    canvas.setAttribute("height","300")
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgb(0,0,0)";
         ctx.beginPath();
@@ -2302,9 +2432,9 @@ function generateplanetdesc(l) {
     drawPlanet2(planets[l],150,150,ctx);
     rscale=14;
     if(planets[l].parentbody<0){
-        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].id+` - `+planets[l].name+`:`,div,"h3") 
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].id+` - `+planets[l].name+`:`,div,"h3",true) 
     }else{
-        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber]+` - `+planets[l].name+`:`,div,"h3") 
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber]+` - `+planets[l].name+`:`,div,"h3",true) 
     }
     var tmp2;
     if(planets[l].atmothickness == 0){
@@ -2326,47 +2456,47 @@ function generateplanetdesc(l) {
         tmp2="A";
     }
 
-
-    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconMass.png"> Mass: ` + planets[l].size + `x the size of Earth`,div,"p");
-    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉",div);
-    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconTemperature.png"> Temperature: ` + temperaturenames[planets[l].temperature],div);
+    var tmp5 = "";
+    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconMass.png"> Mass: ` + planets[l].size + `x the size of Earth` + "</p>";
+    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉" + "</p>";
+        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconTemperature.png"> Temperature: ` + temperaturenames[planets[l].temperature] + "</p>";
                 if(planets[l].composition <= 3) {
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconComposition.png"> Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3",div);
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconComposition.png"> Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3" + "</p>";
                     if(planets[l].atmobasegas == 2) {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconCarbonDioxide.png"><span class='orange'>carbon dioxide</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconCarbonDioxide.png"><span class='orange'>carbon dioxide</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect` + "</p>";
                     } else if(planets[l].atmothickness>0) {
                         if(planets[l].greenhouse > 0 && planets[l].basetemp > 5) {
-                            addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconNitrogen.png"><span class='lightblue'>nitrogen</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + ', carbon dioxide' + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
+                            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconNitrogen.png"><span class='lightblue'>nitrogen</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + ', carbon dioxide' + greenhousenames[planets[l].greenhouse] + ` greenhouse effect` + "</p>";
                         } else {
-                            addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconNitrogen.png"><span class='lightblue'>nitrogen</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`,div);
+                            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconNitrogen.png"><span class='lightblue'>nitrogen</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect` + "</p>";
                         }
                     } else {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconAtmosphere.png"> Atmosphere: none`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconAtmosphere.png"> Atmosphere: none` + "</p>";
                     }
                     
                     if(planets[l].liquid > 0){
                         if(planets[l].lcoverage < -0.5){
-                            addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconLiquid.png"> Surface liquid: ` + liquidnames[planets[l].liquid] + " (" + Math.abs(planets[l].lcoverage*100) + "% coverage, superoceanic)",div);
+                            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconLiquid.png"> Surface liquid: ` + liquidnames[planets[l].liquid] + " (" + Math.abs(planets[l].lcoverage*100) + "% coverage, superoceanic)" + "</p>";
                         }else{
-                            addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconLiquid.png"> Surface liquid: ` + liquidnames[planets[l].liquid] + " (" + Math.abs(planets[l].lcoverage*100) + "% coverage)",div);
+                            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconLiquid.png"> Surface liquid: ` + liquidnames[planets[l].liquid] + " (" + Math.abs(planets[l].lcoverage*100) + "% coverage)" + "</p>";
                         }
                 
                     
                     } else {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconLiquid.png"> Surface liquid: none`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconLiquid.png"> Surface liquid: none` + "</p>";
                     }
 
                     if(planets[l].geoactive) {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconActivity.png"> Geologically active: <span class='orange'>yes</span>`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconActivity.png"> Geologically active: <span class='orange'>yes</span>` + "</p>";
                     }
                     if(!planets[l].geoactive) {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconActivity.png"> Geologically active: no`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconActivity.png"> Geologically active: no` + "</p>";
                     }
                     
                         if(planets[l].life == 0){
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconLife.png"> Life: none`,div);
+                            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconLife.png"> Life: none` + "</p>";
                         }else{
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconLife.png"> Life: ` + spancolorslife[planets[l].liquid]+ lifenames[planets[l].life] +" "+ liquidnameslife[planets[l].liquid]+"</span>",div);
+                            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconLife.png"> Life: ` + spancolorslife[planets[l].liquid]+ lifenames[planets[l].life] +" "+ liquidnameslife[planets[l].liquid]+"</span>" + "</p>";
                         }
 
                     
@@ -2376,31 +2506,31 @@ function generateplanetdesc(l) {
                 
                 
                 } else {
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconComposition.png"> Composition: A` + compositionnames[planets[l].composition] + ` with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3",div);
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconComposition.png"> Composition: A` + compositionnames[planets[l].composition] + ` with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3" + "</p>";
                 }
                 if(planets[l].parentbody < 0){
                     if(planets[l].starsystem == 1) {
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconSystem.png"> Primary system`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconSystem.png"> Primary system` + "</p>";
                     } else{
-                        addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconSystem.png"> Secondary system`,div);
+                        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconSystem.png"> Secondary system` + "</p>";
                     }
                    
                 } else {
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconSystem.png"> Orbits: planet ` + planets[planets[l].parentbody].name,div);
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconSystem.png"> Orbits: planet ` + planets[planets[l].parentbody].name + "</p>";
                 }
-                addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRadius.png"> Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii (`+ (((planets[l].size/planets[l].density)**(0.3333))*6371).toFixed(0) +` km)`,div);
-                addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconGravity.png"> Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g`,div);
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRadius.png"> Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii (`+ (((planets[l].size/planets[l].density)**(0.3333))*6371).toFixed(0) +` km)` + "</p>";
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconGravity.png"> Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g` + "</p>";
                 if(planets[l].rings){
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRings.png"> Rings: <span class='yellow'>Yes</span>`,div);
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRings.png"> Rings: <span class='yellow'>Yes</span>` + "</p>";
                 }else{
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconRings.png"> Rings: No`,div);
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRings.png"> Rings: No` + "</p>";
                 }
 
-                addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconUWP.png"> Traveller profile: `+planets[l].name+` xxyy q` + hexadecimalDigits[Math.floor(Math.min(((planets[l].size/planets[l].density)**(0.3333)).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z",div)
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconUWP.png"> Traveller profile: `+planets[l].name+` xxyy q` + hexadecimalDigits[Math.floor(Math.min(((planets[l].size/planets[l].density)**(0.3333)).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z" + "</p>";
                 if(planets[l].civ){
-                    addline(parentbodynames[planets[l].parentbody>=0] + `<img class="icon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld</span>`,div);
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld</span>`+"</p>";
                 }
-
+                addline(tmp5,div,"div",true);
 
 
                 
@@ -2409,13 +2539,14 @@ function generateplanetdesc(l) {
 
 function Initialize(){
     systemcontainerinterior=document.createElement('div');
-$(systemcontainerinterior).addClass("systemcontainerinterior")
-    $(".systemcontainer").empty();
+systemcontainerinterior.classList.add("systemcontainerinterior")
+    ".systemcontainer".innerHTML = "";
     systems = [];
     systemcontainer=[];
     closecompanionstartype=-1;
     distantcompanionstartype=-1;
     primarystartype=3;
+    
     planets = [];
     age = 4.6;
     closecompanionpresent = false;
@@ -2457,53 +2588,34 @@ $(systemcontainerinterior).addClass("systemcontainerinterior")
     planets.push(new Planet(0.003,1,0.4,0,0,0,0,0,2,0,1,2,36,0,0,8,34,5,0,1,0,-1,0,0,0,0,"Triton"));
     planets.push(new Planet(0.00025,1,0.3,0,0,0,0,0,2,0,0,0,39,0,0,9,35,2,0,1,0,-1,0,0,0,0,"Charon"));
     planets.push(new Planet(0.00007,1,0.4,0,0,0,0,0,2,0,0,0,39,0,0,10,36,2,0,1,0,-1,0,0,0,0,"Dysnomia"));
-systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age));
+systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,"Sol"));
 
-drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype);
+
 
 div=document.createElement('div');
-$(div).addClass("system");
-addline(`SOL SYSTEM`,div,`h3`);
+div.classList.add("system");
 addline(`SYSTEM AGE: `+age.toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
-addline('Sol - ' + startypes[primarystartype],div,"h3");
-if(closecompanionpresent) {
-    addline(startypes[closecompanionstartype],div,"h3");
-}
+addline('Sol - ' + startypes[primarystartype],div,"h3","p",true);
 
 
 for (var q = 0; q < 42; q++) {
     for (var l = 0; l < planets.length; l++) {
         if(planets[l].orbit == q && planets[l].starsystem==1) {
-            generateplanetdesc(l); 
+            generateplanetdesc(l,planets); 
         }
     }
 }
 
-if(distantcompanionpresent) {
-    addline('',div,"h3");
-    addline('SECONDARY STAR:',div,"h3");
-    addline(startypes[distantcompanionstartype],div,"h3");
+systemcontainerinterior.appendChild(drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype));
+systemcontainerinterior.appendChild(div);
+
+document.getElementsByClassName("systemcontainer")[0].append(systemcontainerinterior);
 }
 
-for (var q = 0; q < 42; q++) {
-    for (var l = 0; l < planets.length; l++) {
-        if(planets[l].orbit == q && planets[l].starsystem==2) {
-           generateplanetdesc(l);
-                
+document.addEventListener('DOMContentLoaded', Initialize);
 
-                
-
-        }
-    }
-}
-
-$(systemcontainerinterior).append(div);
-
-$(".systemcontainer").append(systemcontainerinterior);
-}
-$(document).ready(Initialize);
 
     </script>
   </body>
