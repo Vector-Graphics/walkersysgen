@@ -4,9 +4,12 @@
     <meta charset="utf-8">
     <title>walkersysgen</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Metrophobic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <style>
         :root {
             --textcolor: rgb(255,255,255);
+            --textcolorb: rgb(255,255,255);    
             --bgcolor: rgb(16,16,16);
             --btncolorpressed: rgb(48,48,48);
             --btncolor: rgb(64,64,64);
@@ -20,12 +23,17 @@
             --cyan: #51e9f4;
             --lightgreen: #7fed56;
             --typea: #89d4ff;
-            --innershadowcolor: #FFFFFF0F;
-            
+            --innershadowcolor: #0000004F;
+            --innershadowcolorb: #0000001F;
+            --borderradiusdf: 15px;
+            --whiteiconfilter: none;
+            --font: Metrophobic, sans-serif;
+            --hfont: Eras BQ, sans-serif;
 
         }
         [data-theme="light"] {
             --textcolor: rgb(0,0,0);
+            --textcolorb: rgb(0,0,0);    
             --bgcolor: rgb(250,250,250);
             --btncolorpressed: rgb(160,160,160);
             --btncolor: rgb(192,192,192);
@@ -40,17 +48,150 @@
             --cyan: #22bac5;
             --lightgreen: #53d822;
             --innershadowcolor: #0000004F;
+            --innershadowcolorb: #0000001F;
+            --borderradiusdf: 15px;
+            --whiteiconfilter: brightness(0);
+            --font: Metrophobic, sans-serif;
+            --hfont: Eras BQ, sans-serif;
+        }
+        [data-theme="green"] {
+            --textcolor: rgb(255, 255, 255);
+            --textcolorb: rgb(255,255,255);    
+            --bgcolor: rgb(0, 0, 0);
+            --btncolorpressed: rgb(0, 59, 3);
+            --btncolor: rgb(0, 83, 4);
+            --btncolorhover: rgb(0, 104, 5);
+            --scrollcolor: rgb(0, 128, 11);
+            --insetcolor:rgb(0, 26, 4);
+            --typeg:rgb(255,255,255);
+            --typef:#c0e8ff;
+            --typek:#fff0c1;
+            --yellow: #ffd636;
+            --cyan: #51e9f4;
+            --lightgreen: #7fed56;
+            --typea: #89d4ff;
+            --innershadowcolor: #FFFFFF00;
+            --innershadowcolorb: #FFFFFF00;
+            --borderradiusdf: 0px;
+            --whiteiconfilter: none;
+            --font: monospace;
+            --hfont: Orbitron, sans-serif;
+        }
+        [data-theme="red"] {
+            --textcolor: rgb(255,255,255);
+            --textcolorb: rgb(255,255,255);    
+            --bgcolor: rgb(15, 0, 0);
+            --btncolorpressed: rgb(53, 0, 0);
+            --btncolor: rgb(66, 0, 0);
+            --btncolorhover: rgb(95, 0, 0);
+            --scrollcolor: rgb(99, 0, 0);
+            --insetcolor:rgb(41, 0, 0);
+            --typeg:rgb(255,255,255);
+            --typef:#c0e8ff;
+            --typek:#fff0c1;
+            --yellow: #ffd636;
+            --cyan: #51e9f4;
+            --lightgreen: #7fed56;
+            --typea: #89d4ff;
+            --innershadowcolor: #0000004F;
+            --innershadowcolorb: #0000001F;
+            --borderradiusdf: 15px;
+            --whiteiconfilter: none;
+            --font: Metrophobic, sans-serif;
+            --hfont: Eras BQ, sans-serif;
+
+        }
+        [data-theme="blue"] {
+            --textcolor: rgb(255,255,255);
+            --textcolorb: rgb(255,255,255);        
+            --bgcolor: rgb(0, 0, 19);
+            --btncolorpressed: rgb(0, 16, 160);
+            --btncolor: rgb(0, 64, 202);
+            --btncolorhover: rgb(0, 86, 214);
+            --scrollcolor: rgb(0, 38, 141);
+            --insetcolor:rgb(0, 8, 41);
+            --typeg:rgb(255,255,255);
+            --typef:#c0e8ff;
+            --typek:#fff0c1;
+            --yellow: #ffd636;
+            --cyan: #51e9f4;
+            --lightgreen: #7fed56;
+            --typea: #89d4ff;
+            --innershadowcolor: #0084ff1f;
+            --innershadowcolorb: #00ccff1f;
+            --borderradiusdf: 8px;
+            --whiteiconfilter: none;
+            --font: Comfortaa, sans-serif;
+            --hfont: Comfortaa, sans-serif;
+
+
+        }
+        [data-theme="2048"] {
+            --textcolor: #faf8ef;
+            --textcolorb: #776e65;
+            --bgcolor: #faf8ef;
+            --btncolorpressed: #8f7a66;
+            --btncolor: #8f7a66;
+            --btncolorhover: #8f7a66;
+            --scrollcolor: rgb(158, 158, 158);
+            --insetcolor:#eee1c9;
+            --typek:#beab71;
+            --typeg:rgb(140,140,140);
+            --typef:rgb(140,150,160);
+            --typea: #72aed1;
+            --yellow: #b89b29;
+            --cyan: #22bac5;
+            --lightgreen: #53d822;
+            --innershadowcolor: #FFFFFF00;
+            --innershadowcolorb: #FFFFFF00;
+            --borderradiusdf: 5px;
+            --whiteiconfilter: brightness(0);
+            --font: sans-serif;
+            --hfont: sans-serif;
+        }
+        [data-theme="midnight"] {
+            --textcolor: #ffffff;
+            --textcolorb: #ffffff;
+            --bgcolor: #000000;
+            --btncolorpressed: #000000;
+            --btncolor: #000000;
+            --btncolorhover: #000000;
+            --scrollcolor: rgb(35, 0, 58);
+            --insetcolor:#000000;
+            --typek:#beab71;
+            --typeg:rgb(140,140,140);
+            --typef:rgb(140,150,160);
+            --typea: #72aed1;
+            --yellow: #b89b29;
+            --cyan: #22bac5;
+            --lightgreen: #53d822;
+            --innershadowcolor: #FFFFFF00;
+            --innershadowcolorb: #FFFFFF00;
+            --borderradiusdf: 5px;
+            --whiteiconfilter: none;
+            --font: Metrophobic, sans-serif;
+            --hfont: Eras BQ, sans-serif;
         }
         p {
-            font-family: Metrophobic, sans-serif;
+            font-family: var(--font);
+            font-weight:bold;
+            font-size: larger;
+            color: var(--textcolorb);
+            
+        }
+        #pagenumber {
+            font-family: var(--font);
             font-weight:bold;
             font-size: larger;
             color: var(--textcolor);
-            
+            text-align: center;
         }
         .systemcontainer p {
-            color: var(--textcolor);
+            color: var(--textcolorb);
             vertical-align: middle;
+        }
+        #pagenumber {
+            color: var(--textcolorb);
         }
 
         .patchnotes {
@@ -58,19 +199,25 @@
         }
 
         h3 {
-            font-family: Metrophobic, sans-serif;
+            font-family: var(--font);
             font-weight:bold;
             font-size: x-large;
-            color: var(--textcolor);
+            color: var(--textcolorb);
         }
         .systemcontainer h3 {
-            color: var(--textcolor);
+            color: var(--textcolorb);
             vertical-align: middle;
         }
 
         h1 {
-            font-family: Eras BQ, sans-serif;
-            color: var(--textcolor);
+            font-family: var(--hfont);
+            color: var(--textcolorb);
+            font-size: 50;
+            text-align: center;
+        }
+        .infocontainer h1 {
+            font-family: var(--hfont);
+            color: var(--textcolorb);
             font-size: 50;
             text-align: center;
         }
@@ -109,16 +256,16 @@
             display: block;
             margin: auto;
             width:80%;
-            font-family: Metrophobic, sans-serif;
+            font-family: var(--font);
             font-weight:bold;
             font-size: 1.25em;
             color: var(--textcolor);
             border: 0px;
-            border-radius: 16px;
+            border-radius: var(--borderradiusdf);
             cursor: pointer;
             transition: 0.15s;
             height: 80px;
-            box-shadow: inset -8px -8px 16px  #0000001F;
+            box-shadow: inset -8px -8px 16px  var(--innershadowcolorb);
         }
         .genbutton:hover {
             background: var(--btncolorhover);
@@ -138,15 +285,15 @@
             margin: auto;
             width:80%;
             height: 150px;
-            font-family: Metrophobic, sans-serif;
+            font-family: var(--font);
             font-weight:bold;
             font-size: xx-large;
             color: var(--textcolor);
             border: 0px;
-            border-radius: 15px;
+            border-radius: var(--borderradiusdf);
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: inset -8px -8px 16px  #0000001F;
+            box-shadow: inset -8px -8px 16px  var(--innershadowcolorb);
         }
         .genbutton2:hover {
             background: var(--btncolorhover);
@@ -156,6 +303,22 @@
         .genbutton2:active {
             background: var(--btncolorpressed);
             font-size: 1.9em;
+        }
+        .pagebutton {
+            background: var(--btncolor);
+            padding:0px;
+            display: inline;
+            width:40px;
+            font-family: var(--font);
+            font-weight:bold;
+            font-size: 1.25em;
+            color: var(--textcolor);
+            border: 0px;
+            border-radius: var(--borderradiusdf);
+            cursor: pointer;
+            transition: 0.15s;
+            height: 40px;
+            box-shadow: inset -8px -8px 16px  var(--innershadowcolorb);
         }
         .titleimg{
             margin: 0 auto;
@@ -172,8 +335,8 @@
             padding: 15px;
             width: 80%;
             margin: auto;
-            border-radius: 16px;
-            box-shadow: inset 8px 8px 16px  #0000004F;
+            border-radius: var(--borderradiusdf);
+            box-shadow: inset 8px 8px 16px  var(--innershadowcolor);
             transition: 0.15s;
         }
         .system{
@@ -184,8 +347,8 @@
             height:1000px; 
             background: var(--insetcolor);
             padding: 15px;
-            border-radius: 16px;
-            box-shadow: inset 8px 8px 16px  #0000004F;
+            border-radius: var(--borderradiusdf);
+            box-shadow: inset 8px 8px 16px  var(--innershadowcolor);
             transition: 0.15s;
         }
         #csvout p {
@@ -198,14 +361,14 @@
         .systemcontainer{
             height: auto;
             background-color:rgb(0,0,0);
-            border-radius: 16px;
+            border-radius: var(--borderradiusdf);
             transition: 0.15s;
         }
 
         .systemcontainerinterior{
             height: auto;
             background-color:rgb(0,0,0);
-            border-radius: 16px;
+            border-radius: var(--borderradiusdf);
             transition: 0.15s;
         }
         ::-webkit-scrollbar {
@@ -218,7 +381,7 @@
         }
         ::-webkit-scrollbar-thumb {
             background-color:var(--scrollcolor);
-            border-radius:4px;
+            border-radius:var(--borderradiusdf);
         }
         .red {
             color: #ff4500
@@ -328,8 +491,8 @@
             vertical-align: middle;
         }
         .whiteicon {
-            background-image: url('img/imgshadow.png');
-            background-size: cover;
+
+            filter: var(--whiteiconfilter);
         }
         .icon2 {
             height: 64px;
@@ -362,7 +525,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.2.9 </h1>
+    <h1> v0.2.11 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
@@ -374,10 +537,14 @@
     <p></p>
     <a download="" id="download"><button onClick="download(`systems.csv`,fullcsv(systems));" class="genbutton">Download generated CSV</button></a>
     <p></p>
-    <button onClick="switchTheme();" class="genbutton">Toggle light/dark mode</button>
+    <button onClick="switchTheme();" class="genbutton">Switch theme</button>
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
-        <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <p class="patchnotes">COMING SOON:<br> - mouseover<br> - csv import (probably gonna be a UI nightmare)</p>
+        <h3 class="patchnotes">v0.2.11 - color me impressed:</h3>
+        <p class="patchnotes">- added a function, refreshSystem(id), that you can use to refresh the system display if you've made edits using the debug console. <br>- added more themes, including the green theme from before 0.2.7, and one inspired by 2048, my first experience with a github web-app<br>- next update will probably be progress on csv import</p>
+        <h3 class="patchnotes">v0.2.10 - hot(jupiter)fix:</h3>
+        <p class="patchnotes">- hot jupiters don't appear around red dwarfs<br>- improved the look of the page buttons</p>
         <h3 class="patchnotes">v0.2.9 - dayside:</h3>
         <p class="patchnotes">- added light mode (in case you wanted to use light mode)<br>- systems are now displayed in pages<br>- systems now generate much faster<br>- brought back 500 systems button and upgraded it to a 1000 systems button to celebrate</p>
         <h3 class="patchnotes">v0.2.8 - what's in a name:</h3>
@@ -450,11 +617,11 @@
 
     </div>
     <div class="main">
-        <button onClick="decrementPages();" class="genbutton">Previous page</button>
-        <p></p>
-        <p id="pagenumber" class="patchnotes"></p>
-        <p></p>
-        <button onClick="incrementPages();" class="genbutton">Next page</button>
+        <div class="patchnotes"></p>
+        <button onClick="decrementPages();" class="genbutton pagebutton">←</button>
+        <span id="pagenumber"></span>
+        <button onClick="incrementPages();" class="genbutton pagebutton">→</button>
+        </div>
         <p></p>
         <div class="systemcontainer"></div>
     </div>
@@ -686,7 +853,6 @@ var orbittable = [
     "<span class='blue'>46</span>",
     "<span class='blue'>50</span>"
 ]
-
 
 var consonants = [
     "m", "t", "c", "b", "k", "l", "r", "n", "v", "th", "f", "j", "p", "d", "g", "st", "m", "t", "c", "b", "k", "l", "n", "v", "th", "f", "j", "p", "d", "g", "st", "rh", "br", "tr", "", "pl", "s", "sh", "sc", "h", "ch", "ph", "gl", "fl", "cl", "bl", "sch", "", "", "", "", ""
@@ -1312,7 +1478,7 @@ function placePlanets(starid,closecompanionpresent) {
                 if(Math.random()>0.2 && o <= 12){
                 if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
-                    if(o <= 1 && Math.random()>=0.6){
+                    if(o <= 1 && Math.random()>=0.6 && primarystartype != 1){
                         var tmp1 = dice(1,12)+24;
                         planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null,null))
                         o += 12;
@@ -1412,7 +1578,7 @@ function placePlanets(starid,closecompanionpresent) {
             if(Math.random()>0.2 && o <= 12){
                 if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
-                    if(o <= 1 && Math.random()>=0.6){
+                    if(o <= 1 && Math.random()>=0.6 && primarystartype != 1){
                         var tmp1 = dice(1,12)+24;
                         planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null))
                         o += 12;
@@ -1865,7 +2031,7 @@ function generatePlanet(id) {
             planetbuffer.sizeindex = dice(1,36);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
             } else {
-            planetbuffer.sizeindex = dice(1,16);
+            planetbuffer.sizeindex = dice(1,18);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
             }
             if (planetbuffer.starsystem == 2) {
@@ -1876,7 +2042,7 @@ function generatePlanet(id) {
             planetbuffer.sizeindex = dice(1,36);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
             } else {
-            planetbuffer.sizeindex = dice(1,16);
+            planetbuffer.sizeindex = dice(1,18);
             planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
         }
         } 
@@ -2123,10 +2289,31 @@ function GenerateSystem(){
     systemcontainerinterior.classList.add("systemdisplay");
     inc = 0;
     maxinc = 1;
-    syscont.innerHTML = "";
+    while (syscont.hasChildNodes()) {
+    syscont.removeChild(syscont.firstChild);
+}
     systems = [];
     systemdivs = [];
     GenerateSystemLoopWrapper();
+}
+
+function refreshSystem(id){
+    systemdivs[id]=(displaySystem(id));
+    if(id>=page*10&&id<=(page+1)*10) {
+        syscont=document.getElementsByClassName("systemcontainer")[0];
+        while (syscont.hasChildNodes()) {
+    syscont.removeChild(syscont.firstChild);
+}
+    systemcontainerinterior.innerHTML = "";
+    document.getElementById("pagenumber").innerText = "Page "+(page+1);
+    for(let ac = page*10; ac < (page*10)+10; ac++){
+        if(systemdivs[ac]){
+            systemcontainerinterior.appendChild(systemdivs[ac]);
+        }
+
+    }
+    syscont.appendChild(systemcontainerinterior);
+    }
 }
 
 function GenerateSystemLoopWrapper(){
@@ -2140,7 +2327,7 @@ function GenerateSystemLoopWrapper(){
         
     }else{
         page=0;
-    document.getElementById("pagenumber").textContent = "Page "+(page+1);
+    document.getElementById("pagenumber").innerText = "Page "+(page+1);
 
     for(let ac = page*10; ac < (page*10)+10; ac++){
         if(systemdivs[ac]){
@@ -2172,9 +2359,13 @@ function GenerateSector(numberofsystems){
 function incrementPages(){
     page++;
     syscont=document.getElementsByClassName("systemcontainer")[0];
-    syscont.innerHTML = "";
-    systemcontainerinterior.innerHTML = "";
-    document.getElementById("pagenumber").textContent = "Page "+(page+1);
+    while (syscont.hasChildNodes()) {
+    syscont.removeChild(syscont.firstChild);
+}
+while (systemcontainerinterior.hasChildNodes()) {
+    systemcontainerinterior.removeChild(systemcontainerinterior.firstChild);
+}
+    document.getElementById("pagenumber").innerText = "Page "+(page+1);
     for(let ac = page*10; ac < (page*10)+10; ac++){
         if(systemdivs[ac]){
             systemcontainerinterior.appendChild(systemdivs[ac]);
@@ -2189,9 +2380,13 @@ function decrementPages(){
         page--;
     }
     syscont=document.getElementsByClassName("systemcontainer")[0];
-    syscont.innerHTML = "";
-    systemcontainerinterior.innerHTML = "";
-    document.getElementById("pagenumber").textContent = "Page "+(page+1);
+    while (syscont.hasChildNodes()) {
+    syscont.removeChild(syscont.firstChild);
+}
+while (systemcontainerinterior.hasChildNodes()) {
+    systemcontainerinterior.removeChild(systemcontainerinterior.firstChild);
+}
+    document.getElementById("pagenumber").innerText = "Page "+(page+1);
     for(let ac = page*10; ac < (page*10)+10; ac++){
         if(systemdivs[ac]){
             systemcontainerinterior.appendChild(systemdivs[ac]);
@@ -2411,7 +2606,32 @@ function switchTheme() {
         document.documentElement.setAttribute('data-theme', 'dark');
     }
     else {
+        if (document.documentElement.getAttribute('data-theme')=='dark') {
+        document.documentElement.setAttribute('data-theme', 'green');
+    }
+    else {
+        if (document.documentElement.getAttribute('data-theme')=='green') {
+        document.documentElement.setAttribute('data-theme', 'red');
+    }
+    else {
+        if (document.documentElement.getAttribute('data-theme')=='red') {
+        document.documentElement.setAttribute('data-theme', 'blue');
+    }
+    else {
+        if (document.documentElement.getAttribute('data-theme')=='blue') {
+        document.documentElement.setAttribute('data-theme', '2048');
+    }
+    else {
+        if (document.documentElement.getAttribute('data-theme')=='2048') {
+        document.documentElement.setAttribute('data-theme', 'midnight');
+    }
+    else {
         document.documentElement.setAttribute('data-theme', 'light');
+    } 
+    } 
+    } 
+    } 
+    } 
     }    
 }
 
@@ -2538,6 +2758,7 @@ function generateplanetdesc(l,planets) {
 }
 
 function Initialize(){
+    document.documentElement.setAttribute('data-theme', 'dark');
     systemcontainerinterior=document.createElement('div');
 systemcontainerinterior.classList.add("systemcontainerinterior")
     ".systemcontainer".innerHTML = "";
