@@ -276,6 +276,34 @@
             background: var(--btncolorpressed);
             font-size: 1.2em;
         }
+        input::file-selector-button {
+            background: var(--btncolor);
+            padding:10px;
+            padding-right:15px;
+            padding-left:15px;
+            display: block;
+            margin: auto;
+            width:80%;
+            font-family: var(--font);
+            font-weight:bold;
+            font-size: 1.25em;
+            color: var(--textcolor);
+            border: 0px;
+            border-radius: var(--borderradiusdf);
+            cursor: pointer;
+            transition: 0.15s;
+            height: 80px;
+            box-shadow: inset -8px -8px 16px  var(--innershadowcolorb);
+        }
+        input::file-selector-button:hover {
+            background: var(--btncolorhover);
+            font-size: 1.3em;
+
+        }
+        input::file-selector-button:active {
+            background: var(--btncolorpressed);
+            font-size: 1.2em;
+        }
         .genbutton2 {
             background: var(--btncolor);
             padding:30px;
@@ -525,7 +553,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.2.11 </h1>
+    <h1> v0.3.0 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
@@ -535,12 +563,19 @@
     <button onClick="GenerateSector(1000);" class="genbutton">Generate a lot of systems (1000 systems)</button>
     <p></p>
     <p></p>
-    <a download="" id="download"><button onClick="download(`systems.csv`,fullcsv(systems));" class="genbutton">Download generated CSV</button></a>
+    <a download="" id="download"><button onClick="download(`systems.wssg`,fullcsv(systems));" class="genbutton">Save systems as .wssg file</button></a>
+    <p></p>
+    <input type="button" id="loadFile" class="genbutton" value="Choose .wssg file" onclick="document.getElementById('file').click();" />
+    <p></p>
+    <input type="file" style="display:none;" id="file" name="file"/>
+    <button onClick="loadSystem();" class="genbutton">Load selected .wssg file</button>
     <p></p>
     <button onClick="switchTheme();" class="genbutton">Switch theme</button>
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
-        <p class="patchnotes">COMING SOON:<br> - mouseover<br> - csv import (probably gonna be a UI nightmare)</p>
+        <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.0 - saving and loading:</h3>
+        <p class="patchnotes">- CSV IMPORT IS HERE! System customization is now fully supported (though I might make the process a bit more user friendly in the future. <br>- files are now .wssg, they're just csv files though, this change is more meant to represent csv as a save format instead of just an export format.<br>- current .wssg file format version: 1.0.0<br>- squashed a bug with distant companion planet generation</p>
         <h3 class="patchnotes">v0.2.11 - color me impressed:</h3>
         <p class="patchnotes">- added a function, refreshSystem(id), that you can use to refresh the system display if you've made edits using the debug console. <br>- added more themes, including the green theme from before 0.2.7, and one inspired by 2048, my first experience with a github web-app<br>- next update will probably be progress on csv import</p>
         <h3 class="patchnotes">v0.2.10 - hot(jupiter)fix:</h3>
@@ -593,25 +628,26 @@
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <h1 class="patchnotes">FAQ</h1>
-        <p class="patchnotes">Q: What's an AU☉?<br> A: Equivalent distance from the star to 1 AU from the Sun. As in, a distance in AU☉ means that if the planet were in our Solar System, it would need to be placed that distance in AU away from the Sun to stay the same temperature as it is in its system.</p>
-        <p class="patchnotes">Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) <br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
-        <p class="patchnotes">Q: Why is all my life aquatic? <br> A: In this app's terminology, 'aquatic' refers to life that uses water as the main solvent in its biochemistry (like Earth life), not a marine ecosystem. In simple terms, aquatic lifeforms drink water. Compare this to 'methanic' and 'ammonic' (yes, ammonia based life is a possibility!)</p>
-        <p class="patchnotes">Q: Why is life so common? <br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
-        <p class="patchnotes">Q: Euplanet? What's that? <br> A: A euplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
-        <p class="patchnotes">Q: Why are there so few planets in my system? <br> A: Is there a gas giant close to the star? If so, it's because the gas giant migrated inward and destroyed or ejected any planets in its path.</p>
-        <p class="patchnotes">Q: Dwarf planets aren't planets! <br> A: I disagree.</p>
-        <p class="patchnotes">Q: Moons aren't planets! <br> A: I disagree.</p>
-        <p class="patchnotes">Q: How is there life with no water? <br> A: It's probably either subglacial - meaning it's in the subsurface ocean under the crust of an icy planet - or it's methanic or ammonic.</p>
-        <p class="patchnotes">Q: Why is there no oxygen in the atmosphere? <br> A: Oxygen requires photosynthetic producers like plants, so I've simulated the presence of oxygen based on multicellular life.</p>
-        <p class="patchnotes">Q: Why are Earth-like planets so rare? <br> A: Minsharic (Earth-like) planets are rare because the set of 'Earth-like' conditions are very precise. However, habitability doesn't require a planet to be precisely like Earth.</p>
-        <p class="patchnotes">Q: How do I see the habitable zone? <br> A: The concept of a 'habitable zone' is rather fuzzy, given the wildly varying surface conditions that could make surface water possible or not. The thin green vertical lines on the background of a system diagram denote the region where water could exist given Earth-like atmospheric conditions, about 0.6-1.1 AU☉.</p>
-        <p class="patchnotes">Q: Well ackshually, from 0.95 AU☉ and closer the planet has a runaway greenhouse effect- <br> A: I've seen these claims and I acknowledge them. However, I choose a more optimistic approach for this generator: the chance of a runaway greenhouse effect increases as you get closer to the star, but is never quite certain, and certainly not 0.05 AU☉ closer than the Earth.</p>
-        <p class="patchnotes">Q: Why are my dwarf planet moons ordered weirdly? <br> A: Dwarf planet moons are positioned after the entire asteroid belt due to a technical limitation. This may or may not be fixed in the future. I personally don't see it as too big of an issue.</p>
-        <p class="patchnotes">Q: What the heck is methanum? <br> A: Liquid methane. It's a term Astro Pro uses for liquid methane, and that I like.</p>
-        <p class="patchnotes">Q: How do I export to CSV? <br> A: Hit 'download generated CSV' and save the file.</p>
-        <p class="patchnotes">Q: What do all the numbers in the CSV mean? <br> A: The numbers under 'composition', 'temperature', etc are usually internal IDs for the respective classes. There is a table of what the numbers mean at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>.</p>
-        <p class="patchnotes">Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?<br> A: I use 'bepis' for unintended values in certain arrays. 'bepis' appearing in CSVs for names of stars that don't exist is intentional, and additionally, 'Bepis' capitalized is just a very rare possibility for a randomly generated name (be + pi + s). If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
-        <p class="patchnotes">Q: How do I suggest a feature? <br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
+        <p class="patchnotes"><strong>Q: What's an AU☉?</strong><br> A: Equivalent distance from the star to 1 AU from the Sun. As in, a distance in AU☉ means that if the planet were in our Solar System, it would need to be placed that distance in AU away from the Sun to stay the same temperature as it is in its system.</p>
+        <p class="patchnotes"><strong>Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) </strong><br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
+        <p class="patchnotes"><strong>Q: Why is all my life aquatic? </strong><br> A: In this app's terminology, 'aquatic' refers to life that uses water as the main solvent in its biochemistry (like Earth life), not a marine ecosystem. In simple terms, aquatic lifeforms drink water. Compare this to 'methanic' and 'ammonic' (yes, ammonia based life is a possibility!)</p>
+        <p class="patchnotes"><strong>Q: Why is life so common? </strong><br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
+        <p class="patchnotes"><strong>Q: Euplanet? What's that? </strong><br> A: A euplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
+        <p class="patchnotes"><strong>Q: Why are there so few planets in my system? </strong><br> A: Is there a gas giant close to the star? If so, it's because the gas giant migrated inward and destroyed or ejected any planets in its path.</p>
+        <p class="patchnotes"><strong>Q: Dwarf planets aren't planets! / Moons aren't planets!</strong><br> A: I disagree. I have <a href="https://www.youtube.com/watch?v=W7qZ52QHXrs">a video</a> on this topic if you want to know the details.</p>
+        <p class="patchnotes"><strong>Q: How is there life with no water? </strong><br> A: It's probably either subglacial - meaning it's in the subsurface ocean under the crust of an icy planet - or it's methanic or ammonic.</p>
+        <p class="patchnotes"><strong>Q: Why is there no oxygen in the atmosphere? </strong><br> A: Oxygen requires photosynthetic producers like plants, so I've simulated the presence of oxygen based on multicellular life.</p>
+        <p class="patchnotes"><strong>Q: Why are Earth-like planets so rare? </strong><br> A: Minsharic (Earth-like) planets are rare because the set of 'Earth-like' conditions are very precise. However, habitability doesn't require a planet to be precisely like Earth.</p>
+        <p class="patchnotes"><strong>Q: How do I see the habitable zone? </strong><br> A: The concept of a 'habitable zone' is rather fuzzy, given the wildly varying surface conditions that could make surface water possible or not. The thin green vertical lines on the background of a system diagram denote the region where water could exist given Earth-like atmospheric conditions, about 0.6-1.1 AU☉.</p>
+        <p class="patchnotes"><strong>Q: Well ackshually, from 0.95 AU☉ and closer the planet has a runaway greenhouse effect- </strong><br> A: I've seen these claims and I acknowledge them. However, I choose a more optimistic approach for this generator: the chance of a runaway greenhouse effect increases as you get closer to the star, but is never quite certain, and certainly not 0.05 AU☉ closer than the Earth.</p>
+        <p class="patchnotes"><strong>Q: Why are my dwarf planet moons ordered weirdly? </strong><br> A: Dwarf planet moons are positioned after the entire asteroid belt due to a technical limitation. This may or may not be fixed in the future. I personally don't see it as too big of an issue.</p>
+        <p class="patchnotes"><strong>Q: What the heck is methanum? </strong><br> A: Liquid methane. It's a term Astro Pro uses for liquid methane, and that I like.</p>
+        <p class="patchnotes"><strong>Q: How do I export to CSV? </strong><br> A: Hit 'Save systems as .wssg file' and save the file. A .wssg file is a csv file containing the system(s)' information</p>
+        <p class="patchnotes"><strong>Q: What is a .wssg file? </strong><br> A: A .wssg file is just a csv file. It's a special file extension because these files can also be loaded by the software to display saved systems.</p>
+        <p class="patchnotes"><strong>Q: How do I make custom systems? </strong><br> A: A custom system is a .wssg (csv) file containing the system(s)' information. Each planet is a row with all of the planet's data, there is a guide as to how to read the data at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>. Just modify the file using your favorite spreadsheet editor, save it as csv, and you can load your custom system!</p>
+        <p class="patchnotes"><strong>Q: What do all the numbers in the exported file mean? </strong><br> A: The numbers under 'composition', 'temperature', etc are usually internal IDs for the respective classes (hot, cold, etc). There is a table of what the numbers mean at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>.</p>
+        <p class="patchnotes"><strong>Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?</strong><br> A: I use 'bepis' for unintended values in certain arrays. 'bepis' appearing in CSVs for names of stars that don't exist is intentional, and additionally, 'Bepis' capitalized is just a very rare possibility for a randomly generated name (be + pi + s). If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
+        <p class="patchnotes"><strong>Q: How do I suggest a feature? </strong><br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
     </div>
     <p></p>
 
@@ -1467,13 +1503,20 @@ function dice(n, s) {
     } 
     return tot;
 }
+const CSVToArray = (data, delimiter = ',', omitFirstRow = false) =>
+  data
+    .slice(omitFirstRow ? data.indexOf('\n') + 1 : 0)
+    .split('\n')
+    .map(v => v.split(delimiter));
+
+
 
 function placePlanets(starid,closecompanionpresent) {
     var o = 0;
     var ptag = dice(1,10)+999;
     while (o <= 41) {
         if(starid==1){
-            if(closecompanionpresent==0||o>6){
+            if(!closecompanionpresent||o>6){
             if(ptag>(closecompanionpresent|0)){
                 if(Math.random()>0.2 && o <= 12){
                 if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
@@ -1576,9 +1619,9 @@ function placePlanets(starid,closecompanionpresent) {
             
             if(ptag>0){
             if(Math.random()>0.2 && o <= 12){
-                if(dice(1,4)!=1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,4)!=1 && ((distantcompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
-                    if(o <= 1 && Math.random()>=0.6 && primarystartype != 1){
+                    if(o <= 1 && Math.random()>=0.6 && distantcompanionstartype != 1){
                         var tmp1 = dice(1,12)+24;
                         planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null))
                         o += 12;
@@ -1602,7 +1645,7 @@ function placePlanets(starid,closecompanionpresent) {
             }
             }     
             } else if(Math.random()>0.5 && o <= 19){
-                if(dice(1,3)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,3)==1 && ((distantcompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
                     if(distantcompanionstartype == 1){
@@ -1624,7 +1667,7 @@ function placePlanets(starid,closecompanionpresent) {
             }     
             }
             else if((Math.random()>0.5 || o <= 19)&& o <= 30){
-                if(dice(1,4)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,4)==1 && ((distantcompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
                     if(distantcompanionstartype == 1){
@@ -1645,7 +1688,7 @@ function placePlanets(starid,closecompanionpresent) {
             }
             }   
             } else { {
-                if(dice(1,6)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,6)==1 && ((distantcompanionstartype != 0)|| o >= 10)){
                 if(dice(1,6)!=1){
                     planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null,null));
                     if(distantcompanionstartype == 1){
@@ -1760,6 +1803,15 @@ function drawPlanet(planet,x,y,ctx){
             });
 }
 
+async function loadSystem(){
+    const selectedFile = document.getElementById("file").files[0];
+    const systext = await selectedFile.text();
+    systems = ArrayToSystems(CSVToArray(systext,",",true));
+    for(let af = 0; af < systems.length; af++){
+        refreshSystem(af);
+    }
+}
+
 function drawPlanet2(planet,x,y,ctx){
     var imgs = [];
     let promises = [];
@@ -1871,7 +1923,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     var ctx = canvas.getContext("2d");
     ctx.imageSmoothingQuality="high";
     ctx.fillStyle = "rgb(0,255,0)";
-    if(closecompanionpresent == 0){
+    if(!closecompanionpresent){
         drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype],ctx);
         drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype]-10,ctx);
     } else{
@@ -2484,16 +2536,15 @@ systems.push(new System(planets,primarystartype,closecompanionpresent,closecompa
 }
 
 function displaySystem(id){
-    console.log(systems[id]);
     if(systems[id]){
         
         div=document.createElement('div');
 div.classList.add("system");
-addline(`SYSTEM AGE: `+systems[id].primaryage.toFixed(1),div,"h3");
+addline(`SYSTEM AGE: `+Number(systems[id].primaryage).toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
 addline(systems[id].primaryname+" - "+startypes[systems[id].primarystartype],div,"h3",true);
-if(systems[id].closecompanionpresent) {
+if(systems[id].closecompanionpresent == true || systems[id].closecompanionpresent == 1) {
     addline(systems[id].closecompanionname+" - "+startypes[systems[id].closecompanionstartype],div,"h3",true);
 
 }
@@ -2507,7 +2558,7 @@ for (var q = 0; q < 42; q++) {
     }
 }
 
-if(systems[id].distantcompanionpresent) {
+if(systems[id].distantcompanionpresent == true || systems[id].distantcompanionpresent == 1) {
     addline('',div,"h3");
     addline('SECONDARY STAR:',div,"h3");
     addline(systems[id].distantcompanionname+" - "+startypes[systems[id].distantcompanionstartype],div,"h3",true);
@@ -2562,11 +2613,101 @@ function addline(text,parent= systemcontainer,style = "p",html=false) {
     parent.appendChild(txt3);
     return(txt3);
 }
+function ArrayToPlanet(input,row) {
+    var tmp6 = new Planet();
+    var pa = input[row];
+    tmp6.id=pa[idlocation];
+    tmp6.starsystem=eval(pa[parentstarlocation]);
+    tmp6.parentbody=eval(pa[parentbodylocation]);
+    tmp6.orbit=eval(pa[orbitlocation]);
+    tmp6.size=eval(pa[sizelocation]);
+    tmp6.type=eval(pa[typelocation]);
+    tmp6.sizeindex=eval(pa[sizeindexlocation]);
+    tmp6.composition=eval(pa[compositionlocation]);
+    tmp6.density=eval(pa[densitylocation]);
+    tmp6.atmothickness=eval(pa[atmospherethicknesslocation]);
+    tmp6.atmobasegas=eval(pa[atmobasegaslocation]);
+    tmp6.oxygentag=eval(pa[oxygenlocation]);
+    tmp6.liquid=eval(pa[liquidlocation]);
+    tmp6.greenhouse=eval(pa[greenhouselocation]);
+    tmp6.temperature=eval(pa[temperaturelocation]);
+    tmp6.lcoverage=eval(pa[lcoveragelocation]);
+    tmp6.life=eval(pa[lifelocation]);
+    tmp6.moonnumber=eval(pa[moonindexlocation]);
+    tmp6.rings=eval(pa[ringslocation]);
+    tmp6.civ=eval(pa[civlocation]);
+    tmp6.name=pa[namelocation];
+    tmp6.beltlength=eval(pa[beltlengthlocation]);
+    return tmp6;
+}
 
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name"
+function ArrayToSystems(input){
+    var tmp7;
+    var tempsystems = [];
+    var workingsys = new System();
+    for (let ae = 0; ae < input.length; ae++){
+        if(tmp7 != input[ae][0]){
+            tmp7 = input[ae][0];
+            if(workingsys.planets){
+                tempsystems.push(workingsys);
+            }
+            workingsys = new System();
+            workingsys.planets = [];
+            workingsys.primarystartype = eval(input[ae][primarystartypelocation]);
+            workingsys.closecompanionpresent = eval(input[ae][closecompanionexistslocation]);
+            workingsys.closecompanionstartype = eval(input[ae][closecompanionstartypelocation]);
+            workingsys.distantcompanionpresent = eval(input[ae][distantcompanionexistslocation]);
+            workingsys.distantcompanionstartype = eval(input[ae][distantcompanionstartypelocation]);
+            workingsys.primaryname = input[ae][primarynamelocation];
+            workingsys.closecompanionname = input[ae][closecompanionnamelocation];
+            workingsys.distantcompanionname = input[ae][distantcompanionnamelocation];
+            workingsys.primaryage = eval(input[ae][agelocation]);
+            workingsys.secondaryage = eval(input[ae][agelocation]);
+        } 
+        workingsys.planets.push(ArrayToPlanet(input,ae))
+    }
+    tempsystems.push(workingsys);
+    return tempsystems;
+}
+var sysindexlocation = 0;
+var primarystartypelocation = 1;
+var closecompanionexistslocation = 2;
+var closecompanionstartypelocation = 3;
+var distantcompanionexistslocation = 4;
+var distantcompanionstartypelocation = 5;
+var primarynamelocation = 6;
+var closecompanionnamelocation = 7;
+var distantcompanionnamelocation = 8;
+var agelocation = 9;
+var idlocation = 10;
+var parentstarlocation = 11;
+var parentbodylocation = 12;
+var orbitlocation = 13;
+var distancelocation = 14;
+var sizelocation = 15;
+var typelocation = 16;
+var sizeindexlocation = 17;
+var compositionlocation = 18;
+var densitylocation = 19;
+var atmospherethicknesslocation = 20;
+var atmobasegaslocation = 21;
+var oxygenlocation = 22;
+var liquidlocation = 23;
+var greenhouselocation = 24;
+var temperaturelocation = 25;
+var lcoveragelocation = 26;
+var lifelocation = 27;
+var radiuslocation = 28;
+var gravitylocation = 29;
+var moonindexlocation = 30;
+var ringslocation = 31;
+var civlocation = 32;
+var namelocation = 33;
+var beltlengthlocation = 34;
+var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name,beltlength,basetemp"
 function csv(planet){
     return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable2[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
-    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ+","+planet.name;
+    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ+","+planet.name+","+planet.beltlength+","+planet.basetemp;
 }
 function systemcsv(system,ab){
     var systemcsvout = ``;
@@ -2681,7 +2822,7 @@ function generateplanetdesc(l,planets) {
     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉" + "</p>";
         tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconTemperature.png"> Temperature: ` + temperaturenames[planets[l].temperature] + "</p>";
                 if(planets[l].composition <= 3) {
-                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconComposition.png"> Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth, or `+ (planets[l].density*5.51).toFixed(1) + " g/cm^3" + "</p>";
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconComposition.png"> Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + Number(planets[l].density).toFixed(1) + `x that of the Earth, or `+ Number((planets[l].density*5.51)).toFixed(1) + " g/cm^3" + "</p>";
                     if(planets[l].atmobasegas == 2) {
                         tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconAtmosphere.png"> Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, <img class="icon" src="img/iconCarbonDioxide.png"><span class='orange'>carbon dioxide</span>` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect` + "</p>";
                     } else if(planets[l].atmothickness>0) {
@@ -2738,15 +2879,15 @@ function generateplanetdesc(l,planets) {
                 } else {
                     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconSystem.png"> Orbits: planet ` + planets[planets[l].parentbody].name + "</p>";
                 }
-                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRadius.png"> Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii (`+ (((planets[l].size/planets[l].density)**(0.3333))*6371).toFixed(0) +` km)` + "</p>";
-                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconGravity.png"> Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g` + "</p>";
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRadius.png"> Radius: ` + Number(((planets[l].size/planets[l].density)**(0.3333))).toFixed(2) + ` Earth radii (`+ Number((((planets[l].size/planets[l].density)**(0.3333))*6371)).toFixed(0) +` km)` + "</p>";
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconGravity.png"> Surface gravity: ` + Number((planets[l].size/((planets[l].size/planets[l].density)**0.6667))).toFixed(2) + ` g` + "</p>";
                 if(planets[l].rings){
                     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRings.png"> Rings: <span class='yellow'>Yes</span>` + "</p>";
                 }else{
                     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRings.png"> Rings: No` + "</p>";
                 }
 
-                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconUWP.png"> Traveller profile: `+planets[l].name+` xxyy q` + hexadecimalDigits[Math.floor(Math.min(((planets[l].size/planets[l].density)**(0.3333)).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z" + "</p>";
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconUWP.png"> Traveller profile: `+planets[l].name+` xxyy q` + hexadecimalDigits[Math.floor(Math.min(Number(((planets[l].size/planets[l].density)**(0.3333))).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z" + "</p>";
                 if(planets[l].civ){
                     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld</span>`+"</p>";
                 }
