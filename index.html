@@ -553,7 +553,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.1 </h1>
+    <h1> v0.3.2 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
@@ -574,13 +574,15 @@
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.2 - clearing the neighborhood:</h3>
+        <p class="patchnotes">- updated the way planets are placed in the system to more accurately represent how planets form <br> - had to remove numeric IDs because of this, but you can still find them in the csv file (all the planets will be out of order though) <br> - .wssg file format version: sv1.1.1<br>- made life types easier to understand</p>
         <h3 class="patchnotes">v0.3.1 - of jool and jostan, of kerbin and tervis:</h3>
         <p class="patchnotes">- geologic activity is now saved to .wssg files (that was kind of dumb of me to forget)<br>- added a bunch more varieties for planet appearances to make things look a bit more interesting<br>- default solar system file updated, and the app now loads that file when starting up<br>- old imported .wssg files keep the basic planet sprites<br>- current .wssg file format version: sv1.1.0</p>
         <h3 class="patchnotes">v0.3.0 - saving and loading:</h3>
         <p class="patchnotes">- CSV IMPORT IS HERE! System customization is now fully supported (though I might make the process a bit more user friendly in the future. <br>- files are now .wssg, they're just csv files though, this change is more meant to represent csv as a save format instead of just an export format.<br>- current .wssg file format version: sv1.0.0<br>- squashed a bug with distant companion planet generation</p>
         <h3 class="patchnotes">v0.2.11 - color me impressed:</h3>
         <p class="patchnotes">- added a function, refreshSystem(id), that you can use to refresh the system display if you've made edits using the debug console. <br>- added more themes, including the green theme from before 0.2.7, and one inspired by 2048, my first experience with a github web-app<br>- next update will probably be progress on csv import</p>
-        <h3 class="patchnotes">v0.2.10 - hot(jupiter)fix:</h3>
+        <h3 class="patchnotes">v0.2.10 - the missing update:</h3>
         <p class="patchnotes">- hot jupiters don't appear around red dwarfs<br>- improved the look of the page buttons</p>
         <h3 class="patchnotes">v0.2.9 - dayside:</h3>
         <p class="patchnotes">- added light mode (in case you wanted to use light mode)<br>- systems are now displayed in pages<br>- systems now generate much faster<br>- brought back 500 systems button and upgraded it to a 1000 systems button to celebrate</p>
@@ -614,7 +616,7 @@
         <p class="patchnotes">- added atmosphere and surface liquid visualization to the diagrams</p>
         <h3 class="patchnotes">v0.1.2 - scrolllllll:</h3>
     <p class="patchnotes">- added scrollbars to things</p>
-    <h3 class="patchnotes">v0.1.1 - look ma:</h3>
+    <h3 class="patchnotes">v0.1.1 - just right:</h3>
     <p class="patchnotes">- added color to system diagrams to indicate star types, composition of planets, aquatic goldilocks zone (since people seem to care about that) <br> - some star systems now just have many fewer planets <br> - finally the white dwarf temperature check works</p>
     <h3 class="patchnotes">v0.1.0 - diagrams:</h3>
     <p class="patchnotes">- system diagrams added</p>
@@ -630,9 +632,8 @@
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <h1 class="patchnotes">FAQ</h1>
-        <p class="patchnotes"><strong>Q: What's an AU☉?</strong><br> A: Equivalent distance from the star to 1 AU from the Sun. As in, a distance in AU☉ means that if the planet were in our Solar System, it would need to be placed that distance in AU away from the Sun to stay the same temperature as it is in its system.</p>
+        <p class="patchnotes"><strong>Q: What's an AU☉?</strong><br> A: A measurement I made to help describe the layout of systems. One AU☉ is the distance Earth would need to be from the system's main star(s) to have the same surface temperature.</p>
         <p class="patchnotes"><strong>Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) </strong><br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
-        <p class="patchnotes"><strong>Q: Why is all my life aquatic? </strong><br> A: In this app's terminology, 'aquatic' refers to life that uses water as the main solvent in its biochemistry (like Earth life), not a marine ecosystem. In simple terms, aquatic lifeforms drink water. Compare this to 'methanic' and 'ammonic' (yes, ammonia based life is a possibility!)</p>
         <p class="patchnotes"><strong>Q: Why is life so common? </strong><br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
         <p class="patchnotes"><strong>Q: Euplanet? What's that? </strong><br> A: A euplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
         <p class="patchnotes"><strong>Q: Why are there so few planets in my system? </strong><br> A: Is there a gas giant close to the star? If so, it's because the gas giant migrated inward and destroyed or ejected any planets in its path.</p>
@@ -649,6 +650,7 @@
         <p class="patchnotes"><strong>Q: How do I make custom systems? </strong><br> A: A custom system is a .wssg (csv) file containing the system(s)' information. Each planet is a row with all of the planet's data, there is a guide as to how to read the data at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>. Just modify the file using your favorite spreadsheet editor, save it as csv, and you can load your custom system!</p>
         <p class="patchnotes"><strong>Q: What do all the numbers in the exported file mean? </strong><br> A: The numbers under 'composition', 'temperature', etc are usually internal IDs for the respective classes (hot, cold, etc). There is a table of what the numbers mean at <a href=https://github.com/Vector-Graphics/walkersysgen/blob/main/README.md>the readme</a>.</p>
         <p class="patchnotes"><strong>Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?</strong><br> A: I use 'bepis' for unintended values in certain arrays. 'bepis' appearing in CSVs for names of stars that don't exist is intentional, and additionally, 'Bepis' capitalized is just a very rare possibility for a randomly generated name (be + pi + s). If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
+        <p class="patchnotes"><strong>Q: Why are all the planets out of order in the exported file?</strong><br> A: Planets aren't listed in order of distance from the sun, they are instead listed in "order of formation", meaning the order they were placed in the system. In general, more massive planets have lower IDs.</p>
         <p class="patchnotes"><strong>Q: How do I suggest a feature? </strong><br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
     </div>
     <p></p>
@@ -967,7 +969,7 @@ var imagesources = [
 
 ]
 var uberplanetsizes = [0.04, 0.06, 0.1, 0.15, 0.2, 0.3, 0.4, 0.55, 0.7, 0.85, 1, 1.1, 1.25, 1.5, 1.8, 2.3, 2.9, 3.5, 4.3, 6, 8, 10, 13, 16, 20, 25, 30, 35, 45, 60, 80, 100, 200, 300, 500, 800]
-var letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",]
+var letters = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI"]
 var unterplanetsizes = [0.00007,
 0.00008,
 0.00009,
@@ -1280,6 +1282,9 @@ var liquidcoveragetable = [
     -1
 ]
 
+var validorbits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var validorbitsreset = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
 var compositionnames = [
     "<img class='icon' src='img/iconRocky.png'><span class='rocky'>rocky</span>",
     "<img class='icon' src='img/iconIcy.png'><span class='icy'>icy</span>",
@@ -1340,11 +1345,11 @@ var liquidnames = [
 ]
 
 var liquidnameslife = [
-    "aquatic (subglacial)",
-    "aquatic (surface)",
-    "ammonic (surface)",
-    "methanic (surface)",
-    "aquatic (subglacial)"
+    "water-based (subglacial)",
+    "water-based (surface)",
+    "ammonia-based (surface)",
+    "methane-based (surface)",
+    "water-based (subglacial)"
 ]
 
 var spancolorslife = [
@@ -1514,9 +1519,110 @@ const CSVToArray = (data, delimiter = ',', omitFirstRow = false) =>
 
 
 function placePlanets(starid,closecompanionpresent) {
+    validorbits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    console.log(validorbitsreset);
     var o = 0;
     var ptag = dice(1,10)+999;
-    while (o <= 41) {
+    o=dice(1,2);
+    if(!dice(1,4)&&(!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)){
+        var tmp1 = dice(1,12)+24;
+        planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null))
+        validorbits[o]=1;
+        validorbits[o+1]=1;
+            validorbits[o+2]=1;
+            validorbits[o+3]=1;
+            validorbits[o+4]=1;
+            validorbits[o+5]=1;
+            validorbits[o+6]=1;
+            validorbits[o+7]=1;
+            validorbits[o+8]=1;
+            validorbits[o+9]=1;
+            validorbits[o-1]=1;
+        }
+    for(let ag = 0; ag < dice(1,7)+1; ag++){
+        o = dice(1,41)+1;
+        if(validorbits[o] == 0 && dice(1,10)+5<o && dice(1,3)&&(o>10||!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)&&(!((starid==2&&distantcompanionstartype==1)||(starid==1&&(primarystartype<=1&&closecompanionstartype<=1))))){
+            var tmp1 = dice(1,8)+28;
+            planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null))
+            validorbits[o]=1;
+            validorbits[o-1]=1;
+            validorbits[o-2]=1;
+            validorbits[o-3]=1;
+            validorbits[o+1]=1;
+            validorbits[o+2]=1;
+            validorbits[o+3]=1;
+            if((starid==2&&distantcompanionstartype==1)||(starid==1&&(primarystartype<=1&&closecompanionstartype<=1))){
+                validorbits[o-4]=1;
+                validorbits[o+4]=1;
+            }
+        }
+    }
+    for(let ag = 0; ag < dice(1,10)+1; ag++){
+        o = dice(1,41)+1;
+        if(validorbits[o] == 0 && dice(1,42)<o&&(o>10||!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)&&(!((starid==2&&distantcompanionstartype==1)||(starid==1&&(primarystartype<=1&&closecompanionstartype<=1))))){
+            var tmp1 = dice(1,10)+18;
+            planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null))
+            validorbits[o]=1;
+            validorbits[o-1]=1;
+            validorbits[o-2]=1;
+            validorbits[o-3]=1;
+            validorbits[o+1]=1;
+            validorbits[o+2]=1;
+            validorbits[o+3]=1;
+            if((starid==2&&distantcompanionstartype==1)||(starid==1&&(primarystartype<=1&&closecompanionstartype<=1))){
+                validorbits[o-4]=1;
+                validorbits[o+4]=1;
+            }
+        }
+    }
+    for(let ag = 0; ag < dice(1,16)+1; ag++){
+        o = dice(1,41)+1;
+        if(validorbits[o] == 0 && dice(1,42)>o&&(o>10||!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)){
+            var tmp1 = dice(1,6)+12;
+            planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null))
+            validorbits[o]=1;
+            validorbits[o-1]=1;
+            validorbits[o-2]=1;
+            validorbits[o+1]=1;
+            validorbits[o+2]=1;
+            if((starid==2&&distantcompanionstartype==1)||(starid==1&&(primarystartype<=1&&closecompanionstartype<=1))){
+                validorbits[o-3]=1;
+                validorbits[o+3]=1;
+            }
+        }
+    }
+    for(let ag = 0; ag < dice(1,28)+20; ag++){
+        o = dice(1,41)+1;
+        if(validorbits[o] == 0 && dice(1,42)>o&&(o>10||!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<7)){
+            var tmp1 = dice(1,12);
+            planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null))
+            validorbits[o]=1;
+            validorbits[o-1]=1;
+            validorbits[o+1]=1;
+            if((starid==2&&distantcompanionstartype==1)||(starid==1&&(primarystartype<=1&&closecompanionstartype<=1))){
+                validorbits[o-2]=1;
+                validorbits[o+2]=1;
+            }
+        }
+    }
+    for(let ag = 0; ag < dice(1,22)+20; ag++){
+        o = dice(1,41)+1;
+        if(validorbits[o] == 0 &&(o>10||!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)){
+            var beltl = dice(2, 6)-2;
+                    for (var j=0; j < beltl; j++){
+                        var tmp1 = dice(1,36);
+                        planets.push(new Planet(unterplanetsizes[tmp1], null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, starid, null, beltl));
+                    }
+            validorbits[o]=1;
+            validorbits[o-1]=1;
+            validorbits[o+1]=1;
+                validorbits[o-2]=1;
+                validorbits[o+2]=1;
+                validorbits[o-3]=1;
+                validorbits[o+3]=1;
+        }
+    }
+    /*while (o <= 41) {
         if(starid==1){
             if(!closecompanionpresent||o>6){
             if(ptag>(closecompanionpresent|0)){
@@ -1715,7 +1821,7 @@ function placePlanets(starid,closecompanionpresent) {
         
         
         o++;
-    }
+    }*/
 }
 
 function drawCircle(color,x,y,radius,ctx){
@@ -2734,7 +2840,7 @@ var beltlengthlocation = 34;
 var basetemplocation = 35;
 var displayseedlocation = 36;
 var geoactivelocation = 37;
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name,beltlength,basetemp,displayseed,geoactive"
+var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name,beltlength,basetemp,displayseed,geoactive,v1.1.1"
 function csv(planet){
     return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable2[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
     planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ+","+planet.name+","+planet.beltlength+","+planet.basetemp+","+planet.displayseed+","+planet.geoactive;
@@ -2823,9 +2929,9 @@ function generateplanetdesc(l,planets) {
     drawPlanet2(planets[l],150,150,ctx);
     rscale=14;
     if(planets[l].parentbody<0){
-        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].id+` - `+planets[l].name+`:`,div,"h3",true) 
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` - `+planets[l].name+`:`,div,"h3",true) 
     }else{
-        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` `+planets[l].parentbody+`.`+letters[planets[l].moonnumber]+` - `+planets[l].name+`:`,div,"h3",true) 
+        addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` - `+planets[l].name+` (`+planets[planets[l].parentbody].name +` `+letters[planets[l].moonnumber]+`):`,div,"h3",true) 
     }
     var tmp2;
     if(planets[l].atmothickness == 0){
@@ -2907,7 +3013,7 @@ function generateplanetdesc(l,planets) {
                     }
                    
                 } else {
-                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconSystem.png"> Orbits: planet ` + planets[planets[l].parentbody].name + "</p>";
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconSystem.png"> Orbits: ` + planets[planets[l].parentbody].name + "</p>";
                 }
                 tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconRadius.png"> Radius: ` + Number(((planets[l].size/planets[l].density)**(0.3333))).toFixed(2) + ` Earth radii (`+ Number((((planets[l].size/planets[l].density)**(0.3333))*6371)).toFixed(0) +` km)` + "</p>";
                     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconGravity.png"> Surface gravity: ` + Number((planets[l].size/((planets[l].size/planets[l].density)**0.6667))).toFixed(2) + ` g` + "</p>";
