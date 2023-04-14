@@ -540,6 +540,33 @@
     .systemdisplay {
         width: 100%;
         border-radius: 16px;
+        background-image: url("img/bgstars.png");
+        background-size: 2048px;
+    }
+    .planetdisplay {
+        width: 256px;
+        height: 256px;
+        border-radius: 16px;
+        position:relative;
+        
+        background-position: center;
+        background-repeat: no-repeat;
+
+    }
+    .planetbg {
+        background:black;
+    }
+    .planetoverlay {
+        width: 256px;
+        height: 256px;
+        border-radius: 16px;
+        
+        top:0%;
+        left:0%;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+
     }
         
     </style>
@@ -553,7 +580,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.2 </h1>
+    <h1> v0.3.3 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
@@ -574,6 +601,8 @@
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.3 - space is beautiful (and maybe a little boring):</h3>
+        <p class="patchnotes">- more graphical improvements to the generator <br> - star type images added to the files, in case anyone can figure out how the 🦆 to draw those correctly <br> - everyone's probably tired of always getting m-type stars, so I made k and g type stars more common (even if this makes the generator a little unrealistic) <br> - optimizations to system loading. mainly, I no longer use a canvas for the planet preview images, instead I stack a bunch of divs on top of each other. this makes systems generate waaaaaay faster.</p>
         <h3 class="patchnotes">v0.3.2 - clearing the neighborhood:</h3>
         <p class="patchnotes">- updated the way planets are placed in the system to more accurately represent how planets form <br> - had to remove numeric IDs because of this, but you can still find them in the csv file (all the planets will be out of order though) <br> - .wssg file format version: sv1.1.1<br>- made life types easier to understand</p>
         <h3 class="patchnotes">v0.3.1 - of jool and jostan, of kerbin and tervis:</h3>
@@ -725,10 +754,14 @@ var startypetable = [
     5,
     4,
     4,
+    4,
     3,
     3,
     3,
     3,
+    3,
+    3,
+    3,
     2,
     2,
     2,
@@ -737,12 +770,8 @@ var startypetable = [
     2,
     2,
     2,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
+    2,
+    2,
     1,
     1,
     1,
@@ -849,6 +878,70 @@ var hexadecimalDigits = [
     'F',
 
 ]
+
+var imgsrcs =[
+    "img/ATM_carbo.png",
+    "img/ATM_nitro.png",
+    "img/bgstars.png",
+    "img/planeticons/ammoniaOverlay1.png",
+    "img/planeticons/ammoniaOverlay2.png",
+    "img/planeticons/ammoniaOverlay3.png",
+    "img/planeticons/carbonaceousPlanet.png",
+    "img/planeticons/carbonaceousPlanet2.png",
+    "img/planeticons/carbonaceousPlanet3.png",
+    "img/planeticons/carbonaceousPlanet4.png",
+    "img/planeticons/carbonaceousPlanet5.png",
+    "img/planeticons/carbonaceousPlanet6.png",
+    "img/planeticons/gasGiant.png",
+    "img/planeticons/gasGiant2.png",
+    "img/planeticons/gasGiant3.png",
+    "img/planeticons/gasGiant4.png",
+    "img/planeticons/gasGiant5.png",
+    "img/planeticons/gasGiant6.png",
+    "img/planeticons/geoActiveOverlay2.png",
+    "img/planeticons/geoInactiveOverlay.png",
+    "img/planeticons/iceGiant.png",
+    "img/planeticons/iceGiant2.png",
+    "img/planeticons/iceGiant3.png",
+    "img/planeticons/iceGiant4.png",
+    "img/planeticons/iceGiant5.png",
+    "img/planeticons/iceGiant6.png",
+    "img/planeticons/icyPlanet.png",
+    "img/planeticons/icyPlanet2.png",
+    "img/planeticons/icyPlanet3.png",
+    "img/planeticons/icyPlanet4.png",
+    "img/planeticons/icyPlanet5.png",
+    "img/planeticons/icyPlanet6.png",
+    "img/planeticons/lifeIndicator.png",
+    "img/planeticons/lifeOverlayAmmonia.png",
+    "img/planeticons/lifeOverlayMethanum.png",
+    "img/planeticons/lifeOverlayWater.png",
+    "img/planeticons/metallicPlanet.png",
+    "img/planeticons/metallicPlanet2.png",
+    "img/planeticons/metallicPlanet3.png",
+    "img/planeticons/metallicPlanet4.png",
+    "img/planeticons/metallicPlanet5.png",
+    "img/planeticons/metallicPlanet6.png",
+    "img/planeticons/methaneOverlay1.png",
+    "img/planeticons/methaneOverlay2.png",
+    "img/planeticons/methaneOverlay3.png",
+    "img/planeticons/nitrogenOverlay1.png",
+    "img/planeticons/nitrogenOverlay2.png",
+    "img/planeticons/nitrogenOverlay3.png",
+    "img/planeticons/rockyPlanet.png",
+    "img/planeticons/rockyPlanet2.png",
+    "img/planeticons/rockyPlanet3.png",
+    "img/planeticons/rockyPlanet4.png",
+    "img/planeticons/rockyPlanet5.png",
+    "img/planeticons/rockyPlanet6.png",
+    "img/planeticons/shade.png",
+    "img/planeticons/shade2.png",
+    "img/planeticons/torridPlanetOverlay.png",
+    "img/planeticons/waterOverlay1.png",
+    "img/planeticons/waterOverlay2.png",
+    "img/planeticons/waterOverlay3.png",
+]
+
 var orbittable = [
     "<span class='red'>0.1</span>",
     "<span class='red'>0.2</span>",
@@ -965,9 +1058,9 @@ var orbittable2 = [
     "46",
     "50",
 ]
-var imagesources = [
+var imageobjs = {
 
-]
+}
 var uberplanetsizes = [0.04, 0.06, 0.1, 0.15, 0.2, 0.3, 0.4, 0.55, 0.7, 0.85, 1, 1.1, 1.25, 1.5, 1.8, 2.3, 2.9, 3.5, 4.3, 6, 8, 10, 13, 16, 20, 25, 30, 35, 45, 60, 80, 100, 200, 300, 500, 800]
 var letters = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI"]
 var unterplanetsizes = [0.00007,
@@ -1474,34 +1567,40 @@ var liquidcoverageuwp = {
 }
 
 var startypessizes = [
-    20,
-    50,
-    70,
-    90,
-    110,
-    130,
-    150
+20,50,70,90,110,130,150
 ]
 
 var startypescolors = [
-    "rgb(255, 255, 255)",
-    "rgb(255, 150, 70)",
-    "rgb(255, 220, 170)",
-    "rgb(255, 255, 255)",
-    "rgb(255, 255, 255)",
-    "rgb(255, 255, 255)",
-    "rgb(255, 255, 255)"
+    "#ffffff",
+    "#ff9646",
+    "#ffdcaa",
+    "#ffffff",
+    "#ffffff",
+    "#ffffff",
+    "#ffffff"
+]
+
+var startypesurls = [
+    "img/staricons/typeb.png",
+    "img/staricons/typem.png",
+    "img/staricons/typek.png",
+    "img/staricons/typeg.png",
+    "img/staricons/typef.png",
+    "img/staricons/typea.png",
+    "img/staricons/typeb.png",
 ]
 
 var startypesoutercolors = [
-    "rgb(127,255,127)",
-    "rgb(127,0,0)",
-    "rgb(127,63,0)",
-    "rgb(127,127,127)",
-    "rgb(127,144,160)",
-    "rgb(127,160,192)",
-    "rgb(160,160,255)"
+    "#5faf5f",
+    "#7f0000",
+    "#7f3f00",
+    "#7f7f7f",
+    "#7f8f9f",
+    "#7f9fbf",
+    "#9f9fff"
 ]
+
+
 var planets = [];
 function dice(n, s) {
     var tot=0; 
@@ -1835,6 +1934,12 @@ function drawCircle(color,x,y,radius,ctx){
 function image(img,x,y,scale,ctx){
     ctx.drawImage(img,x-(scale/2),y-(scale/2),scale,scale);
 }
+function image2(img,x,y,scale,ctx){
+    let blah = document.createElement("img");
+    blah.src=img;
+    ctx.drawImage(blah,x-(scale/2),y-(scale/2),scale,scale);
+}
+
 
 function radius(planet){
     return planet.size/planet.density;
@@ -1853,68 +1958,94 @@ function add_image_to_list(imglist, imgsrc) {
   imglist.push(myimg);
   return mypromise;
 }
+function add_image_to_list2(imglist, imgsrc) {
+  var myimg = new Image();
+  var myfulfill; var myreject;
+  var mypromise = new Promise((ff, rj) => {myfulfill=ff;myreject=rj;});
+  myimg.src = imgsrc;
+  myimg.onload = function () {myfulfill(1);};
+  myimg.onerror = myreject;
+  imglist[imgsrc]=myimg;
+  return mypromise;
+}
 function drawPlanet(planet,x,y,ctx){
     var imgs = [];
     let promises = [];
     var imgscounter = 0;
+    if(planet.type==1){
+        for(let aj = 0; aj < 100/(planet.beltlength**0.5); aj++){
+            tmp9=dice(1,80);
+            if(planet.orbit>20){
+                drawCircle("#abcdef3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*40)+90,dice(1,650),1,ctx);
+            }else{
+                drawCircle("#fedcba3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*40)+90,dice(1,650),1,ctx);
+            }
+        
+        }
+    }
+
     if(planet.atmothickness>=3){
-                drawCircle(bgcolors[planet.atmobasegas],x,y,displayRadius(planet,rexp,rscale)+6,ctx);
+        if(planet.atmobasegas==2){
+                    image(imageobjs["img/ATM_carbo.png"],x,y,displayRadius(planet,rexp,rscale)*3.3,ctx);
+                }else{
+                    image(imageobjs["img/ATM_nitro.png"],x,y,displayRadius(planet,rexp,rscale)*3.3,ctx);
+                }
             }
             //image(compcolors[planet.composition],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-            promises.push(add_image_to_list(imgs, compcolors[planet.composition][planet.displayseed]));
+            image(imageobjs[compcolors[planet.composition][planet.displayseed]],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             if(planet.composition<4){
             if(planet.geoactive==1){
                 //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/geoActiveOverlay2.png"));
+                console.log(imageobjs["img/planeticons/geoActiveOverlay2.png"]);
+                image(imageobjs["img/planeticons/geoActiveOverlay2.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }else{
                 //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/geoInactiveOverlay.png"));
-            }
-            if(planet.temperature>=17){
-                //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/torridPlanetOverlay.png"));
-            }else{
-                //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+                image(imageobjs["img/planeticons/geoInactiveOverlay.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
         }
+        
         if(planet.life==2){
             if(planet.liquid==1){
                 //image("img/planeticons/lifeOverlayWater.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeOverlayWater.png"));
+                image(imageobjs["img/planeticons/lifeOverlayWater.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
             if(planet.liquid==2){
                 //image("img/planeticons/lifeOverlayAmmonia.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeOverlayAmmonia.png"));
+                image(imageobjs["img/planeticons/lifeOverlayAmmonia.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
             if(planet.liquid==3){
                 //image("img/planeticons/lifeOverlayMethanum.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeOverlayMethanum.png"));
+                image(imageobjs["img/planeticons/lifeOverlayMethanum.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
                 
             }
             if(planet.liquid>=1){
                 //image(surfaceliquidcolors[planet.liquid]+liquidcoveragefilenames[planet.lcoverage]+"",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, surfaceliquidcolors[planet.liquid]+liquidcoveragefilenames[planet.lcoverage]+""));
+            
+                image(imageobjs[surfaceliquidcolors[planet.liquid]+liquidcoveragefilenames[planet.lcoverage]+""],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            }
+            image(imageobjs["img/planeticons/shade.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            if(planet.composition<4){
+                if(planet.temperature>=17){
+                //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+                image(imageobjs["img/planeticons/torridPlanetOverlay.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            }else{
+                //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            }
             }
             if(planet.life>=1){
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeIndicator.png"));
+                image(imageobjs["img/planeticons/lifeIndicator.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
             // wait until imgscounter = imgs.length
             // loop through imgs to draw the images to canvas
-         
+            
             // when all done:
-            Promise.allSettled(promises).then(function () {
-            // here do what you need to do with a full imglist
-            for(let i = 0; i < imgs.length; i++){
-                rscale=7;
-                    image(imgs[i],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                
-            }
+            rscale=7;
             if(planet.rings){
                 ctx.fillStyle=("rgb(127,127,127)")
                 ctx.fillRect(x-displayRadius(planet,rexp,rscale)*2,y-displayRadius(planet,rexp,rscale)*0.1,displayRadius(planet,rexp,rscale)*4,displayRadius(planet,rexp,rscale)*0.2)
             }
-            });
+            
 }
 
 async function loadSystem(){
@@ -1940,61 +2071,63 @@ function drawPlanet2(planet,x,y,ctx){
     let promises = [];
     var imgscounter = 0;
     if(planet.atmothickness>=3){
-                drawCircle(bgcolors[planet.atmobasegas],x,y,displayRadius(planet,rexp,rscale)+15,ctx);
+                if(planet.atmobasegas==2){
+                    image(imageobjs["img/ATM_carbo.png"],x,y,displayRadius(planet,rexp,rscale)*3.3,ctx);
+                }else{
+                    image(imageobjs["img/ATM_nitro.png"],x,y,displayRadius(planet,rexp,rscale)*3.3,ctx);
+                }
             }
             //image(compcolors[planet.composition],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-            promises.push(add_image_to_list(imgs, compcolors[planet.composition][planet.displayseed]));
+            image(imageobjs[compcolors[planet.composition][planet.displayseed]],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             if(planet.composition<4){
             if(planet.geoactive==1){
                 //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/geoActiveOverlay2.png"));
+                console.log(imageobjs["img/planeticons/geoActiveOverlay2.png"]);
+                image(imageobjs["img/planeticons/geoActiveOverlay2.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }else{
                 //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/geoInactiveOverlay.png"));
-            }
-            if(planet.temperature>=17){
-                //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/torridPlanetOverlay.png"));
-            }else{
-                //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+                image(imageobjs["img/planeticons/geoInactiveOverlay.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
         }
         
         if(planet.life==2){
             if(planet.liquid==1){
                 //image("img/planeticons/lifeOverlayWater.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeOverlayWater.png"));
+                image(imageobjs["img/planeticons/lifeOverlayWater.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
             if(planet.liquid==2){
                 //image("img/planeticons/lifeOverlayAmmonia.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeOverlayAmmonia.png"));
+                image(imageobjs["img/planeticons/lifeOverlayAmmonia.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
             if(planet.liquid==3){
                 //image("img/planeticons/lifeOverlayMethanum.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, "img/planeticons/lifeOverlayMethanum.png"));
+                image(imageobjs["img/planeticons/lifeOverlayMethanum.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
                 
             }
             if(planet.liquid>=1){
                 //image(surfaceliquidcolors[planet.liquid]+liquidcoveragefilenames[planet.lcoverage]+"",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                promises.push(add_image_to_list(imgs, surfaceliquidcolors[planet.liquid]+liquidcoveragefilenames[planet.lcoverage]+""));
+            
+                image(imageobjs[surfaceliquidcolors[planet.liquid]+liquidcoveragefilenames[planet.lcoverage]+""],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }
             // wait until imgscounter = imgs.length
             // loop through imgs to draw the images to canvas
-         
+            image(imageobjs["img/planeticons/shade2.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            if(planet.composition<4){
+                if(planet.temperature>=17){
+                //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+                image(imageobjs["img/planeticons/torridPlanetOverlay.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            }else{
+                //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            }}
             // when all done:
-            Promise.allSettled(promises).then(function () {
-            // here do what you need to do with a full imglist
-            for(let i = 0; i < imgs.length; i++){
-                rscale=42;
-                    image(imgs[i],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                
-            }
+            
+            rscale=42;
             if(planet.rings){
                 ctx.fillStyle=("rgb(127,127,127)")
                 ctx.fillRect(x-displayRadius(planet,rexp,rscale)*2,y-displayRadius(planet,rexp,rscale)*0.05,displayRadius(planet,rexp,rscale)*4,displayRadius(planet,rexp,rscale)*0.1)
             }
-            });
+            
 }
 
 function drawPlanets(ctx,i,planets){
@@ -2053,55 +2186,49 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     var ctx = canvas.getContext("2d");
     ctx.imageSmoothingQuality="high";
     ctx.fillStyle = "rgb(0,255,0)";
+    ctx.fillStyle = "rgb(0,255,0)";
+    for(let aj = 0; aj < 100; aj++){
+        drawCircle("#ffffff4f",dice(1,1850),dice(1,650),1,ctx);
+    }
+    var imgs = [];
+    let promises = [];
+    var imgscounter = 0;
     if(!closecompanionpresent){
-        drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype],ctx);
+        drawCircle(startypesoutercolors[primarystartype]+"2f",50-startypessizes[primarystartype],250,startypessizes[primarystartype]+50,ctx);
+        drawCircle(startypesoutercolors[primarystartype]+"5f",50-startypessizes[primarystartype],250,startypessizes[primarystartype]+20,ctx);
+        
+    drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype],ctx);
         drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype]-10,ctx);
     } else{
-        drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype],ctx);
+        drawCircle(startypesoutercolors[primarystartype]+"2f",50-startypessizes[primarystartype],125,startypessizes[primarystartype]+50,ctx);
+        drawCircle(startypesoutercolors[primarystartype]+"5f",50-startypessizes[primarystartype],125,startypessizes[primarystartype]+20,ctx);
+    drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype],ctx);
         drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype]-10,ctx);
-        drawCircle(startypesoutercolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype],ctx);
+        drawCircle(startypesoutercolors[closecompanionstartype]+"2f",50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]+50,ctx);
+        drawCircle(startypesoutercolors[closecompanionstartype]+"5f",50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]+20,ctx);
+    drawCircle(startypesoutercolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype],ctx);
         drawCircle(startypescolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]-10,ctx);
     }
     
-    ctx.strokeStyle = "rgb(63,0,0)";
+    ctx.fillStyle = "#ff45000f";
     for(var i = 0; i < 3; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(63,40,0)";
+    ctx.fillStyle = "#ffa8000f";
     for(var i = 3; i < 5; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(0,63,0)";
+    ctx.fillStyle = "#7fed560f";
     for(var i = 5; i < 11; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        ctx.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(0,40,63)";
+    ctx.fillStyle = "#51e9f40f";
     for(var i = 11; i < 18; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(0,0,63)";
+    ctx.fillStyle = "#368fe90f";
     for(var i = 18; i < 42; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx.fillRect(i*40+90,0,40,650);
     }
     parentbodycheck = 0;
     rexp = 0.14
@@ -2123,51 +2250,36 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
         canvas2.setAttribute("width","1850");
     canvas2.setAttribute("height","650");
     canvas2.classList.add("systemdisplay");
-    var ctx = canvas2.getContext("2d");
-    ctx.fillStyle = "rgb(0,255,0)";
-    drawCircle(startypesoutercolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype],ctx);
-        drawCircle(startypescolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]-10,ctx);
+    var ctx2 = canvas2.getContext("2d");
+    ctx2.fillStyle = "rgb(0,255,0)";
+    for(let aj = 0; aj < 100; aj++){
+        drawCircle("#ffffff4f",dice(1,1850),dice(1,650),1,ctx2);
+    }
+    drawCircle(startypesoutercolors[distantcompanionstartype]+"2f",50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]+50,ctx2);
+    drawCircle(startypesoutercolors[distantcompanionstartype]+"5f",50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]+20,ctx2);
+    drawCircle(startypesoutercolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype],ctx2);
+        drawCircle(startypescolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]-10,ctx2);
 
-    
-        ctx.strokeStyle = "rgb(63,0,0)";
+
+        ctx2.fillStyle = "#ff45000f";
     for(var i = 0; i < 3; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx2.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(63,40,0)";
+    ctx2.fillStyle = "#ffa8000f";
     for(var i = 3; i < 5; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx2.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(0,63,0)";
+    ctx2.fillStyle = "#7fed560f";
     for(var i = 5; i < 11; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        ctx2.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(0,40,63)";
+    ctx2.fillStyle = "#51e9f40f";
     for(var i = 11; i < 18; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx2.fillRect(i*40+90,0,40,650);
     }
-    ctx.strokeStyle = "rgb(0,0,63)";
+    ctx2.fillStyle = "#368fe90f";
     for(var i = 18; i < 42; i++){
-        ctx.beginPath();
-        ctx.moveTo(i*40+90,0)
-        ctx.lineTo(i*40+90,650)
-        ctx.stroke();
-        ctx.closePath();
+        //ctx2.fillRect(i*40+90,0,40,650);
     }
     parentbodycheck = 0;
     moonIndexIterator = 0;
@@ -2179,7 +2291,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     unterplanetbelt = [];
     for(var i = 0; i < planets.length; i++) {
         if(planets[i].starsystem == 2){
-        drawPlanets(ctx,i,planets);
+        drawPlanets(ctx2,i,planets);
     }
     }
     }
@@ -2912,21 +3024,61 @@ function switchTheme() {
     }    
 }
 
+function addDisplayLayer(planetview,imagesrc,sizemult,l,planets){
+    var e = document.createElement("div");
+    e.classList.add("planetdisplay");
+    e.classList.add("planetoverlay");
+        e.setAttribute("style","background-image:url('"+imagesrc+"');background-size:"+displayRadius(planets[l],0.14,42)*sizemult+"px;");
+    planetview.appendChild(e);
+}
 function generateplanetdesc(l,planets) {
     addline(``,div,"p");
     addline(``,div, "hr");
 
-    var canvas = addline("",div,"canvas");
-    canvas.setAttribute("width","300");
-    canvas.setAttribute("height","300")
-    var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgb(0,0,0)";
-        ctx.beginPath();
-        ctx.arc(150,150,150,0,6.28);
-        ctx.fill();
-        ctx.closePath();
-    rscale=42;
-    drawPlanet2(planets[l],150,150,ctx);
+    var planetview = document.createElement("div");
+    planetview.classList.add("planetdisplay");
+    planetview.classList.add("planetbg");
+    if(planets[l].atmobasegas==2&&planets[l].atmothickness>=3){
+        addDisplayLayer(planetview,'img/ATM_carbo.png',3.3,l,planets)
+    }else if(planets[l].atmobasegas==1&&planets[l].atmothickness>=3){
+        addDisplayLayer(planetview,'img/ATM_nitro.png',3.3,l,planets)
+    }else;
+    addDisplayLayer(planetview,compcolors[planets[l].composition][planets[l].displayseed],2,l,planets)
+    if(planets[l].composition<4){
+    if(planets[l].geoactive){
+        addDisplayLayer(planetview,'img/planeticons/geoActiveOverlay2.png',2,l,planets)
+    }else{
+        addDisplayLayer(planetview,'img/planeticons/geoInactiveOverlay.png',2,l,planets)
+    }}
+    if(planets[l].life > 1){
+        if(planets[l].liquid==1){
+            addDisplayLayer(planetview,'img/planeticons/lifeOverlayWater.png',2,l,planets)
+        }
+        if(planets[l].liquid==2){
+            addDisplayLayer(planetview,'img/planeticons/lifeOverlayAmmonia.png',2,l,planets)
+        }
+        if(planets[l].liquid==3){
+            addDisplayLayer(planetview,'img/planeticons/lifeOverlayMethanum.png',2,l,planets)
+        }
+    }
+    addDisplayLayer(planetview,surfaceliquidcolors[planets[l].liquid]+liquidcoveragefilenames[planets[l].lcoverage]+"",2,l,planets)
+    addDisplayLayer(planetview,'img/planeticons/shade2.png',2,l,planets)
+
+    if(planets[l].composition<4){
+                if(planets[l].temperature>=17){
+                //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+                addDisplayLayer(planetview,'img/planeticons/torridPlanetOverlay.png',2,l,planets)
+            }else{
+                //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
+            }}
+    if(planets[l].rings){
+        addDisplayLayer(planetview,'img/planeticons/rings.png',4,l,planets)
+    }
+
+
+
+    div.appendChild(planetview);
+
     rscale=14;
     if(planets[l].parentbody<0){
         addline(parentbodynames2[planets[l].parentbody>=0] + typenames[planets[l].type]+` - `+planets[l].name+`:`,div,"h3",true) 
@@ -3039,7 +3191,14 @@ function Initialize(){
     systemcontainerinterior=document.createElement('div');
 systemcontainerinterior.classList.add("systemcontainerinterior")
     ".systemcontainer".innerHTML = "";
-    loadStartingSystem();
+    var promises2 = [];
+    for(let ak = 0; ak < imgsrcs.length; ak++){
+        promises2.push(add_image_to_list2(imageobjs,imgsrcs[ak]));
+    }
+    
+
+    Promise.allSettled(promises2).then(loadStartingSystem());
+    
 /*    systems = [];
     systemcontainer=[];
     closecompanionstartype=-1;
