@@ -580,7 +580,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.3 </h1>
+    <h1> v0.3.3_01 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
@@ -601,6 +601,8 @@
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.3_01 - the first ever minor update:</h3>
+        <p class="patchnotes">- star graphics added <br> - canvases made higher res <br> - this isn't enough for a major update, resulting in my first ever minor update</p>
         <h3 class="patchnotes">v0.3.3 - space is beautiful (and maybe a little boring):</h3>
         <p class="patchnotes">- more graphical improvements to the generator <br> - star type images added to the files, in case anyone can figure out how the 🦆 to draw those correctly <br> - everyone's probably tired of always getting m-type stars, so I made k and g type stars more common (even if this makes the generator a little unrealistic) <br> - optimizations to system loading. mainly, I no longer use a canvas for the planet preview images, instead I stack a bunch of divs on top of each other. this makes systems generate waaaaaay faster.</p>
         <h3 class="patchnotes">v0.3.2 - clearing the neighborhood:</h3>
@@ -608,7 +610,7 @@
         <h3 class="patchnotes">v0.3.1 - of jool and jostan, of kerbin and tervis:</h3>
         <p class="patchnotes">- geologic activity is now saved to .wssg files (that was kind of dumb of me to forget)<br>- added a bunch more varieties for planet appearances to make things look a bit more interesting<br>- default solar system file updated, and the app now loads that file when starting up<br>- old imported .wssg files keep the basic planet sprites<br>- current .wssg file format version: sv1.1.0</p>
         <h3 class="patchnotes">v0.3.0 - saving and loading:</h3>
-        <p class="patchnotes">- CSV IMPORT IS HERE! System customization is now fully supported (though I might make the process a bit more user friendly in the future. <br>- files are now .wssg, they're just csv files though, this change is more meant to represent csv as a save format instead of just an export format.<br>- current .wssg file format version: sv1.0.0<br>- squashed a bug with distant companion planet generation</p>
+        <p class="patchnotes">- CSV IMPORT IS HERE! System customization is now fully supported (though I might make the process a bit more user friendly in the future.) <br>- files are now .wssg, they're just csv files though, this change is more meant to represent csv as a save format instead of just an export format.<br>- current .wssg file format version: sv1.0.0<br>- squashed a bug with distant companion planet generation</p>
         <h3 class="patchnotes">v0.2.11 - color me impressed:</h3>
         <p class="patchnotes">- added a function, refreshSystem(id), that you can use to refresh the system display if you've made edits using the debug console. <br>- added more themes, including the green theme from before 0.2.7, and one inspired by 2048, my first experience with a github web-app<br>- next update will probably be progress on csv import</p>
         <h3 class="patchnotes">v0.2.10 - the missing update:</h3>
@@ -881,6 +883,12 @@ var hexadecimalDigits = [
 
 var imgsrcs =[
     "img/ATM_carbo.png",
+    "img/staricons/typea.png",
+    "img/staricons/typeb.png",
+    "img/staricons/typef.png",
+    "img/staricons/typeg.png",
+    "img/staricons/typek.png",
+    "img/staricons/typem.png",
     "img/ATM_nitro.png",
     "img/bgstars.png",
     "img/planeticons/ammoniaOverlay1.png",
@@ -1946,7 +1954,7 @@ function radius(planet){
 }
 
 function displayRadius(planet,rexp,rscale){
-    return Math.floor(radius(planet)**(rexp)*rscale);
+    return Math.floor(radius(planet)**(rexp)*rscale*2);
 }
 function add_image_to_list(imglist, imgsrc) {
   var myimg = new Image();
@@ -1974,11 +1982,11 @@ function drawPlanet(planet,x,y,ctx){
     var imgscounter = 0;
     if(planet.type==1){
         for(let aj = 0; aj < 100/(planet.beltlength**0.5); aj++){
-            tmp9=dice(1,80);
+            tmp9=dice(1,160);
             if(planet.orbit>20){
-                drawCircle("#abcdef3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*40)+90,dice(1,650),1,ctx);
+                drawCircle("#abcdef3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*80)+180,dice(1,1300),2,ctx);
             }else{
-                drawCircle("#fedcba3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*40)+90,dice(1,650),1,ctx);
+                drawCircle("#fedcba3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*80)+180,dice(1,1300),2,ctx);
             }
         
         }
@@ -2122,7 +2130,7 @@ function drawPlanet2(planet,x,y,ctx){
             }}
             // when all done:
             
-            rscale=42;
+            rscale=21;
             if(planet.rings){
                 ctx.fillStyle=("rgb(127,127,127)")
                 ctx.fillRect(x-displayRadius(planet,rexp,rscale)*2,y-displayRadius(planet,rexp,rscale)*0.05,displayRadius(planet,rexp,rscale)*4,displayRadius(planet,rexp,rscale)*0.1)
@@ -2133,7 +2141,7 @@ function drawPlanet2(planet,x,y,ctx){
 function drawPlanets(ctx,i,planets){
     if (planets[i].parentbody < 0 && planets[i].type==0){
        
-            drawPlanet(planets[i],planets[i].orbit * 40+90,250,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,500,ctx)
         }
         
 
@@ -2144,7 +2152,7 @@ function drawPlanets(ctx,i,planets){
                 moonIndexIterator=0;
             }
 
-            drawPlanet(planets[i],planets[i].orbit * 40+90,290+moonIndexIterator*25,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,580+moonIndexIterator*50,ctx)
 
         }
         if ((planets[i].type == 1)){
@@ -2153,7 +2161,7 @@ function drawPlanets(ctx,i,planets){
                 orbitcheck = planets[i].orbit;
                 unterIndexIterator=0;
             }
-            drawPlanet(planets[i],planets[i].orbit * 40+90,(250-(planets[i].beltlength-1)*12.5)+unterIndexIterator*25,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,(500-(planets[i].beltlength-1)*25)+unterIndexIterator*50,ctx)
             
         }
         if ((planets[i].type == 2)){
@@ -2162,7 +2170,7 @@ function drawPlanets(ctx,i,planets){
                 orbitcheck2 = planets[i].orbit;
                 untermoonIndex=0;
             }
-            drawPlanet(planets[i],planets[i].orbit * 40+90,(250+(planets[planets[i].parentbody].beltlength-1)*12.5+50)+untermoonIndex*25,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,(500+(planets[planets[i].parentbody].beltlength-1)*25+100)+untermoonIndex*50,ctx)
             
         }
 }
@@ -2180,35 +2188,20 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     
     var canvas = document.createElement("canvas");
     var canvas2;
-    canvas.setAttribute("width","1850");
-    canvas.setAttribute("height","650");
+    canvas.setAttribute("width","3700");
+    canvas.setAttribute("height","1300");
     canvas.classList.add("systemdisplay");
     var ctx = canvas.getContext("2d");
     ctx.imageSmoothingQuality="high";
     ctx.fillStyle = "rgb(0,255,0)";
     ctx.fillStyle = "rgb(0,255,0)";
     for(let aj = 0; aj < 100; aj++){
-        drawCircle("#ffffff4f",dice(1,1850),dice(1,650),1,ctx);
+        drawCircle("#ffffff4f",dice(1,3700),dice(1,1300),2,ctx);
     }
     var imgs = [];
     let promises = [];
     var imgscounter = 0;
-    if(!closecompanionpresent){
-        drawCircle(startypesoutercolors[primarystartype]+"2f",50-startypessizes[primarystartype],250,startypessizes[primarystartype]+50,ctx);
-        drawCircle(startypesoutercolors[primarystartype]+"5f",50-startypessizes[primarystartype],250,startypessizes[primarystartype]+20,ctx);
-        
-    drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype],ctx);
-        drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],250,startypessizes[primarystartype]-10,ctx);
-    } else{
-        drawCircle(startypesoutercolors[primarystartype]+"2f",50-startypessizes[primarystartype],125,startypessizes[primarystartype]+50,ctx);
-        drawCircle(startypesoutercolors[primarystartype]+"5f",50-startypessizes[primarystartype],125,startypessizes[primarystartype]+20,ctx);
-    drawCircle(startypesoutercolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype],ctx);
-        drawCircle(startypescolors[primarystartype],50-startypessizes[primarystartype],125,startypessizes[primarystartype]-10,ctx);
-        drawCircle(startypesoutercolors[closecompanionstartype]+"2f",50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]+50,ctx);
-        drawCircle(startypesoutercolors[closecompanionstartype]+"5f",50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]+20,ctx);
-    drawCircle(startypesoutercolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype],ctx);
-        drawCircle(startypescolors[closecompanionstartype],50-startypessizes[closecompanionstartype],375,startypessizes[closecompanionstartype]-10,ctx);
-    }
+
     
     ctx.fillStyle = "#ff45000f";
     for(var i = 0; i < 3; i++){
@@ -2220,7 +2213,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
     ctx.fillStyle = "#7fed560f";
     for(var i = 5; i < 11; i++){
-        ctx.fillRect(i*40+90,0,40,650);
+        ctx.fillRect(i*80+180,0,80,1300);
     }
     ctx.fillStyle = "#51e9f40f";
     for(var i = 11; i < 18; i++){
@@ -2244,21 +2237,25 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
         if(planets[i].starsystem == 1){
         drawPlanets(ctx,i,planets);
     }
+   
+    }
+    if(!closecompanionpresent){
+        image(imageobjs[startypesurls[primarystartype]],70-startypessizes[primarystartype],500,startypessizes[primarystartype]*8,ctx);
+    } else{
+        image(imageobjs[startypesurls[primarystartype]],70-startypessizes[primarystartype],250,startypessizes[primarystartype]*8,ctx);
+        image(imageobjs[startypesurls[closecompanionstartype]],70-startypessizes[closecompanionstartype],750,startypessizes[closecompanionstartype]*8,ctx);
     }
     if(distantcompanionpresent){
         canvas2 = addline("",systemcontainerinterior,"canvas");
-        canvas2.setAttribute("width","1850");
-    canvas2.setAttribute("height","650");
+        canvas2.setAttribute("width","3700");
+    canvas2.setAttribute("height","1300");
     canvas2.classList.add("systemdisplay");
     var ctx2 = canvas2.getContext("2d");
     ctx2.fillStyle = "rgb(0,255,0)";
     for(let aj = 0; aj < 100; aj++){
-        drawCircle("#ffffff4f",dice(1,1850),dice(1,650),1,ctx2);
+        drawCircle("#ffffff4f",dice(1,3700),dice(1,1300),2,ctx2);
     }
-    drawCircle(startypesoutercolors[distantcompanionstartype]+"2f",50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]+50,ctx2);
-    drawCircle(startypesoutercolors[distantcompanionstartype]+"5f",50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]+20,ctx2);
-    drawCircle(startypesoutercolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype],ctx2);
-        drawCircle(startypescolors[distantcompanionstartype],50-startypessizes[distantcompanionstartype],250,startypessizes[distantcompanionstartype]-10,ctx2);
+    image(imageobjs[startypesurls[distantcompanionstartype]],70-startypessizes[distantcompanionstartype],500,startypessizes[distantcompanionstartype]*8,ctx2);
 
 
         ctx2.fillStyle = "#ff45000f";
@@ -2271,7 +2268,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     }
     ctx2.fillStyle = "#7fed560f";
     for(var i = 5; i < 11; i++){
-        ctx2.fillRect(i*40+90,0,40,650);
+        ctx2.fillRect(i*80+180,0,80,1300);
     }
     ctx2.fillStyle = "#51e9f40f";
     for(var i = 11; i < 18; i++){
@@ -2729,6 +2726,7 @@ function putGreeting() {
         
     }
     primarystartype=startypetable[dice(1,36)];
+
         if(
             (primarystartype==6 && age >= 0.5)||
             (primarystartype==5 && age >= 3)||
@@ -3028,7 +3026,7 @@ function addDisplayLayer(planetview,imagesrc,sizemult,l,planets){
     var e = document.createElement("div");
     e.classList.add("planetdisplay");
     e.classList.add("planetoverlay");
-        e.setAttribute("style","background-image:url('"+imagesrc+"');background-size:"+displayRadius(planets[l],0.14,42)*sizemult+"px;");
+        e.setAttribute("style","background-image:url('"+imagesrc+"');background-size:"+displayRadius(planets[l],0.14,21)*sizemult+"px;");
     planetview.appendChild(e);
 }
 function generateplanetdesc(l,planets) {
