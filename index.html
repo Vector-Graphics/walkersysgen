@@ -267,6 +267,25 @@
             height: 80px;
             box-shadow: inset -8px -8px 16px  var(--innershadowcolorb);
         }
+        .genbutton3 {
+            background: var(--insetcolor);
+            padding:10px;
+            padding-right:15px;
+            padding-left:15px;
+            display: block;
+            margin: auto;
+            width:80%;
+            font-family: var(--font);
+            font-weight:bold;
+            font-size: 1.25em;
+            color: var(--textcolor);
+            border: 0px;
+            border-radius: var(--borderradiusdf);
+            cursor: pointer;
+            transition: 0.15s;
+            height: 80px;
+            box-shadow: inset -8px -8px 16px  var(--innershadowcolorb);
+        }
         .genbutton:hover {
             background: var(--btncolorhover);
             font-size: 1.3em;
@@ -580,8 +599,10 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.3_01 </h1>
+    <h1> v0.3.4 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
+    <p></p>
+    <input type="text" class="genbutton3" style="text-align:center;" placeholder="Seed (blank to use random seed)" id="seedinput">
     <p></p>
     <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
     <p></p>
@@ -601,6 +622,8 @@
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.4 - twinkle, twinkle, little star</h3>
+        <p class="patchnotes">- star luminosity and proper AU measurements added <br> - ultra-cool red dwarfs added because of this <br> - the WSSG file format version is now 1.2.0 <br> - the app now uses a custom pseudorandom number generator, so specified seeds are now supported. there are 400 trillion different possible systems - that's 2000 galaxies worth of star systems! </p>
         <h3 class="patchnotes">v0.3.3_01 - the first ever minor update:</h3>
         <p class="patchnotes">- star graphics added <br> - canvases made higher res <br> - this isn't enough for a major update, resulting in my first ever minor update</p>
         <h3 class="patchnotes">v0.3.3 - space is beautiful (and maybe a little boring):</h3>
@@ -664,6 +687,8 @@
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <h1 class="patchnotes">FAQ</h1>
         <p class="patchnotes"><strong>Q: What's an AU☉?</strong><br> A: A measurement I made to help describe the layout of systems. One AU☉ is the distance Earth would need to be from the system's main star(s) to have the same surface temperature.</p>
+        <p class="patchnotes"><strong>Q: What's a seed?</strong><br> A: A seed is the base number the app uses to generate a system. The same seed always gives the same generated system. For example, the seed 466896111676924 (at least on 0.3.4) gives a star system with a rare blue giant star. Note that asteroid belt backgrounds and starfields are purely cosmetic, so they are generated using Javascript's internal random generator, which doesn't follow the seed.</p>
+        <p class="patchnotes"><strong>Q: Why are my white dwarfs so bright?</strong><br> A: A white dwarf's 'luminosity' is how bright it was as a main sequence star. This is done so that planets can be placed correctly around white dwarfs. You may notice that all the planets are very cold to account for the white dwarf in reality being very dim.</p>
         <p class="patchnotes"><strong>Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) </strong><br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
         <p class="patchnotes"><strong>Q: Why is life so common? </strong><br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
         <p class="patchnotes"><strong>Q: Euplanet? What's that? </strong><br> A: A euplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
@@ -734,7 +759,7 @@ class Planet{
     }
 }
 class System{
-    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,primaryage,secondaryage,primaryname="bepis",closecompanionname="bepis",distantcompanionname="bepis"){
+    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,primaryage,secondaryage,primaryname="bepis",closecompanionname="bepis",distantcompanionname="bepis",primaryluminosity=1,closecompanionluminosity=1,distantcompanionluminosity=1){
         this.planets=planets;
         this.primarystartype=primarystartype;
         this.closecompanionpresent=closecompanionpresent;
@@ -745,7 +770,10 @@ class System{
         this.secondaryage=secondaryage;
         this.primaryname=primaryname;
         this.closecompanionname=closecompanionname;
-        this.distantcompanionname=distantcompanionname
+        this.distantcompanionname=distantcompanionname;
+        this.primaryluminosity=primaryluminosity;
+        this.closecompanionluminosity=closecompanionluminosity;
+        this.distantcompanionluminosity=distantcompanionluminosity
     }
 }
 
@@ -763,7 +791,6 @@ var startypetable = [
     3,
     3,
     3,
-    3,
     2,
     2,
     2,
@@ -773,7 +800,8 @@ var startypetable = [
     2,
     2,
     2,
-    2,
+    1,
+    1,
     1,
     1,
     1,
@@ -1005,7 +1033,7 @@ var glides = [
     "r", "", ""
 ]
 function syllable(){
-    if(Math.random >= 0.5){
+    if(prng() >= 0.5){
         return consonants[dice(1,consonants.length)]+vowels[dice(1,vowels.length)]+glides[dice(1,glides.length)];
     }else{
         return namepenul[dice(1,namepenul.length)];
@@ -1613,7 +1641,7 @@ var planets = [];
 function dice(n, s) {
     var tot=0; 
     for(var i=0; i < n; i++) {
-        tot += Math.floor(Math.random() * s);
+        tot += Math.floor(prng() * s);
     } 
     return tot;
 }
@@ -1627,7 +1655,7 @@ const CSVToArray = (data, delimiter = ',', omitFirstRow = false) =>
 
 function placePlanets(starid,closecompanionpresent) {
     validorbits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    console.log(validorbitsreset);
+    
     var o = 0;
     var ptag = dice(1,10)+999;
     o=dice(1,2);
@@ -1982,11 +2010,11 @@ function drawPlanet(planet,x,y,ctx){
     var imgscounter = 0;
     if(planet.type==1){
         for(let aj = 0; aj < 100/(planet.beltlength**0.5); aj++){
-            tmp9=dice(1,160);
+            tmp9=Math.round(Math.random()*160);
             if(planet.orbit>20){
-                drawCircle("#abcdef3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*80)+180,dice(1,1300),2,ctx);
+                drawCircle("#abcdef3f",Math.round(Math.random()*tmp9)-(tmp9/2)+(planet.orbit*80)+180,Math.round(Math.random()*1300),2,ctx);
             }else{
-                drawCircle("#fedcba3f",dice(1,tmp9)-(tmp9/2)+(planet.orbit*80)+180,dice(1,1300),2,ctx);
+                drawCircle("#fedcba3f",Math.round(Math.random()*tmp9)-(tmp9/2)+(planet.orbit*80)+180,Math.round(Math.random()*1300),2,ctx);
             }
         
         }
@@ -2004,7 +2032,7 @@ function drawPlanet(planet,x,y,ctx){
             if(planet.composition<4){
             if(planet.geoactive==1){
                 //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                console.log(imageobjs["img/planeticons/geoActiveOverlay2.png"]);
+                
                 image(imageobjs["img/planeticons/geoActiveOverlay2.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }else{
                 //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
@@ -2069,6 +2097,8 @@ async function loadStartingSystem(){
     const selectedFile = await fetch("https://raw.githubusercontent.com/Vector-Graphics/walkersysgen/main/solarsystem.wssg").then(r => r.blob());
     const systext = await selectedFile.text();
     systems = ArrayToSystems(CSVToArray(systext,",",true));
+    systems[0].primaryluminosity = 1;
+    systems[0].closecompanionluminosity = 0;
     for(let af = 0; af < systems.length; af++){
         refreshSystem(af);
     }
@@ -2090,7 +2120,7 @@ function drawPlanet2(planet,x,y,ctx){
             if(planet.composition<4){
             if(planet.geoactive==1){
                 //image("img/planeticons/geoActiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
-                console.log(imageobjs["img/planeticons/geoActiveOverlay2.png"]);
+                
                 image(imageobjs["img/planeticons/geoActiveOverlay2.png"],x,y,displayRadius(planet,rexp,rscale)*2,ctx);
             }else{
                 //image("img/planeticons/geoInactiveOverlay.png",x,y,displayRadius(planet,rexp,rscale)*2,ctx);
@@ -2196,7 +2226,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     ctx.fillStyle = "rgb(0,255,0)";
     ctx.fillStyle = "rgb(0,255,0)";
     for(let aj = 0; aj < 100; aj++){
-        drawCircle("#ffffff4f",dice(1,3700),dice(1,1300),2,ctx);
+        drawCircle("#ffffff4f",Math.round(Math.random()*3700),Math.round(Math.random()*1300),2,ctx);
     }
     var imgs = [];
     let promises = [];
@@ -2253,7 +2283,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     var ctx2 = canvas2.getContext("2d");
     ctx2.fillStyle = "rgb(0,255,0)";
     for(let aj = 0; aj < 100; aj++){
-        drawCircle("#ffffff4f",dice(1,3700),dice(1,1300),2,ctx2);
+        drawCircle("#ffffff4f",Math.round(Math.random()*3700),Math.round(Math.random()*1300),2,ctx2);
     }
     image(imageobjs[startypesurls[distantcompanionstartype]],70-startypessizes[distantcompanionstartype],500,startypessizes[distantcompanionstartype]*8,ctx2);
 
@@ -2426,7 +2456,7 @@ function generatePlanet(id) {
     } else if(compositionindex == 10) {
         planetbuffer.composition = 2;
         planetbuffer.density = 0.7+(dice(1,6)/10)
-    } else if(orbit>17 && Math.random()>0.1) { // frostline
+    } else if(orbit>17 && prng()>0.1) { // frostline
         planetbuffer.composition = 1;
         planetbuffer.density = 0.3+(dice(1,3)/10)
     } else {  
@@ -2439,7 +2469,7 @@ function generatePlanet(id) {
     {planetbuffer.basetemp = 0}
     
     if (dice(1,12) >= (13 - Math.floor(planetbuffer.size))) {
-        if ((planetbuffer.size <= 35 && Math.random() > 0.2) && planetbuffer.orbit > 20) {
+        if ((planetbuffer.size <= 35 && prng() > 0.2) && planetbuffer.orbit > 20) {
             planetbuffer.composition = 4;
         } else {
             planetbuffer.composition = 5;
@@ -2459,7 +2489,7 @@ function generatePlanet(id) {
         (planetbuffer.size >= 0.006 && dice(1,6) >= 4) || 
         (planetbuffer.size >= 0.002 && dice(1,6) >= 4)) 
         && 
-        (planetbuffer.orbit > 5 || Math.random() >= 0.5) && (planetbuffer.basetemp>0)) {
+        (planetbuffer.orbit > 5 || prng() >= 0.5) && (planetbuffer.basetemp>0)) {
             if (planetbuffer.size <= 0.01 || (planetbuffer.size <= 0.1 && planetbuffer.basetemp >= 5)) {
                 planetbuffer.atmothickness = 1;
             } else if(planetbuffer.size <= 0.6) {
@@ -2484,13 +2514,13 @@ function generatePlanet(id) {
                 planetbuffer.atmobasegas = 1;
                 if (planetbuffer.atmothickness >= 5){
                     planetbuffer.greenhouse = dice(1,5);
-                    if(planetbuffer.greenhouse==0 && Math.random >= 0.5){
+                    if(planetbuffer.greenhouse==0 && prng() >= 0.5){
                         planetbuffer.greenhouse = dice(1,5);
                     }
                 }
                 else if (planetbuffer.atmothickness >= 3){
                     planetbuffer.greenhouse = dice(1,planetbuffer.atmothickness);
-                    if(planetbuffer.greenhouse==0 && Math.random >= 0.5){
+                    if(planetbuffer.greenhouse==0 && prng() >= 0.5){
                         planetbuffer.greenhouse = dice(1,planetbuffer.atmothickness);
                     }
                 } else {
@@ -2508,16 +2538,16 @@ function generatePlanet(id) {
         planetbuffer.density = (dice(1,6)/10) + 0.6
     }
     if (planetbuffer.atmothickness >= 0) {
-        if (((9 <= planetbuffer.temperature) && (planetbuffer.temperature <= (8+planetbuffer.atmothickness))) && planetbuffer.atmothickness >= 3 && Math.random() > 0.33) {
+        if (((9 <= planetbuffer.temperature) && (planetbuffer.temperature <= (8+planetbuffer.atmothickness))) && planetbuffer.atmothickness >= 3 && prng() > 0.33) {
             planetbuffer.liquid = 1;
         } else
-        if (((((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 7)) && planetbuffer.atmothickness >= 3) || (((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 8)) && planetbuffer.atmothickness >= 4)) && Math.random() > 0.95) {
+        if (((((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 7)) && planetbuffer.atmothickness >= 3) || (((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 8)) && planetbuffer.atmothickness >= 4)) && prng() > 0.95) {
             planetbuffer.liquid = 2;
         } else
-        if (((((2 <= planetbuffer.temperature) && (planetbuffer.temperature <= 3)) && planetbuffer.atmothickness >= 4) || (((2 <= planetbuffer.temperature) && (planetbuffer.temperature <= 5)) && planetbuffer.atmothickness >= 6)) && Math.random() > 0.95) {
+        if (((((2 <= planetbuffer.temperature) && (planetbuffer.temperature <= 3)) && planetbuffer.atmothickness >= 4) || (((2 <= planetbuffer.temperature) && (planetbuffer.temperature <= 5)) && planetbuffer.atmothickness >= 6)) && prng() > 0.95) {
             planetbuffer.liquid = 3;
         } else
-        if ((((1 <= planetbuffer.temperature) && (planetbuffer.temperature <= 1)) && planetbuffer.atmothickness >= 3) && Math.random() > 0.95){
+        if ((((1 <= planetbuffer.temperature) && (planetbuffer.temperature <= 1)) && planetbuffer.atmothickness >= 3) && prng() > 0.95){
             planetbuffer.liquid = 4;
         } else {
             planetbuffer.liquid = 0;
@@ -2533,8 +2563,8 @@ function generatePlanet(id) {
        (planetbuffer.size >= 0.5 && dice(1,6) >= 1) ||
        (planetbuffer.size >= 0.05 && dice(1,6) >= 2) ||
        (planetbuffer.size >= 0.005 && dice(1,6) >= 3) ||
-       (planetbuffer.moons >= 0 && Math.random() >= 0.5) ||
-       (planetbuffer.parentbody >= 0 && Math.random() >= 0.5)
+       (planetbuffer.moons >= 0 && prng() >= 0.5) ||
+       (planetbuffer.parentbody >= 0 && prng() >= 0.5)
         ) && planetbuffer.atmothickness >= 0) {
         planetbuffer.geoactive = true;
        } else {
@@ -2544,7 +2574,7 @@ function generatePlanet(id) {
     if (planetbuffer.geoactive = true && dice(1,6)>0 && (planetbuffer.composition == 1 || (planetbuffer.liquid >= 1 && planetbuffer.liquid <= 3))) {
         if (dice(1,12)*0.3<=age-3){
             planetbuffer.life = 2;
-            if(Math.random()<=1/1000 ){
+            if(prng()<=1/1000 ){
                 planetbuffer.civ = 1;
             }
         } else{
@@ -2575,6 +2605,10 @@ var distantcompanionname;
 var salibe;
 
 function GenerateSystem(){
+    var oolala=document.getElementById("seedinput");
+    if((oolala.value >= 0 || oolala.value <= 0)&&oolala.value != ""){ // oolala.value is a number
+    seed=oolala.value;
+    } // else use random seed
     syscont=document.getElementsByClassName("systemcontainer")[0];
     systemcontainerinterior=document.createElement('div');
     systemcontainerinterior.classList.add("systemdisplay");
@@ -2635,6 +2669,10 @@ var page = 0;
 var systemdivs=[];
 var syscont=0;
 function GenerateSector(numberofsystems){
+    var oolala=document.getElementById("seedinput");
+    if((oolala.value >= 0 || oolala.value <= 0)&&oolala.value != ""){ // oolala.value is a number
+    seed=oolala.value;
+    } // else use random seed
     syscont=document.getElementsByClassName("systemcontainer")[0];
     systemcontainerinterior=document.createElement('div');
     systemcontainerinterior.classList.add("systemdisplay");
@@ -2692,7 +2730,41 @@ var primaryname;
 var closecompanionname;
 var distantcompanionname;
 
+var luminositymin= [
+    1.7,
+    0.001,
+    0.1,
+    0.6,
+    1.5,
+    5,
+    30,
+]
+
+var luminositymax= [
+    80,
+    0.1,
+    0.6,
+    1.5,
+    5,
+    30,
+    300,
+]
+
+var luminositymid= [
+    8,
+    0.01,
+    0.3,
+    1,
+    3,
+    10,
+    100,
+]
+
+var primaryluminosity;
+var closecompanionluminosity;
+var distantcompanionluminosity;
 function putGreeting() {
+    seed=seed%491041798642919;
     salibe = dice(1,1000);
     systemcontainer=[];
     closecompanionstartype=-1;
@@ -2702,9 +2774,15 @@ function putGreeting() {
     age = dice(1,36)*0.3+0.1;
     closecompanionpresent = false;
     distantcompanionpresent = false;
+    distantcompanionluminosity = 0;
+    closecompanionluminosity = 0;
     if(dice(1,3)==2){
         closecompanionpresent=true;
         closecompanionstartype=startypetable[dice(1,36)];
+        if(closecompanionstartype==1&&prng()>=0.5){
+            closecompanionluminosity = prng()*0.001+0.0004
+    }
+        closecompanionluminosity = prng()*(luminositymax[closecompanionstartype]-luminositymin[closecompanionstartype])+luminositymin[closecompanionstartype];
         if(
             (closecompanionstartype==6 && age >= 0.5)||
             (closecompanionstartype==5 && age >= 3)||
@@ -2716,6 +2794,10 @@ function putGreeting() {
     if(dice(1,3)==2){
         distantcompanionpresent=true;
         distantcompanionstartype=startypetable[dice(1,36)];
+        distantcompanionluminosity = prng()*(luminositymax[distantcompanionstartype]-luminositymin[distantcompanionstartype])+luminositymin[distantcompanionstartype];
+        if(distantcompanionstartype==1&&prng()>=0.5){
+            distantcompanionluminosity = prng()*0.001+0.0004
+    }
         if(
             (distantcompanionstartype==6 && age >= 0.5)||
             (distantcompanionstartype==5 && age >= 3)||
@@ -2726,6 +2808,11 @@ function putGreeting() {
         
     }
     primarystartype=startypetable[dice(1,36)];
+    primaryluminosity = prng()*(luminositymax[primarystartype]-luminositymin[primarystartype])+luminositymin[primarystartype];
+    if(primarystartype==1&&prng()>=0.5){
+        primaryluminosity = prng()*0.001+0.0004
+    }
+    
 
         if(
             (primarystartype==6 && age >= 0.5)||
@@ -2734,6 +2821,7 @@ function putGreeting() {
         ){
             primarystartype = 0
         }
+    
     
     placePlanets(1,closecompanionpresent);
     if(distantcompanionpresent==true){
@@ -2768,7 +2856,7 @@ function putGreeting() {
         planets[k]=generatePlanet(k);
         n = k;
     }
-systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname))
+systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname,primaryluminosity,closecompanionluminosity,distantcompanionluminosity))
 
 
 
@@ -2783,9 +2871,9 @@ div.classList.add("system");
 addline(`SYSTEM AGE: `+Number(systems[id].primaryage).toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
-addline(systems[id].primaryname+" - "+startypes[systems[id].primarystartype],div,"h3",true);
+addline(systems[id].primaryname+" - "+startypes[systems[id].primarystartype]+" (Main-sequence luminosity: "+Number(systems[id].primaryluminosity).toFixed(3)+"x solar luminosity)",div,"h3",true);
 if(systems[id].closecompanionpresent == true || systems[id].closecompanionpresent == 1) {
-    addline(systems[id].closecompanionname+" - "+startypes[systems[id].closecompanionstartype],div,"h3",true);
+    addline(systems[id].closecompanionname+" - "+startypes[systems[id].closecompanionstartype]+" (Main-sequence luminosity: "+Number(systems[id].closecompanionluminosity).toFixed(3)+"x solar luminosity)",div,"h3",true);
 
 }
 
@@ -2793,7 +2881,7 @@ if(systems[id].closecompanionpresent == true || systems[id].closecompanionpresen
 for (var q = 0; q < 42; q++) {
     for (var l = 0; l < systems[id].planets.length; l++) {
         if(systems[id].planets[l].orbit == q && systems[id].planets[l].starsystem==1) {
-            generateplanetdesc(l, systems[id].planets); 
+            generateplanetdesc(l, systems[id].planets,systems[id]); 
         }
     }
 }
@@ -2801,13 +2889,13 @@ for (var q = 0; q < 42; q++) {
 if(systems[id].distantcompanionpresent == true || systems[id].distantcompanionpresent == 1) {
     addline('',div,"h3");
     addline('SECONDARY STAR:',div,"h3");
-    addline(systems[id].distantcompanionname+" - "+startypes[systems[id].distantcompanionstartype],div,"h3",true);
+    addline(systems[id].distantcompanionname+" - "+startypes[systems[id].distantcompanionstartype]+" (Main-sequence luminosity: "+Number(systems[id].distantcompanionluminosity).toFixed(3)+"x solar luminosity)",div,"h3",true);
 }
 
 for (var q = 0; q < 42; q++) {
     for (var l = 0; l < systems[id].planets.length; l++) {
         if(systems[id].planets[l].orbit == q && systems[id].planets[l].starsystem==2) {
-           generateplanetdesc(l,systems[id].planets);
+           generateplanetdesc(l,systems[id].planets,systems[id]);
                 
 
                 
@@ -2824,9 +2912,9 @@ return div2;
 }
 function generatePlanetName() {
     var tmp3;
-    if(Math.random()>=0.5){
-        if(Math.random()>=0.5){
-            if(Math.random()>=0.3){
+    if(prng()>=0.5){
+        if(prng()>=0.5){
+            if(prng()>=0.3){
                 tmp3 = capitalizeFirstLetter(syllable()+syllable()+nameends[dice(1,nameends.length)]);
     } else {
         tmp3 = capitalizeFirstLetter(syllable()+syllable()+syllable()+syllable()+nameends[dice(1,nameends.length)]);
@@ -2884,6 +2972,7 @@ function ArrayToPlanet(input,row) {
     return tmp6;
 }
 
+
 function ArrayToSystems(input){
     var tmp7;
     var tempsystems = [];
@@ -2906,6 +2995,20 @@ function ArrayToSystems(input){
             workingsys.distantcompanionname = input[ae][distantcompanionnamelocation];
             workingsys.primaryage = eval(input[ae][agelocation]);
             workingsys.secondaryage = eval(input[ae][agelocation]);
+            workingsys.primaryluminosity = luminositymid[input[ae][primarystartypelocation]];
+            workingsys.closecompanionluminosity = luminositymid[input[ae][closecompanionstartypelocation]];
+            workingsys.distantcompanionluminosity = luminositymid[input[ae][distantcompanionstartypelocation]];
+            if(input[ae][primaryluminositylocation]){
+                workingsys.primaryluminosity = input[ae][primaryluminositylocation];
+            }
+            if(input[ae][closecompanionluminositylocation]){
+                workingsys.closecompanionluminosity = input[ae][closecompanionluminositylocation];
+            }
+            if(input[ae][distantcompanionluminositylocation]){
+                workingsys.distantcompanionluminosity = input[ae][distantcompanionluminositylocation];
+            }
+           
+           
         } 
         workingsys.planets.push(ArrayToPlanet(input,ae))
     }
@@ -2950,16 +3053,21 @@ var beltlengthlocation = 34;
 var basetemplocation = 35;
 var displayseedlocation = 36;
 var geoactivelocation = 37;
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name,beltlength,basetemp,displayseed,geoactive,v1.1.1"
+var primaryluminositylocation = 38;
+var closecompanionluminositylocation = 39;
+var distantcompanionluminositylocation = 40;
+
+var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name,beltlength,basetemp,displayseed,geoactive,primary luminosity,close companion luminosity,distant companion luminosity,v1.2.0"
 function csv(planet){
     return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable2[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
     planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ+","+planet.name+","+planet.beltlength+","+planet.basetemp+","+planet.displayseed+","+planet.geoactive;
 }
+
 function systemcsv(system,ab){
     var systemcsvout = ``;
     for (let aa = 0; aa < system.planets.length; aa++){
         systemcsvout = systemcsvout + `
-        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,`+ system.primaryname+  `,`+ system.closecompanionname+  `,`+ system.distantcompanionname+ ',' + system.primaryage.toFixed(1) + `,` + csv(system.planets[aa]);
+        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,`+ system.primaryname+  `,`+ system.closecompanionname+  `,`+ system.distantcompanionname+ ',' + system.primaryage.toFixed(1) + `,` + csv(system.planets[aa])+ ',' + system.primaryluminosity+ ',' + system.closecompanionluminosity+ ',' + system.distantcompanionluminosity;
     }
     return systemcsvout;
 }
@@ -3029,7 +3137,7 @@ function addDisplayLayer(planetview,imagesrc,sizemult,l,planets){
         e.setAttribute("style","background-image:url('"+imagesrc+"');background-size:"+displayRadius(planets[l],0.14,21)*sizemult+"px;");
     planetview.appendChild(e);
 }
-function generateplanetdesc(l,planets) {
+function generateplanetdesc(l,planets,systemin) {
     addline(``,div,"p");
     addline(``,div, "hr");
 
@@ -3105,7 +3213,24 @@ function generateplanetdesc(l,planets) {
 
     var tmp5 = "";
     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconMass.png"> Mass: ` + planets[l].size + `x the size of Earth` + "</p>";
-    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉" + "</p>";
+    if(planets[l].starsystem==1){
+        if(systemin.closecompanionpresent){
+            if(primarystartype==0&&closecompanionstartype>0){
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉ (" + (orbittable2[planets[l].orbit]*Math.sqrt(systemin.closecompanionluminosity)).toFixed(2) + " AU) </p>";
+            }else if(closecompanionstartype==0&&primarystartype>0){
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉ (" + (orbittable2[planets[l].orbit]*Math.sqrt(systemin.primaryluminosity)).toFixed(2) + " AU) </p>";
+            }else{
+                tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉ (" + (orbittable2[planets[l].orbit]*Math.sqrt(systemin.primaryluminosity+systemin.closecompanionluminosity)).toFixed(2) + " AU) </p>";
+            }
+        } else {
+            tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉ (" + (orbittable2[planets[l].orbit]*Math.sqrt(systemin.primaryluminosity)).toFixed(2) + " AU) </p>";
+        }
+
+       
+    }else{
+        tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconDistance.png"> Distance from star: ` + orbittable[planets[l].orbit] + " AU☉ (" + (orbittable2[planets[l].orbit]*Math.sqrt(systemin.distantcompanionluminosity)).toFixed(2) + " AU) </p>";
+    }
+    
         tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconTemperature.png"> Temperature: ` + temperaturenames[planets[l].temperature] + "</p>";
                 if(planets[l].composition <= 3) {
                     tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconComposition.png"> Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + Number(planets[l].density).toFixed(1) + `x that of the Earth, or `+ Number((planets[l].density*5.51)).toFixed(1) + " g/cm^3" + "</p>";
@@ -3183,8 +3308,15 @@ function generateplanetdesc(l,planets) {
                 
                 
 }
+var seed = Math.floor(Math.random()*441041798642919);
+function prng() {
+    seed = ((seed*seed*seed*seed*seed*seed)+249254546412641)%491041798642919;
+    return seed/491041798642919;
+    
+}
 
 function Initialize(){
+
     document.documentElement.setAttribute('data-theme', 'dark');
     systemcontainerinterior=document.createElement('div');
 systemcontainerinterior.classList.add("systemcontainerinterior")
