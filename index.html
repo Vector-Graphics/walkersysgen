@@ -599,7 +599,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.4 </h1>
+    <h1> v0.3.5 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <input type="text" class="genbutton3" style="text-align:center;" placeholder="Seed (blank to use random seed)" id="seedinput">
@@ -622,10 +622,12 @@
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.5 - wssg file overhaul</h3>
+        <p class="patchnotes">- wssg file format v2.0.0 is out! <br> - this means that older .wssg files WILL break, but it should be pretty easy to adapt them to the new specs <br> - things in the wssg file are now in an order that makes much more sense <br> - squashed a bug regarding the capitalization of "TRUE" and "FALSE" in csv files</p>
         <h3 class="patchnotes">v0.3.4 - twinkle, twinkle, little star</h3>
         <p class="patchnotes">- star luminosity and proper AU measurements added <br> - ultra-cool red dwarfs added because of this <br> - the WSSG file format version is now 1.2.0 <br> - the app now uses a custom pseudorandom number generator, so specified seeds are now supported. there are 400 trillion different possible systems - that's 2000 galaxies worth of star systems! </p>
         <h3 class="patchnotes">v0.3.3_01 - the first ever minor update:</h3>
-        <p class="patchnotes">- star graphics added <br> - canvases made higher res <br> - this isn't enough for a major update, resulting in my first ever minor update</p>
+        <p class="patchnotes">- star graphics added <br> - canvases made higher res <br> - this isn't enough for a major update, resulting in my first ever minor update<br> - which also happens to be the 100th update on github so hooray</p>
         <h3 class="patchnotes">v0.3.3 - space is beautiful (and maybe a little boring):</h3>
         <p class="patchnotes">- more graphical improvements to the generator <br> - star type images added to the files, in case anyone can figure out how the 🦆 to draw those correctly <br> - everyone's probably tired of always getting m-type stars, so I made k and g type stars more common (even if this makes the generator a little unrealistic) <br> - optimizations to system loading. mainly, I no longer use a canvas for the planet preview images, instead I stack a bunch of divs on top of each other. this makes systems generate waaaaaay faster.</p>
         <h3 class="patchnotes">v0.3.2 - clearing the neighborhood:</h3>
@@ -1424,7 +1426,6 @@ var compositionnames = [
 ]
 
 var lifenames_atmo = [
-    "",
     "",    
     ", <img class='icon' src='img/iconOxygen.png'><span class='red'>oxygen</span>"
 ]
@@ -2585,7 +2586,7 @@ function generatePlanet(id) {
     }
     planetbuffer.oxygentag = 0;
     if (planetbuffer.liquid == 1 && planetbuffer.life == 2){
-        planetbuffer.oxygentag = 2;
+        planetbuffer.oxygentag = 1;
     }
     return planetbuffer;
 
@@ -2950,7 +2951,7 @@ function ArrayToPlanet(input,row) {
     tmp6.orbit=eval(pa[orbitlocation]);
     tmp6.size=eval(pa[sizelocation]);
     tmp6.type=eval(pa[typelocation]);
-    tmp6.sizeindex=eval(pa[sizeindexlocation]);
+    tmp6.sizeindex=1;
     tmp6.composition=eval(pa[compositionlocation]);
     tmp6.density=eval(pa[densitylocation]);
     tmp6.atmothickness=eval(pa[atmospherethicknesslocation]);
@@ -2986,9 +2987,9 @@ function ArrayToSystems(input){
             workingsys = new System();
             workingsys.planets = [];
             workingsys.primarystartype = eval(input[ae][primarystartypelocation]);
-            workingsys.closecompanionpresent = eval(input[ae][closecompanionexistslocation]);
+            workingsys.closecompanionpresent = eval(input[ae][closecompanionexistslocation].toLowerCase());
             workingsys.closecompanionstartype = eval(input[ae][closecompanionstartypelocation]);
-            workingsys.distantcompanionpresent = eval(input[ae][distantcompanionexistslocation]);
+            workingsys.distantcompanionpresent = eval(input[ae][distantcompanionexistslocation].toLowerCase());
             workingsys.distantcompanionstartype = eval(input[ae][distantcompanionstartypelocation]);
             workingsys.primaryname = input[ae][primarynamelocation];
             workingsys.closecompanionname = input[ae][closecompanionnamelocation];
@@ -3025,49 +3026,106 @@ var primarynamelocation = 6;
 var closecompanionnamelocation = 7;
 var distantcompanionnamelocation = 8;
 var agelocation = 9;
-var idlocation = 10;
-var parentstarlocation = 11;
-var parentbodylocation = 12;
-var orbitlocation = 13;
+var primaryluminositylocation = 10;
+var closecompanionluminositylocation = 11;
+var distantcompanionluminositylocation = 12;
+var idlocation = 13;
+var parentstarlocation = 15;
+var parentbodylocation = 17;
+var orbitlocation = 16;
 var distancelocation = 14;
-var sizelocation = 15;
-var typelocation = 16;
-var sizeindexlocation = 17;
-var compositionlocation = 18;
-var densitylocation = 19;
-var atmospherethicknesslocation = 20;
-var atmobasegaslocation = 21;
-var oxygenlocation = 22;
-var liquidlocation = 23;
-var greenhouselocation = 24;
-var temperaturelocation = 25;
-var lcoveragelocation = 26;
-var lifelocation = 27;
-var radiuslocation = 28;
-var gravitylocation = 29;
-var moonindexlocation = 30;
-var ringslocation = 31;
-var civlocation = 32;
-var namelocation = 33;
-var beltlengthlocation = 34;
-var basetemplocation = 35;
+var sizelocation = 21;
+var typelocation = 20;
+var compositionlocation = 22;
+var densitylocation = 23;
+var atmospherethicknesslocation = 24;
+var atmobasegaslocation = 25;
+var oxygenlocation = 26;
+var liquidlocation = 30;
+var greenhouselocation = 27;
+var temperaturelocation = 29;
+var lcoveragelocation = 31;
+var lifelocation = 34;
+var moonindexlocation = 18;
+var ringslocation = 32;
+var civlocation = 35;
+var namelocation = 14;
+var beltlengthlocation = 19;
+var basetemplocation = 28;
 var displayseedlocation = 36;
-var geoactivelocation = 37;
-var primaryluminositylocation = 38;
-var closecompanionluminositylocation = 39;
-var distantcompanionluminositylocation = 40;
+var geoactivelocation = 33;
 
-var csvheader= "system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,primary name,close companion name,distant companion name,age,id,parent star(s),parent body,orbit,distance,size,type,size index,composition,density,atmosphere thickness,atmosphere base gas,oxygen present,liquid,greenhouse effect,temperature,liquid coverage,life,radius,gravity,moon index,rings,civ,name,beltlength,basetemp,displayseed,geoactive,primary luminosity,close companion luminosity,distant companion luminosity,v1.2.0"
+
+var csvheader= 
+"system index,primary star type,close companion exists?,close companion star type,distant companion exists?,distant companion star type,"+
+"primary name,close companion name,distant companion name,age,primary luminosity,close companion luminosity,distant companion luminosity,id,name,parent star(s),orbit index,parent body,moon index,belt length"+
+",type,size,composition,density,atmosphere thickness,primary atmospheric gas,oxygen,greenhouse effect,base temperature,proper temperature,surface liquid,liquid coverage"+
+",rings,geologically active,life,civilization,visual style,v2.0.0"
 function csv(planet){
-    return "" + planet.id + "," + planet.starsystem + ","  + planet.parentbody + "," + planet.orbit + "," + orbittable2[planet.orbit] + "," + planet.size + ","+    planet.type + "," + planet.sizeindex + "," + planet.composition + "," +  planet.density.toFixed(1) + "," +
-    planet.atmothickness + "," + planet.atmobasegas + "," +planet.oxygentag + "," + planet.liquid + "," + planet.greenhouse + "," + planet.temperature + "," + planet.lcoverage + "," + planet.life + "," + ((planet.size/planet.density)**(0.3333)).toFixed(2) + ","+(planet.size/((planet.size/planet.density)**0.6667)).toFixed(2)+","+planet.moonnumber+","+planet.rings+","+planet.civ+","+planet.name+","+planet.beltlength+","+planet.basetemp+","+planet.displayseed+","+planet.geoactive;
+    /*return "" 
+    + planet.id + "," 
+    + planet.starsystem + ","  
+    + planet.parentbody + "," 
+    + planet.orbit + "," 
+    + orbittable2[planet.orbit] + "," 
+    + planet.size + "," 
+    + planet.type + "," 
+    + planet.sizeindex + "," 
+    + planet.composition + ","
+    + planet.density.toFixed(1) + ","
+    + planet.atmothickness + "," 
+    + planet.atmobasegas + "," 
+    + planet.oxygentag + "," 
+    + planet.liquid + "," 
+    + planet.greenhouse + "," 
+    + planet.temperature + "," 
+    + planet.lcoverage + "," 
+    + planet.life + "," 
+    + ((planet.size/planet.density)**(0.3333)).toFixed(2) + "," 
+    + (planet.size/((planet.size/planet.density)**0.6667)).toFixed(2) + "," 
+    + planet.moonnumber + "," 
+    + planet.rings + "," 
+    + planet.civ + "," 
+    + planet.name + "," 
+    + planet.beltlength + "," 
+    + planet.basetemp + "," 
+    + planet.displayseed + "," 
+    + planet.geoactive
+    ;*/
+    return "" 
+    + planet.id + "," 
+    + planet.name + "," 
+    + planet.starsystem + ","  
+    + planet.orbit + "," 
+    + planet.parentbody + "," 
+    + planet.moonnumber + "," 
+    + planet.beltlength + "," 
+    + planet.type + "," 
+    + planet.size + "," 
+    + planet.composition + ","
+    + planet.density.toFixed(1) + ","
+    + planet.atmothickness + "," 
+    + planet.atmobasegas + "," 
+    + planet.oxygentag + "," 
+    + planet.greenhouse + "," 
+    + planet.basetemp + "," 
+    + planet.temperature + "," 
+    + planet.liquid + "," 
+    + planet.lcoverage + "," 
+    + planet.rings + "," 
+    + planet.geoactive + ","
+    + planet.life + "," 
+    + planet.civ + "," 
+    
+    + planet.displayseed + "," 
+    ;
 }
 
 function systemcsv(system,ab){
     var systemcsvout = ``;
     for (let aa = 0; aa < system.planets.length; aa++){
         systemcsvout = systemcsvout + `
-        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,`+ system.primaryname+  `,`+ system.closecompanionname+  `,`+ system.distantcompanionname+ ',' + system.primaryage.toFixed(1) + `,` + csv(system.planets[aa])+ ',' + system.primaryluminosity+ ',' + system.closecompanionluminosity+ ',' + system.distantcompanionluminosity;
+        ` + ab + `,` + system.primarystartype + `,` + system.closecompanionpresent + `,`+ system.closecompanionstartype + `,` + system.distantcompanionpresent + `,`+ system.distantcompanionstartype + `,`+ system.primaryname+  `,`+ system.closecompanionname+  `,`+ system.distantcompanionname+ ',' + system.primaryage.toFixed(1) + ',' + system.primaryluminosity+ ',' + system.closecompanionluminosity+ ',' + system.distantcompanionluminosity+ `,` + csv(system.planets[aa]);
     }
     return systemcsvout;
 }
