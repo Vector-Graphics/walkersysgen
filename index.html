@@ -236,9 +236,11 @@
         .main {
             width: 92%;
             margin: auto;
-
-            overflow-y: scroll;
+            
+            left:25%;
+            height:auto;
             overflow-x: scroll;
+            overflow-y: scroll;
         }
         hr{
             color:var(--textcolor);
@@ -561,6 +563,8 @@
         border-radius: 16px;
         background-image: url("img/bgstars.png");
         background-size: 2048px;
+        position:relative;
+        display:block;
     }
     .planetdisplay {
         width: 256px;
@@ -599,7 +603,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.5 </h1>
+    <h1> v0.3.6 </h1>
     <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
     <p></p>
     <input type="text" class="genbutton3" style="text-align:center;" placeholder="Seed (blank to use random seed)" id="seedinput">
@@ -622,6 +626,9 @@
     <p class="progress patchnotes"></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.6 - the beginnings of mouseover</h3>
+        <p class="patchnotes">- hovering over a planet in the system preview displays its name <br> - trust me, this is a big deal
+        </p>
         <h3 class="patchnotes">v0.3.5 - wssg file overhaul</h3>
         <p class="patchnotes">- wssg file format v2.0.0 is out! <br> - this means that older .wssg files WILL break, but it should be pretty easy to adapt them to the new specs <br> - things in the wssg file are now in an order that makes much more sense <br> - squashed a bug regarding the capitalization of "TRUE" and "FALSE" in csv files</p>
         <h3 class="patchnotes">v0.3.4 - twinkle, twinkle, little star</h3>
@@ -2005,10 +2012,15 @@ function add_image_to_list2(imglist, imgsrc) {
   imglist[imgsrc]=myimg;
   return mypromise;
 }
-function drawPlanet(planet,x,y,ctx){
+function drawPlanet(planet,x,y,ctx,canvas){
     var imgs = [];
     let promises = [];
     var imgscounter = 0;
+    var planetdiv = document.createElement("div")
+    planetdiv.setAttribute("style","top:"+(y-displayRadius(planet,rexp,rscale))/13+"%;left:"+(x-displayRadius(planet,rexp,rscale))/37+"%;width:"+(displayRadius(planet,rexp,rscale)*2)/37+"%;height:"+(displayRadius(planet,rexp,rscale)*2)/13+"%;position:absolute;");
+    planetdiv.setAttribute("name",JSON.stringify(planet));
+    planetdiv.setAttribute("title",JSON.parse(planetdiv.getAttribute("name")).name);
+    canvas.appendChild(planetdiv);
     if(planet.type==1){
         for(let aj = 0; aj < 100/(planet.beltlength**0.5); aj++){
             tmp9=Math.round(Math.random()*160);
@@ -2169,10 +2181,10 @@ function drawPlanet2(planet,x,y,ctx){
             
 }
 
-function drawPlanets(ctx,i,planets){
+function drawPlanets(ctx,i,planets,canvas){
     if (planets[i].parentbody < 0 && planets[i].type==0){
        
-            drawPlanet(planets[i],planets[i].orbit * 80+180,500,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,500,ctx,canvas)
         }
         
 
@@ -2183,7 +2195,7 @@ function drawPlanets(ctx,i,planets){
                 moonIndexIterator=0;
             }
 
-            drawPlanet(planets[i],planets[i].orbit * 80+180,580+moonIndexIterator*50,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,580+moonIndexIterator*50,ctx,canvas)
 
         }
         if ((planets[i].type == 1)){
@@ -2192,7 +2204,7 @@ function drawPlanets(ctx,i,planets){
                 orbitcheck = planets[i].orbit;
                 unterIndexIterator=0;
             }
-            drawPlanet(planets[i],planets[i].orbit * 80+180,(500-(planets[i].beltlength-1)*25)+unterIndexIterator*50,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,(500-(planets[i].beltlength-1)*25)+unterIndexIterator*50,ctx,canvas)
             
         }
         if ((planets[i].type == 2)){
@@ -2201,7 +2213,7 @@ function drawPlanets(ctx,i,planets){
                 orbitcheck2 = planets[i].orbit;
                 untermoonIndex=0;
             }
-            drawPlanet(planets[i],planets[i].orbit * 80+180,(500+(planets[planets[i].parentbody].beltlength-1)*25+100)+untermoonIndex*50,ctx)
+            drawPlanet(planets[i],planets[i].orbit * 80+180,(500+(planets[planets[i].parentbody].beltlength-1)*25+100)+untermoonIndex*50,ctx,canvas)
             
         }
 }
@@ -2218,6 +2230,9 @@ var parentbodycheck = 0;
 function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primarystartype,closecompanionstartype,distantcompanionstartype,div){
     
     var canvas = document.createElement("canvas");
+    var canvascontainer = document.createElement("div");
+    canvascontainer.appendChild(canvas);
+    canvascontainer.setAttribute("style","position:relative;width:100%;aspect-ratio:37/13;margin-bottom:0px;margin-top:0px;");
     var canvas2;
     canvas.setAttribute("width","3700");
     canvas.setAttribute("height","1300");
@@ -2266,7 +2281,7 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     unterplanetbelt = [];
     for(var i = 0; i < planets.length; i++) {
         if(planets[i].starsystem == 1){
-        drawPlanets(ctx,i,planets);
+        drawPlanets(ctx,i,planets,canvascontainer);
     }
    
     }
@@ -2277,7 +2292,11 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
         image(imageobjs[startypesurls[closecompanionstartype]],70-startypessizes[closecompanionstartype],750,startypessizes[closecompanionstartype]*8,ctx);
     }
     if(distantcompanionpresent){
+        
         canvas2 = addline("",systemcontainerinterior,"canvas");
+        var canvascontainer2 = document.createElement("div");
+        canvascontainer2.appendChild(canvas2);
+        canvascontainer2.setAttribute("style","position:relative;width:100%;aspect-ratio:37/13;margin-bottom:0px;margin-top:0px;");
         canvas2.setAttribute("width","3700");
     canvas2.setAttribute("height","1300");
     canvas2.classList.add("systemdisplay");
@@ -2319,14 +2338,14 @@ function drawCanvas(planets,closecompanionpresent,distantcompanionpresent,primar
     unterplanetbelt = [];
     for(var i = 0; i < planets.length; i++) {
         if(planets[i].starsystem == 2){
-        drawPlanets(ctx2,i,planets);
+        drawPlanets(ctx2,i,planets,canvascontainer2);
     }
     }
     }
     var canvases = document.createElement("div");
-    canvases.appendChild(canvas);
+    canvases.appendChild(canvascontainer);
     if(canvas2){
-        canvases.appendChild(canvas2);
+        canvases.appendChild(canvascontainer2);
     }
     
     return canvases;
