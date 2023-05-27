@@ -604,16 +604,22 @@
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
     <h1> v0.3.6 </h1>
-    <button onClick="GenerateSystem();" class="genbutton2">Generate!</button>
+    <hr>
+    <h3 class="patchnotes">System Generation</h3>
+
+    <p class="patchnotes">Number of systems to generate (>320 is very slow)</p>
+    <input type="text" class="genbutton3" style="text-align:center;" placeholder="Number of systems to generate" value="1" id="numsystemsInput">
     <p></p>
+    <button onClick="GenerateSector(document.getElementById('numsystemsInput').value);" class="genbutton2">Generate!</button>
+    <p></p>
+    <p class="patchnotes">Seed (leave blank to use random seed)</p>
     <input type="text" class="genbutton3" style="text-align:center;" placeholder="Seed (blank to use random seed)" id="seedinput">
     <p></p>
-    <button onClick="GenerateSector(10);" class="genbutton">Generate stellar neighborhood (10 systems)</button>
+    <p class="patchnotes">Systems generated:</p>
+    <p class="progress patchnotes"></p>
+    <hr>
     <p></p>
-    <button onClick="GenerateSector(125);" class="genbutton">Generate sector (125 systems)</button>
-    <p></p>
-    <button onClick="GenerateSector(1000);" class="genbutton">Generate a lot of systems (1000 systems)</button>
-    <p></p>
+    <h3 class="patchnotes">Saving and Loading</h3>
     <p></p>
     <a download="" id="download"><button onClick="download(`systems.wssg`,fullcsv(systems));" class="genbutton">Save systems as .wssg file</button></a>
     <p></p>
@@ -622,10 +628,20 @@
     <input type="file" style="display:none;" id="file" name="file"/>
     <button onClick="loadSystem();" class="genbutton">Load selected .wssg file</button>
     <p></p>
+    <hr>
+    <h3 class="patchnotes">Other</h3>
     <button onClick="switchTheme();" class="genbutton">Switch theme</button>
-    <p class="progress patchnotes"></p>
+    <p></p>
+    <hr>
+    <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover</p>
+        <h3 class="patchnotes">v0.3.7 - greenhouse patch</h3>
+        <p class="patchnotes">- planet atmosphere composition determination is now a bit more realistic, with the atmosphere starting as a fully generated nitrogen atmosphere, but if certain conditions are met it becomes a Venus or Mars-like atmosphere.
+            <br> - the seed for a system is now displayed in the system info (however, it isn't saved)
+            <br> - updated the sidebar to reduce button clutter
+            <br> - changed the way a swear word is censored in the patch notes
+        </p>
         <h3 class="patchnotes">v0.3.6 - the beginnings of mouseover</h3>
         <p class="patchnotes">- hovering over a planet in the system preview displays its name <br> - trust me, this is a big deal
         </p>
@@ -636,7 +652,7 @@
         <h3 class="patchnotes">v0.3.3_01 - the first ever minor update:</h3>
         <p class="patchnotes">- star graphics added <br> - canvases made higher res <br> - this isn't enough for a major update, resulting in my first ever minor update<br> - which also happens to be the 100th update on github so hooray</p>
         <h3 class="patchnotes">v0.3.3 - space is beautiful (and maybe a little boring):</h3>
-        <p class="patchnotes">- more graphical improvements to the generator <br> - star type images added to the files, in case anyone can figure out how the 🦆 to draw those correctly <br> - everyone's probably tired of always getting m-type stars, so I made k and g type stars more common (even if this makes the generator a little unrealistic) <br> - optimizations to system loading. mainly, I no longer use a canvas for the planet preview images, instead I stack a bunch of divs on top of each other. this makes systems generate waaaaaay faster.</p>
+        <p class="patchnotes">- more graphical improvements to the generator <br> - star type images added to the files, in case anyone can figure out how the f🪐ck to draw those correctly <br> - everyone's probably tired of always getting m-type stars, so I made k and g type stars more common (even if this makes the generator a little unrealistic) <br> - optimizations to system loading. mainly, I no longer use a canvas for the planet preview images, instead I stack a bunch of divs on top of each other. this makes systems generate waaaaaay faster.</p>
         <h3 class="patchnotes">v0.3.2 - clearing the neighborhood:</h3>
         <p class="patchnotes">- updated the way planets are placed in the system to more accurately represent how planets form <br> - had to remove numeric IDs because of this, but you can still find them in the csv file (all the planets will be out of order though) <br> - .wssg file format version: sv1.1.1<br>- made life types easier to understand</p>
         <h3 class="patchnotes">v0.3.1 - of jool and jostan, of kerbin and tervis:</h3>
@@ -768,7 +784,7 @@ class Planet{
     }
 }
 class System{
-    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,primaryage,secondaryage,primaryname="bepis",closecompanionname="bepis",distantcompanionname="bepis",primaryluminosity=1,closecompanionluminosity=1,distantcompanionluminosity=1){
+    constructor(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,primaryage,secondaryage,primaryname="bepis",closecompanionname="bepis",distantcompanionname="bepis",primaryluminosity=1,closecompanionluminosity=1,distantcompanionluminosity=1,seed="(User-created)"){
         this.planets=planets;
         this.primarystartype=primarystartype;
         this.closecompanionpresent=closecompanionpresent;
@@ -782,7 +798,8 @@ class System{
         this.distantcompanionname=distantcompanionname;
         this.primaryluminosity=primaryluminosity;
         this.closecompanionluminosity=closecompanionluminosity;
-        this.distantcompanionluminosity=distantcompanionluminosity
+        this.distantcompanionluminosity=distantcompanionluminosity;
+        this.seed=seed;
     }
 }
 
@@ -1386,21 +1403,21 @@ var basetemptable = [
 
 var greenhousetable = [
     [0,  0,  0,  0,  1,  4],
-    [1,  1,  1,  1,  2,  5],
-    [2,  2,  2,  2,  3,  7],
-    [3,  3,  3,  3,  4,  8],
-    [4,  4,  4,  4,  5,  9],
-    [5,  5,  6,  6,  6,  10],
-    [6,  6,  6,  7,  7,  11],
-    [7,  7,  7,  8,  8,  13],
-    [8,  9,  9,  9,  10, 14],
-    [9,  10, 10, 11, 11, 15],
-    [10, 11, 12, 12, 13, 16],
-    [11, 12, 12, 12, 14, 17],
-    [12, 13, 13, 14, 14, 18],
-    [13, 14, 14, 14, 15, 18],
-    [14, 14, 15, 15, 15, 18],
-    [15, 15, 15, 16, 16, 18],
+    [1,  1,  1,  2,  2,  5],
+    [2,  2,  2,  3,  3,  7],
+    [3,  3,  3,  4,  4,  8],
+    [4,  4,  4,  5,  6,  9],
+    [5,  5,  6,  6,  7,  10],
+    [6,  6,  6,  7,  8,  11],
+    [7,  7,  8,  9,  10, 13],
+    [8,  9,  9,  10, 11, 14],
+    [9,  10, 10, 11, 13, 15],
+    [10, 11, 12, 13, 14, 16],
+    [11, 12, 12, 13, 14, 16],
+    [12, 13, 13, 14, 15, 17],
+    [13, 14, 14, 15, 15, 17],
+    [14, 14, 15, 15, 16, 17],
+    [15, 15, 15, 16, 17, 18],
     [16, 16, 16, 17, 17, 18],
 
 ]
@@ -2510,7 +2527,7 @@ function generatePlanet(id) {
         (planetbuffer.size >= 0.002 && dice(1,6) >= 4)) 
         && 
         (planetbuffer.orbit > 5 || prng() >= 0.5) && (planetbuffer.basetemp>0)) {
-            if (planetbuffer.size <= 0.01 || (planetbuffer.size <= 0.1 && planetbuffer.basetemp >= 5)) {
+            if (planetbuffer.size <= 0.01 || (planetbuffer.size < 0.1 && planetbuffer.basetemp >= 5)) {
                 planetbuffer.atmothickness = 1;
             } else if(planetbuffer.size <= 0.6) {
                 planetbuffer.atmothickness = dice(1,6)+1;
@@ -2524,7 +2541,36 @@ function generatePlanet(id) {
             planetbuffer.atmothickness = 0;
         }
         if ( planetbuffer.atmothickness > 0){
-            if (dice(1,10)>=planetbuffer.orbit && planetbuffer.basetemp > 5){
+        planetbuffer.atmobasegas=1;
+        if (planetbuffer.atmothickness >= 5){
+                    planetbuffer.greenhouse = dice(1,5);
+                    if(planetbuffer.greenhouse==0 && prng() >= 0.5){
+                        planetbuffer.greenhouse = dice(1,5);
+                    }
+                }
+                else if (planetbuffer.atmothickness >= 3){
+                    planetbuffer.greenhouse = dice(1,planetbuffer.atmothickness);
+                    if(planetbuffer.greenhouse==0 && prng() >= 0.5){
+                        planetbuffer.greenhouse = dice(1,planetbuffer.atmothickness);
+                    }
+                } else {
+                    planetbuffer.greenhouse = 0;
+                }
+                planetbuffer.temperature = greenhousetable[planetbuffer.basetemp][planetbuffer.greenhouse]
+                var qrstuv = dice(1,7)+9;
+        if(planetbuffer.temperature>(8+planetbuffer.atmothickness)&&planetbuffer.atmothickness >= 4){
+            planetbuffer.atmobasegas=2;
+            planetbuffer.atmothickness=6;
+            planetbuffer.greenhouse=5;
+        }
+
+        if(planetbuffer.size<0.16&&age>1&&planetbuffer.atmothickness >= 2){
+            planetbuffer.atmobasegas=2;
+            planetbuffer.atmothickness=1;
+            planetbuffer.greenhouse=0;
+        }
+
+           /* if (dice(1,10)>=planetbuffer.orbit && planetbuffer.basetemp > 5){
                 planetbuffer.atmobasegas = 2;
                 planetbuffer.greenhouse = planetbuffer.atmothickness;
                 if (planetbuffer.greenhouse > 5) {
@@ -2546,7 +2592,7 @@ function generatePlanet(id) {
                 } else {
                     planetbuffer.greenhouse = 0;
                 }
-            }
+            }*/
         } else {
             planetbuffer.atmobasegas = 0;
             planetbuffer.greenhouse = 0;
@@ -2697,7 +2743,12 @@ function GenerateSector(numberofsystems){
     systemcontainerinterior=document.createElement('div');
     systemcontainerinterior.classList.add("systemdisplay");
     inc = 0;
-    maxinc = numberofsystems;
+    maxinc = 5;
+    if(numberofsystems==Number(numberofsystems)){
+        numberofsystems = Math.abs(Math.ceil(numberofsystems));
+        maxinc = numberofsystems;
+    }
+    
     syscont.innerHTML = "";
     systems = [];
     systemdivs = [];
@@ -2785,6 +2836,7 @@ var closecompanionluminosity;
 var distantcompanionluminosity;
 function putGreeting() {
     seed=seed%491041798642919;
+    var seedtemp = seed;
     salibe = dice(1,1000);
     systemcontainer=[];
     closecompanionstartype=-1;
@@ -2876,7 +2928,7 @@ function putGreeting() {
         planets[k]=generatePlanet(k);
         n = k;
     }
-systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname,primaryluminosity,closecompanionluminosity,distantcompanionluminosity))
+systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname,primaryluminosity,closecompanionluminosity,distantcompanionluminosity,seedtemp))
 
 
 
@@ -2888,6 +2940,7 @@ function displaySystem(id){
         
         div=document.createElement('div');
 div.classList.add("system");
+addline(`Seed: `+systems[id].seed,div,"h3");
 addline(`SYSTEM AGE: `+Number(systems[id].primaryage).toFixed(1),div,"h3");
 addline('',div,"h3");
 addline('PRIMARY STAR(S):',div,"h3");
@@ -3388,6 +3441,7 @@ function generateplanetdesc(l,planets,systemin) {
 var seed = Math.floor(Math.random()*441041798642919);
 function prng() {
     seed = ((seed*seed*seed*seed*seed*seed)+249254546412641)%491041798642919;
+    //return seed/491041798642919;
     return seed/491041798642919;
     
 }
