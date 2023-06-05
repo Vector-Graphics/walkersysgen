@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>walkersysgen</title>
+    <style>
+        #hi {
+            font-family: ITC Avant Garde Gothic LT, Century Gothic, sans-serif;
+            font-size: larger;
+            color: rgb(0, 255, 0);
+        }
+
+        h1 {
+            font-family: Eras BQ, sans-serif;
+            color: rgb(0, 255, 0);
+            font-size: 50;
+        }
+        html {
+            background-color: black;
+        }
+        body {
+            width: 1000px;
+            margin: auto;
+
+        }
+        .genbutton {
+            background-color: rgb(0,96,0);
+            padding:10px;
+            padding-right:15px;
+            padding-left:15px;
+            margin:0px;
+            width:100%;
+            font-family: ITC Avant Garde Gothic LT, Century Gothic, sans-serif;
+            font-size: larger;
+            color: rgb(0, 255, 0);
+        }
+        .genbutton:hover {
+            background-color: rgb(0,128,0);
+        }
+        .genbutton:active {
+            background-color: rgb(0,64,0);
+        }
+        .titleimg{
+            margin: 0 auto;
+            width: 1000px;
+            display:block;
+        }
+        
+    </style>
+  </head>
+
+  <body>
+    <img class="titleimg" src="https://i.imgur.com/dwncrEm.png">
+    <button onClick="putGreeting();" class="genbutton">Generate!</button>
+    <pre><p id="hi"></p></pre>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script> 
+class Planet{
+    constructor(size,composition,density,atmobasegas,atmothickness,greenhouse,liquid,lcoverage,sizeindex,sizeclass,geoactive,life,orbit,basetemp,temperature,parentbody,id,type,moons,starsystem,oxygentag) {
+        this.size=size;
+        this.composition=composition;
+        this.density=density;
+        this.atmobasegas=atmobasegas;
+        this.atmothickness=atmothickness;
+        this.greenhouse=greenhouse;
+        this.liquid=liquid;
+        this.lcoverage=lcoverage;
+        this.sizeindex=sizeindex;
+        this.sizeclass=sizeclass;
+        this.geoactive=geoactive;
+        this.life=life;
+        this.orbit=orbit;
+        this.basetemp=basetemp;
+        this.temperature=temperature;
+        this.parentbody=parentbody;
+        this.id=id;
+        this.type=type;
+        this.moons=moons;
+        this.starsystem=starsystem;
+        this.oxygentag=oxygentag;
+    }
+}
+
+var startypetable = [
+    6,
+    5,
+    4,
+    4,
+    3,
+    3,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+]
+
+var uberplanetsizes = [0.04, 0.08, 0.1, 0.3, 0.5, 0.7, 0.9, 1, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.3, 2.7, 3, 3.7, 4.3, 5, 6, 7.5, 9, 11, 14, 17, 20, 24, 35, 40, 70, 100, 200, 300, 500, 800]
+
+var unterplanetsizes = [0.00007,
+0.00008,
+0.00009,
+0.0001,
+0.00011,
+0.00012,
+0.00014,
+0.00016,
+0.00018,
+0.00021,
+0.00024,
+0.00027,
+0.0003,
+0.00033,
+0.00037,
+0.0004,
+0.00043,
+0.00047,
+0.0005,
+0.00053,
+0.00057,
+0.0006,
+0.00063,
+0.00067,
+0.0007,
+0.0008,
+0.0009,
+0.001,
+0.0011,
+0.0012,
+0.0014,
+0.0017,
+0.0020,
+0.0024,
+0.0029,
+0.0035
+]
+
+var untermoonsizes = [0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+]
+
+var smubermoonsizes = [0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.0003,
+0.00033,
+0.0004,
+0.001,
+0.003,
+0.01,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.0003,
+0.00033,
+0.0004,
+0.001,
+0.003,
+0.01,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.00021,
+0.00027,
+0.0003,
+0.00033,
+0.0004,
+0.001,
+0.003,
+0.01
+]
+
+var meubermoonsizes = [
+0.00007,
+0.00012,
+0.00016,
+0.0003,
+0.0007,
+0.0015,
+0.0028,
+0.004,
+0.007,
+0.01,
+0.02,
+0.04,
+0.00007,
+0.00012,
+0.00016,
+0.0003,
+0.0007,
+0.0015,
+0.0028,
+0.004,
+0.007,
+0.01,
+0.02,
+0.04,
+0.00007,
+0.00012,
+0.00016,
+0.0003,
+0.0007,
+0.0015,
+0.0028,
+0.004,
+0.007,
+0.01,
+0.02,
+0.04,
+]
+
+var age;
+
+var laubermoonsizes = [
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.0003,
+0.0006,
+0.001,
+0.002,
+0.0035,
+0.005,
+0.008,
+0.01,
+0.02,
+0.05,
+0.1,
+0.3,
+0.7,
+1,
+0.00007,
+0.00009,
+0.00012,
+0.00016,
+0.0003,
+0.0006,
+0.001,
+0.002,
+0.0035,
+0.005,
+0.008,
+0.01,
+0.02,
+0.05,
+0.1,
+0.3,
+0.7,
+1,
+]
+
+var basetemptable = [
+    16,
+    15,
+    14,
+    13,
+    12,
+    11,
+    10,
+    9, // temperate
+    9,
+    8,
+    8,
+    7,
+    6,
+    6,
+    5,
+    5,
+    4,
+    4,
+    4,
+    3,
+    3,
+    3,
+    3,
+    3,
+    2,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+]
+
+var greenhousetable = [
+    [0,  0,  0,  0,  1,  4],
+    [1,  1,  1,  1,  2,  5],
+    [2,  2,  2,  2,  3,  7],
+    [3,  3,  3,  3,  4,  8],
+    [4,  4,  4,  4,  5,  9],
+    [5,  5,  6,  6,  6,  10],
+    [6,  6,  6,  7,  7,  11],
+    [7,  7,  7,  8,  8,  13],
+    [8,  9,  9,  9,  10, 14],
+    [9,  10, 10, 11, 11, 15],
+    [10, 11, 12, 12, 13, 16],
+    [11, 12, 12, 12, 14, 17],
+    [12, 13, 13, 14, 14, 18],
+    [13, 14, 14, 14, 15, 18],
+    [14, 14, 15, 15, 15, 18],
+    [15, 15, 15, 16, 16, 18],
+    [16, 16, 16, 17, 17, 18],
+
+]
+
+var liquidcoveragetable = [
+    0.02,
+    0.05,
+    0.1,
+    0.3,
+    0.7,
+    0.8,
+    0.9,
+    0.97,
+    1,
+    -1,
+    -1,
+    -1
+]
+
+var compositionnames = [
+    "rocky",
+    "icy",
+    "carbonaceous",
+    "metallic",
+    "n ice giant",
+    " gas giant"
+]
+
+var lifenames_atmo = [
+    "",
+    "",    
+    ", oxygen"
+]
+
+var parentbodynames = {
+    false: "",
+    true: "   "
+}
+
+var vapornames = [
+    "",
+    ", water vapor",
+    ", ammonia",
+    ", methane",
+    ""
+]
+
+var greenhousenames = [
+    ", negligible",
+    ", mild",
+    ", moderate",
+    ", strong",
+    ", severe",
+    ", runaway",
+]
+
+var liquidnames = [
+    "",
+    "water",
+    "ammonia",
+    "methanum",
+    "nitrogen"
+]
+
+var atmothicknessnames = [
+    "none",
+    "very thin",
+    "thin",
+    "somewhat thin",
+    "medium",
+    "thick",
+    "very thick"
+]
+
+var temperaturenames = [
+    "frigid",
+    "frigid+",
+    "cold-",
+    "cold",
+    "cold+",
+    "cool-",
+    "cool",
+    "cool+",
+    "temperate-",
+    "temperate",
+    "temperate+",
+    "warm-",
+    "warm",
+    "warm+",
+    "hot-",
+    "hot",
+    "hot+",
+    "torrid-",
+    "torrid"
+]
+
+var lifenames = [
+    "no",
+    "yes (unicellular)",
+    "yes (multicellular)"
+]
+
+var startypes = [
+    "white dwarf",
+    "red dwarf",
+    "orange dwarf",
+    "G-type dwarf",
+    "F-type dwarf",
+    "A-type main sequence star",
+    "B-type main sequence star"
+]
+
+var planets = [];
+function dice(n, s) {
+    var tot=0; 
+    for(var i=0; i < n; i++) {
+        tot += Math.floor(Math.random() * s);
+    } 
+    return tot;
+}
+
+function placePlanets(starid) {
+    var o = 0;
+    while (o <= 41) {
+        if(starid==1){
+            if(dice(1,4)==1 && ((primarystartype != 0 && closecompanionstartype != 0)|| o >= 10)){
+                if(dice(1,6)!=1){
+                    planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 1, null));
+                    o += 1;
+                } else {
+                    for (var j=0; j < dice(2, 6)-2; j++){
+                        planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 1, null));
+                    }
+                    o += 1;
+            }
+            }   
+        } else {
+            
+            if(dice(1,4)==1 && (distantcompanionstartype != 0 || o >= 10)){
+                if(dice(1,6)!=1){
+                    planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 0, null, 2, null));
+                    o += 1;
+                } else {
+                    for (var j=0; j < dice(2, 6)-2; j++){
+                        planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, o, null, null, 0-starid, planets.length, 1, null, 2, null));
+                    }
+                    o += 1;
+            }
+            }   
+        }
+        
+        
+        o++;
+    }
+}
+
+function generatePlanet(id) {
+    var planetbuffer = planets[id];
+    var orbit = planetbuffer.orbit;
+    var type = planetbuffer.type;
+    var parentbody = planetbuffer.parentbody;
+    if(type == 0) {
+        planetbuffer.sizeindex = dice(1,36)
+        planetbuffer.size = uberplanetsizes[planetbuffer.sizeindex]
+    }
+    if(type == 1) {
+        planetbuffer.sizeindex = dice(1,36)
+        planetbuffer.size = unterplanetsizes[planetbuffer.sizeindex]
+    }
+    if(type == 2) {
+        planetbuffer.sizeindex = dice(1,6)
+        planetbuffer.size = untermoonsizes[planetbuffer.sizeindex]
+    }
+    if(type == 3) {
+        planetbuffer.sizeindex = dice(1,12)
+        planetbuffer.size = smubermoonsizes[planetbuffer.sizeindex]
+    }
+    if(type == 4) {
+        planetbuffer.sizeindex = dice(1,12)
+        planetbuffer.size = meubermoonsizes[planetbuffer.sizeindex]
+    }
+    if(type == 5) {
+        planetbuffer.sizeindex = dice(1,18)
+        planetbuffer.size = laubermoonsizes[planetbuffer.sizeindex]
+    }
+    planetbuffer.sizeclass=Math.floor(planetbuffer.sizeindex/12)
+    planetbuffer.moons=0;
+    if(type == 0 || type == 1 && ((planetbuffer.starsystem==1&&(primarystartype>1||closecompanionstartype>1||orbit>5))||(planetbuffer.starsystem==2&&(distantcompanionstartype>1||orbit>5)))) {
+
+        if(type == 1 && planetbuffer.sizeclass == 2){
+            if (dice(1, 6)>=2) {
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 2, null, planetbuffer.starsystem, null));
+                planetbuffer.moons++;
+            }
+        }
+        if(type == 0 && planetbuffer.sizeclass == 0){
+            for (var m = 0; m < planetbuffer.sizeindex; m++){
+                if (dice(1, 12)>=11) {
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 3, null, planetbuffer.starsystem, null));
+                planetbuffer.moons++;
+            }
+            }
+            
+        }
+        if(type == 0 && planetbuffer.sizeclass == 1){
+            for (var m = 0; m < planetbuffer.sizeindex; m++){
+                if (dice(1, 12)>=11) {
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null));
+                planetbuffer.moons++;
+            }
+            }
+            
+        }
+        if(type == 0 && planetbuffer.sizeclass == 2){
+            for (var m = 0; m < planetbuffer.sizeindex; m++){
+                if (dice(1, 6)>=5) {
+                planets.push(new Planet(null, null, null, null, null, null, null, null, null, null, null, null, planetbuffer.orbit, null, null, planetbuffer.id, planets.length, 4, null, planetbuffer.starsystem, null));
+                planetbuffer.moons++;
+            }
+            }
+            
+        }
+
+    }
+    var compositionindex = dice(2,6)
+    if(compositionindex <= 1) {
+        planetbuffer.composition = 3;
+        planetbuffer.density = 1.0+(dice(1,6)/10)
+    } else if(compositionindex == 10) {
+        planetbuffer.composition = 2;
+        planetbuffer.density = 0.7+(dice(1,6)/10)
+    } else if(orbit>17 && Math.random()>0.5) { // frostline
+        planetbuffer.composition = 1;
+        planetbuffer.density = 0.3+(dice(1,3)/10)
+    } else {  
+        planetbuffer.composition = 0;
+        planetbuffer.density = 0.6+(dice(1,6)/10)
+    }
+    if((starsystem = 1 && (primarystartype != 0 || closecompanionstartype != 0))||(starsystem = 2 && distantcompanionstartype != 0))
+    {planetbuffer.basetemp = basetemptable[orbit]}
+    else
+    {planetbuffer.basetemp = 0}
+    
+    if (dice(1,12) >= (12 - Math.floor(planetbuffer.size))) {
+        if (planetbuffer.size <= 50 && Math.random() > 0.5) {
+            planetbuffer.composition = 4;
+        } else {
+            planetbuffer.composition = 5;
+        }
+        planetbuffer.density = 0.2;
+        planetbuffer.atmobasegas = -1;
+        planetbuffer.atmothickness = -1;
+        planetbuffer.greenhouse = 0;
+        planetbuffer.liquid = 0;
+        planetbuffer.lcoverage = 0;
+        
+    } else {
+        if ((planetbuffer.size >= 0.6 || 
+        (planetbuffer.size >= 0.2 && dice(1,6) >= 1) || 
+        (planetbuffer.size >= 0.06 && dice(1,6) >= 2) || 
+        (planetbuffer.size >= 0.02 && dice(1,6) >= 3) || 
+        (planetbuffer.size >= 0.006 && dice(1,6) >= 4) || 
+        (planetbuffer.size >= 0.002 && dice(1,6) >= 4)) 
+        && 
+        (planetbuffer.orbit > 5 || Math.random() >= 0.5)) {
+            if (planetbuffer.size <= 0.01 || (planetbuffer.size <= 0.1 && planetbuffer.basetemp >= 5)) {
+                planetbuffer.atmothickness = 1;
+            } else {
+                planetbuffer.atmothickness = dice(1,6)+1;
+            }
+        } else
+        {
+            planetbuffer.atmothickness = 0;
+        }
+        if ( planetbuffer.atmothickness > 0){
+            if (dice(1,6)==5 && planetbuffer.basetemp > 5){
+                planetbuffer.atmobasegas = 2;
+                planetbuffer.greenhouse = planetbuffer.atmothickness;
+                if (planetbuffer.greenhouse > 5) {
+                    planetbuffer.greenhouse = 5;
+                }
+            }else{
+                planetbuffer.atmobasegas = 1;
+                if (planetbuffer.atmothickness >= 5){
+                    planetbuffer.greenhouse = dice(1,5);
+                    if(planetbuffer.greenhouse==0 && Math.random >= 0.5){
+                        planetbuffer.greenhouse = dice(1,5);
+                    }
+                }
+                else if (planetbuffer.atmothickness >= 3){
+                    planetbuffer.greenhouse = dice(1,planetbuffer.atmothickness);
+                    if(planetbuffer.greenhouse==0 && Math.random >= 0.5){
+                        planetbuffer.greenhouse = dice(1,planetbuffer.atmothickness);
+                    }
+                } else {
+                    planetbuffer.greenhouse = 0;
+                }
+            }
+        } else {
+            planetbuffer.atmobasegas = 0;
+            planetbuffer.greenhouse = 0;
+        }
+    }
+    planetbuffer.temperature = greenhousetable[planetbuffer.basetemp][planetbuffer.greenhouse]
+    if (planetbuffer.temperature > 4 && planetbuffer.composition == 1) {
+        planetbuffer.composition = 0;
+        planetbuffer.density = (dice(1,6)/10) + 0.6
+    }
+    if (planetbuffer.atmothickness >= 0) {
+        if (((9 <= planetbuffer.temperature) && (planetbuffer.temperature <= (8+planetbuffer.atmothickness))) && planetbuffer.atmothickness >= 3) {
+            planetbuffer.liquid = 1;
+        } else
+        if (((((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 7)) && planetbuffer.atmothickness >= 3) || (((6 <= planetbuffer.temperature) && (planetbuffer.temperature <= 8)) && planetbuffer.atmothickness >= 4)) && Math.random() > 0.95) {
+            planetbuffer.liquid = 2;
+        } else
+        if (((((2 <= planetbuffer.temperature) && (planetbuffer.temperature <= 3)) && planetbuffer.atmothickness >= 4) || (((2 <= planetbuffer.temperature) && (planetbuffer.temperature <= 5)) && planetbuffer.atmothickness >= 6)) && Math.random() > 0.95) {
+            planetbuffer.liquid = 3;
+        } else
+        if ((((1 <= planetbuffer.temperature) && (planetbuffer.temperature <= 1)) && planetbuffer.atmothickness >= 3) && Math.random() > 0.95){
+            planetbuffer.liquid = 4;
+        } else {
+            planetbuffer.liquid = 0;
+        }
+        if (planetbuffer.liquid >= 1) {
+            planetbuffer.lcoverage = liquidcoveragetable[dice(1,12)];
+        } else {
+            planetbuffer.lcoverage = 0;
+        }
+    }
+
+    if ((planetbuffer.size >= 1 ||
+       (planetbuffer.size >= 0.5 && dice(1,6) >= 1) ||
+       (planetbuffer.size >= 0.05 && dice(1,6) >= 2) ||
+       (planetbuffer.size >= 0.005 && dice(1,6) >= 3) ||
+       (planetbuffer.moons >= 0 && Math.random() >= 0.5) ||
+       (planetbuffer.parentbody >= 0 && Math.random() >= 0.5)
+        ) && planetbuffer.atmothickness >= 0) {
+        planetbuffer.geoactive = true;
+       } else {
+        planetbuffer.geoactive = false;
+       }
+    
+    if (planetbuffer.geoactive = true && (planetbuffer.composition == 1 || (planetbuffer.liquid >= 1 && planetbuffer.liquid <= 3))) {
+        if (dice(1,12)*0.3<=age-3){
+            planetbuffer.life = 2;
+        } else{
+            planetbuffer.life = 1;
+        }
+    } else {
+        planetbuffer.life = 0;
+    }
+    planetbuffer.oxygentag = 0;
+    if (planetbuffer.liquid == 1 && planetbuffer.life == 2){
+        planetbuffer.oxygentag = 2;
+    }
+    return planetbuffer;
+
+    
+}
+var testPlanet;
+
+var n;
+var closecompanionstartype=-1;
+var distantcompanionstartype=-1;
+var primarystartype=-1;
+
+function putGreeting() {
+    planets = [];
+    age = dice(1,36)*0.3+0.1;
+    var closecompanionpresent = false;
+var distantcompanionpresent = false;
+    if(dice(1,3)==2){
+        closecompanionpresent=true;
+        closecompanionstartype=startypetable[dice(1,36)];
+        if(
+            (closecompanionstartype==6 && age >= 0.5)||
+            (closecompanionstartype==5 && age >= 3)||
+            (closecompanionstartype==4 && age >= 8)
+        ){
+            closecompanionstartype = 0
+        }
+    }
+    if(dice(1,3)==2){
+        distantcompanionpresent=true;
+        distantcompanionstartype=startypetable[dice(1,36)];
+        if(
+            (distantcompanionstartype==6 && age >= 0.5)||
+            (distantcompanionstartype==5 && age >= 3)||
+            (distantcompanionstartype==4 && age >= 8)
+        ){
+            distantcompanionstartype = 0
+        }
+        
+    }
+    primarystartype=startypetable[dice(1,36)];
+        if(
+            (primarystartype==6 && age >= 0.5)||
+            (primarystartype==5 && age >= 3)||
+            (primarystartype==4 && age >= 8)
+        ){
+            primarystartype = 0
+        }
+    
+    placePlanets(1);
+    if(distantcompanionpresent==true){
+        
+        placePlanets(2);
+    }
+    for (var k = 0; k < planets.length; k++){
+        planets[k]=generatePlanet(k);
+        n = k;
+    }
+var p_hi;
+p_hi = $('#hi');
+p_hi.text("");
+p_hi.text(p_hi.text()+`SYSTEM AGE: `+age.toFixed(1)+'\n\nPRIMARY STAR(S): \n'+startypes[primarystartype]);
+if(closecompanionpresent) {
+    p_hi.text(p_hi.text()+`\n`+startypes[closecompanionstartype]);
+}
+
+
+for (var q = 0; q < 41; q++) {
+    for (var l = 0; l < planets.length; l++) {
+        if(planets[l].orbit == q && planets[l].starsystem==1) {
+            generateplanetdesc(p_hi, l); 
+        }
+    }
+}
+
+if(distantcompanionpresent) {
+    p_hi.text(p_hi.text()+`\n\nSECONDARY STAR: \n`+startypes[distantcompanionstartype]);
+}
+
+for (var q = 0; q < 41; q++) {
+    for (var l = 0; l < planets.length; l++) {
+        if(planets[l].orbit == q && planets[l].starsystem==2) {
+           generateplanetdesc(p_hi, l);
+                
+
+                
+
+        }
+    }
+}
+var txt3 = document.createElement("p"); 
+txt3.text("Hello world!")
+$("body").append(txt3);
+
+}
+
+function generateplanetdesc(outputloc, l) {
+    outputloc.text(outputloc.text()+`\n \n` + parentbodynames[planets[l].parentbody>=0] + `PLANET `+planets[l].id +`:`);
+                outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Size: ` + planets[l].size + `x the size of Earth`);
+                outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Distance index from star(s): ` + planets[l].orbit);
+                outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Temperature: ` + temperaturenames[planets[l].temperature]);
+                if(planets[l].composition <= 3) {
+                    outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Composition: Primarily ` + compositionnames[planets[l].composition] + `, with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth`);
+                    if(planets[l].atmobasegas == 2) {
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, carbon dioxide` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`);
+                    } else if(planets[l].atmothickness>0) {
+                        if(planets[l].greenhouse > 0 && planets[l].basetemp > 5) {
+                            outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, nitrogen` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + ', carbon dioxide' + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`);
+                        } else {
+                            outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Atmosphere: `+atmothicknessnames[planets[l].atmothickness]+ `, nitrogen` + lifenames_atmo[planets[l].oxygentag] + vapornames[planets[l].liquid] + greenhousenames[planets[l].greenhouse] + ` greenhouse effect`);
+                        }
+                    } else {
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Atmosphere: none`);
+                    }
+                    console.log(planets[l].liquid);
+                    if(planets[l].liquid > 0){
+                        if(planets[l].lcoverage < -0.5){
+                            outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Surface liquid: ` + liquidnames[planets[l].liquid] + " (" + Math.abs(planets[l].lcoverage*100) + "% coverage, superoceanic)");
+                        }else{
+                            outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Surface liquid: ` + liquidnames[planets[l].liquid] + " (" + Math.abs(planets[l].lcoverage*100) + "% coverage)");
+                        }
+                
+                    
+                    } else {
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Surface liquid: none`);
+                    }
+
+                    if(planets[l].geoactive) {
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Geologically active: yes`);
+                    }
+                    if(!planets[l].geoactive) {
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Geologically active: no`);
+                    }
+
+                    outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Life: ` + lifenames[planets[l].life]);
+                    
+                    
+                
+                
+                } else {
+                    outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Composition: A` + compositionnames[planets[l].composition] + ` with a density of ` + planets[l].density.toFixed(1) + `x that of the Earth`);
+                }
+                if(planets[l].parentbody < 0){
+                    if(planets[l].starsystem == 1) {
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Primary system`);
+                    } else{
+                        outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Secondary system`);
+                    }
+                   
+                } else {
+                    outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Orbits: planet ` + planets[l].parentbody);
+                }
+                outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Radius: ` + ((planets[l].size/planets[l].density)**(0.3333)).toFixed(2) + ` Earth radii`);
+                outputloc.text(outputloc.text()+`\n` + parentbodynames[planets[l].parentbody>=0] + `Surface gravity: ` + (planets[l].size/((planets[l].size/planets[l].density)**0.6667)).toFixed(2) + ` g`);
+
+                
+                
+}
+
+
+$(document).ready(putGreeting);
+
+    </script>
+  </body>
+</html>
