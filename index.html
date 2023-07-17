@@ -591,6 +591,17 @@
         position: absolute;
 
     }
+    .planetscan {
+        font-family: 'Consolas', 'Courier New', Courier, monospace;
+        border-radius: var(--borderradiusdf);
+            box-shadow: inset 8px 8px 16px  var(--innershadowcolor);
+            background: var(--bgcolor);
+            padding: 30px;
+    }
+    .planetscan p {
+        font-family: 'Consolas', 'Courier New', Courier, monospace;
+        
+    }
         
     </style>
   </head>
@@ -603,7 +614,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.8 </h1>
+    <h1> v0.3.9 </h1>
     <hr>
     <h3 class="patchnotes">System Generation</h3>
 
@@ -636,6 +647,9 @@
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover <br> - better composition</p>
+        <h3 class="patchnotes">v0.3.9 - starbounded</h3>
+        <p class="patchnotes">- added a dynamically generated description inspired by starbound to the planet info <br> - this will work with existing systems
+        </p>
         <h3 class="patchnotes">v0.3.8 - nccs fail</h3>
         <p class="patchnotes">- non-technological civilizations added. such 'civilizations' are like dolphins, unable to develop notable technology and only debatably civilizations at all. they are very common <br>- they're id 2 to maintain compatibility <br>- was going to add NCCS composition today but that requires rewriting a lot of how composition is handled. a mockup of roughly how it will work can be found at <a href="https://scratch.mit.edu/projects/861212610/">this Scratch project</a> <br> - removed jquery <br> - fixed the FAQ </p>
         <h3 class="patchnotes">v0.3.7 - greenhouse patch</h3>
@@ -1498,6 +1512,14 @@ var liquidnames = [
     "<img class='icon' src='img/iconNitrogenLiquid.png'><span class='nitrogen'>nitrogen</span>"
 ]
 
+var liquidnames2 = [
+    "",
+    "water",
+    "ammonia",
+    "methane",
+    "nitrogen",
+]
+
 var liquidnameslife = [
     "water-based (subglacial)",
     "water-based (surface)",
@@ -1523,6 +1545,15 @@ var atmothicknessnames = [
     "<img class='icon' src='img/iconAtmo5.png'><span class='typef'>thick</span>",
     "<img class='icon' src='img/iconAtmo6.png'><span class='typef'>very thick</span>"
 ]
+var atmothicknessnames2 = [
+    "none",
+    "very thin",
+    "thin",
+    "somewhat thin",
+    "medium",
+    "thick",
+    "very thick"
+                    ]
 var typenames = [
     "<img class='icon whiteicon' src='img/iconUberplanet.png'> EUPLANET",
     "<img class='icon whiteicon' src='img/iconUnterplanet.png'> DWARF PLANET",
@@ -1553,6 +1584,29 @@ var temperaturenames = [
     "<img class='icon' src='img/iconTemp7.png'><span class='red'>scorched</span> (~900K, ~630C)",
     "<img class='icon' src='img/iconTemp7.png'><span class='red'>torrid</span> (~1200K, ~930C)"
 ]
+
+var temperaturenames2 = [
+    "a frigid -220C",
+    "a freezing -200C",
+    "a gelid -170C",
+    "a cold -150C",
+    "a chilly -120C",
+    "a cool -100C",
+    "an aretian -80C",
+    "a huronian -50C",
+    "a sturtian -20C",
+    "a temperate 10C",
+    "a tepid 40C",
+    "a lukewarm 70C",
+    "a warm 105C",
+    "a toasty 155C",
+    "a hot 230C",
+    "a sweltering 330C",
+    "a veneran 480C",
+    "a scorching 630C",
+    "a torrid 930C"
+]
+
 
 var lifenames = [
     "no",
@@ -3441,7 +3495,222 @@ function generateplanetdesc(l,planets,systemin) {
                     }
                     
                 }
+
+                tmp5 = tmp5 + "</br>"
                 addline(tmp5,div,"div",true);
+                var tmp5 = "";
+                tmp5 = tmp5 + '<p>Habitability results: HABITABLE '
+                if((planets[l].composition == 1 && planets[l].geoactive) || (planets[l].liquid > 0 && planets[l].liquid < 4)){
+                     if ((planets[l].liquid > 1)){
+                        tmp5 = tmp5 + "(...that ain't lookin like water to me) </p>"
+                    } else if((planets[l].composition == 1)){
+                        tmp5 = tmp5 + "(...but it's kinda dark) </p>"
+                    } else if ((planets[l].lcoverage == 0)){
+                        tmp5 = tmp5 + "(...something weird happened here) </p>"
+                    } else if ((!planets[l].oxygentag)){
+                        tmp5 = tmp5 + "(...the lack of oxygen isn't all that important) </p>"
+                    } else if ((planets[l].life < 2)){
+                        tmp5 = tmp5 + "(...no complex life already present, though) </p>"
+                    } else {
+                        tmp5 = tmp5 + "(...minsharic planets are rather boring, aren't they?) </p>"
+                    }
+                } else {
+                    tmp5 = tmp5 + "(...if you're brave enough) </p>"
+                }
+                tmp5 = tmp5 + '<p>Other scan information : </p>'
+                if(planets[l].composition == 1){
+                    tmp5 = tmp5 + '<p>Scans show that the surface is cold and icy'
+                        if(planets[l].displayseed > 0 && planets[l].displayseed < 5){
+                            tmp5 = tmp5 + ', with sediments of reddish-brown organic compounds having accumulated on the surface due to reactions with high-energy radiation from the star. '
+                        } else {
+                            tmp5 = tmp5 + '. '
+                        }
+                        if(planets[l].geoactive){
+                            tmp5 = tmp5 + ' Occasionally, cryovolcanoes spew out water and other ices, which cool and keep the surface of the planet fresh. Due to this, we know that an ocean of liquid water exists under the surface of the planet.'
+                        } else {
+                            tmp5 = tmp5 + ' Craters dot the surface, which were formed when asteroids, comets, or meteoroids crashed into the planet.'
+                        }
+                } else if(planets[l].composition == 2){
+                    tmp5 = tmp5 + '<p>Scans show that the surface rocks are composed of carbon compounds like graphite. '
+                        if(planets[l].geoactive){
+                            tmp5 = tmp5 + ' Large, rough diamonds jut out from the ground, forged deep in the mantle and brought up to the surface via volcanic eruptions. '
+                        } else {
+                            if((planets[l].temperature + planets[l].displayseed)/2==Math.round((planets[l].temperature + planets[l].displayseed)/2)){
+                                tmp5 = tmp5 + ' Craters dot the surface, scars of impacts with comets, meteorites, and other space debris.'
+                            }else{
+                                tmp5 = tmp5 + ' This planet is pockmarked with clearly visible craters, due to asteroid impacts.'
+                            }
+                            
+                        }
+                } else if(planets[l].composition == 3){
+                    tmp5 = tmp5 + '<p>Scans show that the planet contains a very large amount of iron and other metallic elements, and would be a prime site for mining.'
+                        if(planets[l].geoactive){
+                            tmp5 = tmp5 + ' Occasionally, volcanoes erupt and bring magma to the surface, which cools and keeps the surface of the planet fresh and relatively devoid of craters.'
+                        } else {
+                            tmp5 = tmp5 + ' There are many craters on the surface, which were created by impacts with comets or asteroids.'
+                        }
+                } else if(planets[l].composition == 5){
+                    tmp5 = tmp5 + '<p>This planet is a stormy gas giant, with no landable surface. (I mean, if you REALLY wanted to, you could try landing here, but neither you nor your ship would survive.) Instead, you might want to check out any satellites that may exist orbiting this planet.'
+                } else if(planets[l].composition == 4){
+                    tmp5 = tmp5 + '<p>This planet is a windy ice giant, with no landable surface. (I mean, there is a surface EVENTUALLY, but it isn`t really reachable safely. You might encounter some freaky supercritical oceans, though, if you manage to get that far.) Go check out its major moons instead, if it has any.'
+                } else if(planets[l].composition == 0){
+                    tmp5 = tmp5 + '<p>Scans show that this planet is primarily made of silicate rocks, with a possible iron core.'
+                        if(planets[l].geoactive){
+                            tmp5 = tmp5 + ' Occasionally, volcanoes spew out molten rock, which cools and keeps the surface of the planet fresh and relatively devoid of craters.'
+                        } else {
+                            if((planets[l].temperature + planets[l].displayseed)/2==Math.round((planets[l].temperature + planets[l].displayseed)/2)){
+                                tmp5 = tmp5 + ' This planet has several large impact craters. And many smaller ones.'
+                            }else{
+                                tmp5 = tmp5 + ' The surface is covered with numerous craters and basins, formed from impacts by comets or other space debris.'
+                            }
+                        }
+                } 
+                if(planets[l].composition <= 3){
+
+                
+                if(planets[l].lcoverage != 0){
+                    if(planets[l].lcoverage == -1){
+                        tmp5 = tmp5 + ' The planet is covered in a massive, ridiculously deep planetwide ocean of ' + liquidnames2[planets[l].liquid] + '. In fact, it`s so deep that I doubt there`s any dry land at all!'
+                        if(planets[l].atmothickness >= 4){
+                            tmp5 = tmp5 + " I can't really tell though, due to the seeming 'planetwide storm' that exists here interfering with the scans."
+                        }
+                    } else {
+                        if(planets[l].lcoverage > 0.95){
+                            if(planets[l].geoactive){
+                            tmp5 = tmp5 + ' The planet is covered in a massive ocean of ' + liquidnames2[planets[l].liquid] + ', with various volcanic islands dotted around, breaking up the endless expanse of ocean.'
+
+                            } else {
+                                tmp5 = tmp5 + ' The planet is almost entirely covered in a massive ocean of ' + liquidnames2[planets[l].liquid] + '.'
+                            }
+                            if(planets[l].atmothickness >= 4){
+                            tmp5 = tmp5 + " There is a seeming 'planetwide storm' that exists here interfering with the scans."
+                        }
+                }   else if(planets[l].lcoverage > 0.25){
+                    tmp5 = tmp5 + ' The planet has several large continents, separated by large seas of ' + liquidnames2[planets[l].liquid] + '.'
+                } else {
+                    tmp5 = tmp5 + ' The planet has small seas of ' + liquidnames2[planets[l].liquid] + '.'
+                }
+                    
+            }} 
+            if(planets[l].atmothickness > 0){
+                if(planets[l].atmothickness/2 + planets[l].atmobasegas == Math.round(planets[l].atmothickness/2 + planets[l].atmobasegas)){
+                if(planets[l].atmobasegas == 2){
+                    tmp5 = tmp5 + ' This planet has a ' + atmothicknessnames2[planets[l].atmothickness] + ' atmosphere composed of primarily carbon dioxide'
+                }else{
+                    tmp5 = tmp5 + ' This world has a ' + atmothicknessnames2[planets[l].atmothickness] + ' atmosphere composed of mostly nitrogen'
+                }
+            } else {
+                if(planets[l].atmobasegas == 2){
+                    tmp5 = tmp5 + ' This world posesses a ' + atmothicknessnames2[planets[l].atmothickness] + ' atmosphere primarily made of gaseous carbon dioxide'
+                }else{
+                    tmp5 = tmp5 + ' This planet has a ' + atmothicknessnames2[planets[l].atmothickness] + ' atmosphere mainly made up of nitrogen'
+                }
+            }
+                if(planets[l].oxygentag){
+                    if((planets[l].civ + planets[l].greenhouse)/2 == Math.round((planets[l].civ + planets[l].greenhouse)/2)){
+                        tmp5 = tmp5 + '. The atmosphere has a large proportion of oxygen as well, making it suitable to light fires'
+                    }else{
+                        tmp5 = tmp5 + '. The atmosphere also contains large amounts of oxygen, which I don`t really see the significance of'
+                    }
+
+                    
+                    
+                }
+                if(planets[l].lcoverage != 0){
+                    tmp5 = tmp5 + ', and the oceans maintain a stable ' + liquidnames2[planets[l].liquid] + " cycle in the atmosphere, creating clouds and rain."
+                } else {
+                    tmp5 = tmp5 + '.'
+                }
+
+            }else{
+                tmp5 = tmp5 + ' This planet has no atmosphere.'
+            }
+            
+            if(planets[l].greenhouse > 0){
+                tmp5 = tmp5 + " The planet's atmosphere traps incoming heat from the sun, warming up the planet"
+                if(planets[l].greenhouse >= 5){
+                tmp5 = tmp5 + ". In fact, this 'greenhouse effect' is so strong that it heats the planet up to " + temperaturenames2[planets[l].temperature] + "!"
+            } else {
+                tmp5 = tmp5 + " to " + temperaturenames2[planets[l].temperature] + "."
+            }
+            } else {
+                if (planets[l].atmothickness > 0){
+                    tmp5 = tmp5 + " The planet's atmosphere has a negligible effect on its average temperature, which sits at " + temperaturenames2[planets[l].temperature] + "."
+                }else {
+                    tmp5 = tmp5 + " The planet's average temperature sits at " + temperaturenames2[planets[l].temperature] + ", but experiences wild temperature swings due to the lack of an atmosphere to retain heat."
+                }
+                
+            }
+            if(planets[l].temperature >= 17){
+                tmp5 = tmp5 + " This planet is so hot that it glows, like metal being heated up in a blacksmithing forge."
+            }
+            if(planets[l].life){
+                if(planets[l].life == 1){
+                    if(planets[l].lcoverage == 0){
+                    tmp5 = tmp5 + " This planet  has simple life in its subsurface ocean, a biosphere powered by geothermal activity alone."
+                } else if(planets[l].composition == 1 && planets[l].geoactive){
+                    tmp5 = tmp5 + " This planet has simple life in its subsurface ocean, a biosphere powered by geothermal activity alone. It also has life on its surface, which is based on " + liquidnames2[planets[l].liquid] + "."
+                } else {
+                    tmp5 = tmp5 + " This planet  has simple life on its surface, which is based on " + liquidnames2[planets[l].liquid] + "."
+                }
+                }
+                if(planets[l].life == 2){
+                    if(planets[l].lcoverage == 0){
+                    tmp5 = tmp5 + " This planet contains advanced life in its subsurface ocean, a biosphere powered by geothermal activity alone."
+                } else if(planets[l].composition == 1 && planets[l].geoactive){
+                    tmp5 = tmp5 + " This planet contains advanced life in its subsurface ocean, a biosphere powered by geothermal activity alone. It also has life on its surface, which is based on " + liquidnames2[planets[l].liquid] + "."
+                } else {
+                    tmp5 = tmp5 + " This planet has advanced life on its surface, which is based on " + liquidnames2[planets[l].liquid] + "."
+                }
+                }
+                
+            }
+        } if(planets[l].parentbody >= 1){
+            if(planets[l].displayseed <= 3){
+                tmp5 = tmp5 + " This is a moon of another planet, and is tidally locked to the planet which it orbits"
+            } else {
+                tmp5 = tmp5 + " This satellite planet is tidally locked to the planet it orbits"
+            }
+                    
+                    if(planets[planets[l].parentbody].composition >= 4){
+                        if(planets[l].displayseed/2 == Math.round(planets[l].displayseed/2)){
+                tmp5 = tmp5 + ", meaning one side has a much cooler view of the night sky than the other side."
+            } else {
+                tmp5 = tmp5 + ", meaning one side always faces the parent planet, and one side always faces away from it."
+            }
+                        if(planets[l].atmothickness >= 2) {
+                            tmp5 = tmp5 + " In fact, the jovian appears so large and bright that it brightens the night sky on that side to a dim twilight."
+                        }
+                    } else {
+                        tmp5 = tmp5 + "."
+                    }
+                
+            }
+                        if(planets[l].rings){
+                            if((planets[l].composition + planets[l].displayseed)/2 == Math.round((planets[l].composition + planets[l].displayseed)/2)){
+                                tmp5 = tmp5 + " Additionally, this planet has a ring system, a remnant of an asteroid or small moon that wandered too close to it and got torn apart by tidal forces."
+                                if(planets[l].composition <= 3){
+                    tmp5 = tmp5 + " I bet it looks gorgeous from the surface, but it sure will make navigating around the planet a pain."
+                } else {
+                    
+                }
+                            } else {
+                                tmp5 = tmp5 + " Also, this planet has rings, which were created as an asteroid or comet got too close to the planet and got torn apart by tidal forces."
+                                if(planets[l].composition <= 3){
+                    tmp5 = tmp5 + " I bet they look rather beautiful from the surface, but it will make navigating around the planet rather annoying."
+                } else {
+                    
+                }
+                            }
+                    
+
+            }
+                tmp5 = tmp5 + '</p>'
+
+                addline(tmp5,div,"div",true).classList.add("planetscan")
+
+
+            
 
 
                 
