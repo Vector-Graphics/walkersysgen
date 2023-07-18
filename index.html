@@ -614,7 +614,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3.9 </h1>
+    <h1> v0.3091 </h1>
     <hr>
     <h3 class="patchnotes">System Generation</h3>
 
@@ -647,6 +647,9 @@
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover <br> - better composition</p>
+        <h3 class="patchnotes">v0.3091 - a fix</h3>
+        <p class="patchnotes">- added slightly more variety to the composition descriptions in the "starbound description".
+        </p>
         <h3 class="patchnotes">v0.3.9 - starbounded</h3>
         <p class="patchnotes">- added a dynamically generated description inspired by starbound to the planet info <br> - this will work with existing systems
         </p>
@@ -3519,7 +3522,12 @@ function generateplanetdesc(l,planets,systemin) {
                 }
                 tmp5 = tmp5 + '<p>Other scan information : </p>'
                 if(planets[l].composition == 1){
-                    tmp5 = tmp5 + '<p>Scans show that the surface is cold and icy'
+                    if(planets[l].displayseed >= 3){
+                        tmp5 = tmp5 + '<p>Scans show that the surface is cold and icy'
+                    }else{  
+                        tmp5 = tmp5 + '<p>Scans show that the planet is mainly made of ice'
+                    }
+                    
                         if(planets[l].displayseed > 0 && planets[l].displayseed < 5){
                             tmp5 = tmp5 + ', with sediments of reddish-brown organic compounds having accumulated on the surface due to reactions with high-energy radiation from the star. '
                         } else {
@@ -3531,7 +3539,12 @@ function generateplanetdesc(l,planets,systemin) {
                             tmp5 = tmp5 + ' Craters dot the surface, which were formed when asteroids, comets, or meteoroids crashed into the planet.'
                         }
                 } else if(planets[l].composition == 2){
-                    tmp5 = tmp5 + '<p>Scans show that the surface rocks are composed of carbon compounds like graphite. '
+                    if(planets[l].displayseed >= 3){
+                        tmp5 = tmp5 + '<p>Scans show that the surface rocks are composed of carbon compounds like graphite. '
+                    }else{  
+                        tmp5 = tmp5 + '<p>Scans show a high presence of carbon-based compounds on the surface.'
+                    }
+                    
                         if(planets[l].geoactive){
                             tmp5 = tmp5 + ' Large, rough diamonds jut out from the ground, forged deep in the mantle and brought up to the surface via volcanic eruptions. '
                         } else {
@@ -3543,18 +3556,37 @@ function generateplanetdesc(l,planets,systemin) {
                             
                         }
                 } else if(planets[l].composition == 3){
-                    tmp5 = tmp5 + '<p>Scans show that the planet contains a very large amount of iron and other metallic elements, and would be a prime site for mining.'
+                    if(planets[l].displayseed >= 3){
+                        tmp5 = tmp5 + '<p>Scans show that the planet contains a very large amount of iron and other metallic elements, and would be a prime site for mining.'
+                    }else{  
+                        tmp5 = tmp5 + '<p>Scans show that the interior of the planet is very rich in metals.'
+                    }
+                   
                         if(planets[l].geoactive){
                             tmp5 = tmp5 + ' Occasionally, volcanoes erupt and bring magma to the surface, which cools and keeps the surface of the planet fresh and relatively devoid of craters.'
                         } else {
                             tmp5 = tmp5 + ' There are many craters on the surface, which were created by impacts with comets or asteroids.'
                         }
                 } else if(planets[l].composition == 5){
-                    tmp5 = tmp5 + '<p>This planet is a stormy gas giant, with no landable surface. (I mean, if you REALLY wanted to, you could try landing here, but neither you nor your ship would survive.) Instead, you might want to check out any satellites that may exist orbiting this planet.'
+                    if(planets[l].displayseed >= 3){
+                        tmp5 = tmp5 + '<p>This planet is a stormy gas giant, with no landable surface. (I mean, if you REALLY wanted to, you could try landing here, but neither you nor your ship would survive.) Instead, you might want to check out any satellites that may exist orbiting this planet.'
+                    }else{  
+                        tmp5 = tmp5 + '<p>This planet is a gas giant without an acccessible surface layer. (There`s probably a surface down there SOMEWHERE, but it`s not like it`s safe.) Instead, you might want to check out any of this planet`s satellite planets, if they exist.'
+                    }
+                    
                 } else if(planets[l].composition == 4){
-                    tmp5 = tmp5 + '<p>This planet is a windy ice giant, with no landable surface. (I mean, there is a surface EVENTUALLY, but it isn`t really reachable safely. You might encounter some freaky supercritical oceans, though, if you manage to get that far.) Go check out its major moons instead, if it has any.'
+                    if(planets[l].displayseed >= 3){
+                        tmp5 = tmp5 + '<p>This planet is a windy ice giant, with no landable surface. (I mean, there is a surface EVENTUALLY, but it isn`t really reachable safely. You might encounter some freaky supercritical oceans, though, if you manage to get that far.) Go check out its major moons instead, if it has any.'
+                    }else{  
+                        tmp5 = tmp5 + '<p>This planet has a very thick hydrogen and methane atmosphere over a strange ocean of supercritical water. I can`t see any kind of surface to it, though. An ice giant for sure. (There probably is one if you go down far enough, but I wouldn`t count on surviving the trip there.) Ice giants tend to have plenty of major moons to explore, though.'
+                    }
+                    
                 } else if(planets[l].composition == 0){
-                    tmp5 = tmp5 + '<p>Scans show that this planet is primarily made of silicate rocks, with a possible iron core.'
+                    if(planets[l].displayseed >= 3){
+                        tmp5 = tmp5 + '<p>Scans show that this planet is primarily made of silicate rocks, with a possible iron core.'
+                    }else{  
+                        tmp5 = tmp5 + '<p>Scans indicate the presence of a very thick, silicate mantle.'
+                    }
                         if(planets[l].geoactive){
                             tmp5 = tmp5 + ' Occasionally, volcanoes spew out molten rock, which cools and keeps the surface of the planet fresh and relatively devoid of craters.'
                         } else {
