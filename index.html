@@ -614,7 +614,7 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3091 </h1>
+    <h1> v0.3092 </h1>
     <hr>
     <h3 class="patchnotes">System Generation</h3>
 
@@ -647,6 +647,8 @@
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover <br> - better composition</p>
+        <h3 class="patchnotes">v0.3092 - tabletop version!</h3>
+        <P class="patchnotes">- ported the generator to a tabletop version on request, you can find the link <a href="https://docs.google.com/document/d/1vcIC-3xI5Exhx_7GfSNIz44qizAuZ_4R-y7Uo700TO8/edit?usp=sharing">here</a> <br> - will probably make it look nicer in the future <br> - fixed some funky code</P>
         <h3 class="patchnotes">v0.3091 - a fix</h3>
         <p class="patchnotes">- added slightly more variety to the composition descriptions in the "starbound description".
         </p>
@@ -1736,14 +1738,17 @@ const CSVToArray = (data, delimiter = ',', omitFirstRow = false) =>
 
 
 function placePlanets(starid,closecompanionpresent) {
-    validorbits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    validorbits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; // All orbits start out blank.
     
-    var o = 0;
-    var ptag = dice(1,10)+999;
-    o=dice(1,2);
-    if(!dice(1,4)&&(!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)){
-        var tmp1 = dice(1,12)+24;
-        planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null))
+    var o = 0; // This variable, o, is the orbit pointer, which is used to randomly select a position to try to place a planet.
+    o=dice(1,2); // The first attempt to place a planet tries to place a Hot Jupiter.
+    if(!dice(1,4)&&(!(starid==2&&distantcompanionstartype==0)&&!(starid==1&&(primarystartype==0||closecompanionstartype==0)))&&!(starid==1&&closecompanionpresent&&o<5)){ 
+        // The Hot Jupiter will not generate if the primary system has a Tatooine-style binary (because the orbit would be unstable), or if a star in the system it's in is a white dwarf (because it would have been vaporized by the expanding star).
+        var tmp1 = dice(1,12)+24; // The Hot Jupiter is a large planet, pulling from the upper 12 entries of the uberplanet size table. tmp1 here is the size index.
+        planets.push(new Planet(uberplanetsizes[tmp1], null, null, null, null, null, null, null, tmp1, 2, null, null, o, null, null, 0-starid, planets.length, 0, null, starid, null,null)) // Initialize some basic info about the planet:
+        // the planet's ID (planets.length), its orbital position (o), its parent body (0-starid, a negative number, because it does not orbit another planet), 
+        // the system it's in (starid, primary or secondary), its size (the value in the size table, ...sizes[tmp1]), the size index,
+        // the "size class" (the 12-entry region of the size table its size is in), and the type of planet that it is (the value after planets.length).
         validorbits[o]=1;
         validorbits[o+1]=1;
             validorbits[o+2]=1;
@@ -2898,34 +2903,35 @@ var distantcompanionluminosity;
 function putGreeting() {
     seed=seed%491041798642919;
     var seedtemp = seed;
-    salibe = dice(1,1000);
-    systemcontainer=[];
-    closecompanionstartype=-1;
-    distantcompanionstartype=-1;
-    primarystartype=-1;
-    planets = [];
-    age = dice(1,36)*0.3+0.1;
-    closecompanionpresent = false;
-    distantcompanionpresent = false;
-    distantcompanionluminosity = 0;
-    closecompanionluminosity = 0;
-    if(dice(1,3)==2){
+    salibe = dice(1,1000); // 1 in 1000 chance all planets will be named Salibe.
+    systemcontainer=[]; // Initialize the system container.
+    closecompanionstartype=-1; // By default, the close companion's star type is -1, indicating that it is not present.
+    distantcompanionstartype=-1; // By default, the distant companion's star type is -1, indicating that it is not present.
+    primarystartype=-1; // The primary star's star type is initialized at -1. This value is never meant to be seen in the final system as the primary star always exists.
+    planets = []; // The system starts off with no planets.
+    age = dice(1,36)*0.3+0.1; // Determine the age of the system: starting from 0.1, values incrementing by 0.3 up to 10.9. This is in billions of years.
+    closecompanionpresent = false; // By default, the close companion is not present.
+    distantcompanionpresent = false; // By default, the distant companion is not present.
+    distantcompanionluminosity = 0; // The luminosity of nonexistent stars is 0.
+    closecompanionluminosity = 0; // The luminosity of nonexistent stars is 0.
+    if(dice(1,3)==2){ // 1 in 3 chance that there is a close companion.
         closecompanionpresent=true;
-        closecompanionstartype=startypetable[dice(1,36)];
+        closecompanionstartype=startypetable[dice(1,36)]; // Choose a star type using a d36 and the star type table.
         if(closecompanionstartype==1&&prng()>=0.5){
-            closecompanionluminosity = prng()*0.001+0.0004
+            closecompanionluminosity = prng()*0.001+0.0004 // About half of red dwarfs (star type 1) are very, very dim.
     }
-        closecompanionluminosity = prng()*(luminositymax[closecompanionstartype]-luminositymin[closecompanionstartype])+luminositymin[closecompanionstartype];
+        closecompanionluminosity = prng()*(luminositymax[closecompanionstartype]-luminositymin[closecompanionstartype])+luminositymin[closecompanionstartype]; // Choose a random value between the luminosity minimum and maximum for the star type.
         if(
             (closecompanionstartype==6 && age >= 0.5)||
             (closecompanionstartype==5 && age >= 3)||
             (closecompanionstartype==4 && age >= 8)
         ){
-            closecompanionstartype = 0
+            closecompanionstartype = 0 // If the star is a B-type star (type 6) older than 0.5 billion years, an A-type star (type 5) older than 3 billion years, or an F-type star (type 4) older than 8 billion years, 
+            //it has already exploded into a planetary nebula, and is now a white dwarf (type 0).
         }
     }
-    if(dice(1,3)==2){
-        distantcompanionpresent=true;
+    if(dice(1,3)==2){ // 1 in 3 chance that there is a distant companion, meaning 5/9 chance that the system has at least 2 stars and 1 in 9 that it has all 3 possible stars.
+        distantcompanionpresent=true; // Follow the same star type routine for the distant companion, if it is present.
         distantcompanionstartype=startypetable[dice(1,36)];
         distantcompanionluminosity = prng()*(luminositymax[distantcompanionstartype]-luminositymin[distantcompanionstartype])+luminositymin[distantcompanionstartype];
         if(distantcompanionstartype==1&&prng()>=0.5){
@@ -2940,7 +2946,7 @@ function putGreeting() {
         }
         
     }
-    primarystartype=startypetable[dice(1,36)];
+    primarystartype=startypetable[dice(1,36)]; // The primary star is always present, follow the same star type routine for the primary star.
     primaryluminosity = prng()*(luminositymax[primarystartype]-luminositymin[primarystartype])+luminositymin[primarystartype];
     if(primarystartype==1&&prng()>=0.5){
         primaryluminosity = prng()*0.001+0.0004
@@ -2956,19 +2962,20 @@ function putGreeting() {
         }
     
     
-    placePlanets(1,closecompanionpresent);
+    placePlanets(1,closecompanionpresent); // Determine where the primary star's planets are located.
     if(distantcompanionpresent==true){
         
-        placePlanets(2,closecompanionpresent);
+        placePlanets(2,closecompanionpresent); // Determine where the distant companion's planets are located. (The primary star's planets also orbit the close companion if it is present.)
     }
-    if(salibe){
-        var tmp4 = generatePlanetName();
+    // This generates the star's name.
+    if(salibe){ // 1 in 1000 chance that all planets are named Salibe, as a reference to a feature in Universe Sandbox where certain randomly-generated names like Salibe recur.
+        var tmp4 = generatePlanetName(); // Generate a random planet name, this is not significant but I might include it as a bonus in the doc.
     } else {
         var tmp4 = "Salibe";
     }
     
     if(closecompanionpresent){
-        if(distantcompanionpresent){
+        if(distantcompanionpresent){ // If all three stars are present, number them Aa, Ab, and B.
             primaryname=tmp4+" Aa";
             closecompanionname=tmp4+" Ab";
             distantcompanionname=tmp4+" B";
@@ -2977,16 +2984,16 @@ function putGreeting() {
             closecompanionname=tmp4+" B";
         }
     } else {
-        if(distantcompanionpresent){
+        if(distantcompanionpresent){ // If only two stars are present, regardless of which stars they are, number them A and B.
             primaryname=tmp4+" A";
             distantcompanionname=tmp4+" B";
         } else {
-            primaryname=tmp4;
+            primaryname=tmp4; // If only one star exists, it does not get an ID, as that would be redundant.
         }
     }
     for (var k = 0; k < planets.length; k++){
 
-        planets[k]=generatePlanet(k);
+        planets[k]=generatePlanet(k); // Generate the details of the planets.
         n = k;
     }
 systems.push(new System(planets,primarystartype,closecompanionpresent,closecompanionstartype,distantcompanionpresent,distantcompanionstartype,age,age,primaryname,closecompanionname,distantcompanionname,primaryluminosity,closecompanionluminosity,distantcompanionluminosity,seedtemp))
