@@ -647,6 +647,8 @@
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
         <p class="patchnotes">COMING SOON:<br> - mouseover <br> - better composition</p>
+        <h3 class="patchnotes">v0.3093 - getting into the swing of things</h3>
+        <P class="patchnotes">- fixed a little bit of outdated terminology</P>
         <h3 class="patchnotes">v0.3092 - tabletop version!</h3>
         <P class="patchnotes">- ported the generator to a tabletop version on request, you can find the link <a href="https://docs.google.com/document/d/1vcIC-3xI5Exhx_7GfSNIz44qizAuZ_4R-y7Uo700TO8/edit?usp=sharing">here</a> <br> - will probably make it look nicer in the future <br> - fixed some funky code</P>
         <h3 class="patchnotes">v0.3091 - a fix</h3>
@@ -737,7 +739,7 @@
         <p class="patchnotes"><strong>Q: Why are my white dwarfs so bright?</strong><br> A: A white dwarf's 'luminosity' is how bright it was as a main sequence star. This is done so that planets can be placed correctly around white dwarfs. You may notice that all the planets are very cold to account for the white dwarf in reality being very dim.</p>
         <p class="patchnotes"><strong>Q: Why is 340K (67*C) "lukewarm"? Why is 170K (-103*C) "cool"? (Etc.) </strong><br> A: 340 Kelvin may be very hot for humans, and 170K very cold, but keep in mind we're dealing with planets as hot as 1200K and as cold as 50K! This means that temperatures are described in a more moderate manner than usual.</p>
         <p class="patchnotes"><strong>Q: Why is life so common? </strong><br> A: Icy worlds with subsurface oceans are promising candidates for life. This is partially because they are very stable, and unlikely to be affected by astronomical events that would spell disaster on planets like Earth.</p>
-        <p class="patchnotes"><strong>Q: Euplanet? What's that? </strong><br> A: A euplanet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
+        <p class="patchnotes"><strong>Q: Major planet? What's that? </strong><br> A: A major planet refers to the traditional definition of a planet as needing to clear its neighborhood.</p>
         <p class="patchnotes"><strong>Q: Why are there so few planets in my system? </strong><br> A: Is there a gas giant close to the star? If so, it's because the gas giant migrated inward and destroyed or ejected any planets in its path.</p>
         <p class="patchnotes"><strong>Q: What is the NCCS? </strong><br> A: The No-Classification Classification System. Ideally, the planet description system used for WSSG, however it hasn't quite been implemented (as seen by the atmospheres and compositions).</p>
         <p class="patchnotes"><strong>Q: Dwarf planets aren't planets! / Moons aren't planets!</strong><br> A: I disagree. I have <a href="https://www.youtube.com/watch?v=W7qZ52QHXrs">a video</a> on this topic if you want to know the details.</p>
@@ -755,6 +757,7 @@
         <p class="patchnotes"><strong>Q: What does bepis mean? / Why is my planet's [whatever] 'bepis'?</strong><br> A: I use 'bepis' for unintended values in certain arrays. 'bepis' appearing in CSVs for names of stars that don't exist is intentional, and additionally, 'Bepis' capitalized is just a very rare possibility for a randomly generated name (be + pi + s). If this isn't that, you can report it as a bug on <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
         <p class="patchnotes"><strong>Q: Why are all the planets out of order in the exported file?</strong><br> A: Planets aren't listed in order of distance from the sun, they are instead listed in "order of formation", meaning the order they were placed in the system. In general, more massive planets have lower IDs.</p>
         <p class="patchnotes"><strong>Q: How do I suggest a feature? </strong><br> A: Using <a href=https://github.com/Vector-Graphics/walkersysgen/issues>the issues page</a>.</p>
+        <p class="patchnotes"><strong>Q: Demi-civilization? </strong><br> A: A social species that meets some of the criteria for having civilization, but not all of them.</p>
     </div>
     <p></p>
 
@@ -1560,7 +1563,7 @@ var atmothicknessnames2 = [
     "very thick"
                     ]
 var typenames = [
-    "<img class='icon whiteicon' src='img/iconUberplanet.png'> EUPLANET",
+    "<img class='icon whiteicon' src='img/iconUberplanet.png'> MAJOR PLANET",
     "<img class='icon whiteicon' src='img/iconUnterplanet.png'> DWARF PLANET",
     "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET",
     "<img class='icon whiteicon' src='img/iconSatellite.png'> SATELLITE PLANET",
@@ -3499,7 +3502,7 @@ function generateplanetdesc(l,planets,systemin) {
                 tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconUWP.png"> Traveller profile: `+planets[l].name+` xxyy q` + hexadecimalDigits[Math.floor(Math.min(Number(((planets[l].size/planets[l].density)**(0.3333))).toFixed(2)*8,15))] + tmp2 +  liquidcoverageuwp[planets[l].lcoverage]+"pgl-t b tc tc z" + "</p>";
                 if(planets[l].civ){
                     if(planets[l].civ == 2){
-                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconCivilization.png"> <span class='lightblue'>Is a homeworld (non-technological civilization)</span>`+"</p>";
+                    tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconCivilization.png"> <span class='lightblue'>Is a homeworld (demi-civilization)</span>`+"</p>";
                     } else{
                         tmp5 = tmp5 + "<p>"+ parentbodynames[planets[l].parentbody>=0] + `<img class="icon whiteicon" src="img/iconCivilization.png"> <span class='blue'>Is a homeworld (technological civilization)</span>`+"</p>";
                     }
