@@ -3122,7 +3122,7 @@ function ArrayToSystems(input){
     var tempsystems = [];
     var workingsys = new System();
     for (let ae = 0; ae < input.length; ae++){
-        if(tmp7 != input[ae][0]){
+        if(tmp7 != input[ae][0] && input[ae][0] != ''){
             tmp7 = input[ae][0];
             if(workingsys.planets){
                 tempsystems.push(workingsys);
