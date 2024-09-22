@@ -614,7 +614,10 @@
   <body>
     <div class="navbar">
     <img class="titleimg" src="img/titleimg.png">
-    <h1> v0.3094 </h1>
+    <img class="titleimg" src="img/titleimg2.png">
+    <h1> v0.3094b </h1>
+    <h1 class="patchnotes">PERIAPSIS HAS RELEASED</h1>
+    <h3 class="patchnotes">- <span class="red">Walkersysgen is no longer being updated. It is old, low-quality, inaccurate, and bad.</span> Please use <a href="https://vector-graphics.github.io/periapsis/">Periapsis, my new star system generator,</a> instead.</h3>
     <hr>
     <h3 class="patchnotes">System Generation</h3>
 
@@ -646,9 +649,11 @@
     <hr>
     <p></p>
     <div class="infocontainer" style="overflow-y:scroll; height:500px;">
-        <p class="patchnotes">COMING SOON:<br> - mouseover <br> - better composition</p>
-              <h3 class="patchnotes">v0.3094 - uhhhhhh</h3>
-        <P class="patchnotes">- the generator now forgives you if you commit the cardinal sin of leaving a blank line in your wssg file</P>
+        <p class="patchnotes">COMING SOON:<br> - <span class="red">the end</span></p>
+        <h3 class="patchnotes">v0.3094b - PERIAPSIS HAS RELEASED</h3>
+        <P class="patchnotes">- <span class="red">Walkersysgen is no longer being updated.</span> Please visit <a href="https://vector-graphics.github.io/periapsis/">Periapsis, my new star system generator!</a></P>
+        <h3 class="patchnotes">v0.3094 - uhhhhh</h3>
+        <P class="patchnotes">- the app now forgives you if you commit the cardinal sin of leaving a blank row in your wssg file</P>
         <h3 class="patchnotes">v0.3093 - getting into the swing of things</h3>
         <P class="patchnotes">- fixed a little bit of outdated terminology</P>
         <h3 class="patchnotes">v0.3092 - tabletop version!</h3>
@@ -2076,16 +2081,7 @@ function radius(planet){
 function displayRadius(planet,rexp,rscale){
     return Math.floor(radius(planet)**(rexp)*rscale*2);
 }
-function add_image_to_list(imglist, imgsrc) {
-  var myimg = new Image();
-  var myfulfill; var myreject;
-  var mypromise = new Promise((ff, rj) => {myfulfill=ff;myreject=rj;});
-  myimg.src = imgsrc;
-  myimg.onload = function () {myfulfill(1);};
-  myimg.onerror = myreject;
-  imglist.push(myimg);
-  return mypromise;
-}
+
 function add_image_to_list2(imglist, imgsrc) {
   var myimg = new Image();
   var myfulfill; var myreject;
@@ -3121,17 +3117,25 @@ function ArrayToPlanet(input,row) {
 
 function ArrayToSystems(input){
     var tmp7;
+    console.log(input);
     var tempsystems = [];
     var workingsys = new System();
     for (let ae = 0; ae < input.length; ae++){
+        console.log(ae);
         if(tmp7 != input[ae][0] && input[ae][0] != ''){
+            console.log(ae);
             tmp7 = input[ae][0];
+            console.log(ae);
             if(workingsys.planets){
                 tempsystems.push(workingsys);
             }
             workingsys = new System();
+            console.log(ae);
             workingsys.planets = [];
+            console.log(ae);
             workingsys.primarystartype = eval(input[ae][primarystartypelocation]);
+            
+            console.log(ae);
             workingsys.closecompanionpresent = eval(input[ae][closecompanionexistslocation].toLowerCase());
             workingsys.closecompanionstartype = eval(input[ae][closecompanionstartypelocation]);
             workingsys.distantcompanionpresent = eval(input[ae][distantcompanionexistslocation].toLowerCase());
@@ -3770,7 +3774,7 @@ function prng() {
 
 function Initialize(){
 
-    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.setAttribute('data-theme', 'red');
     systemcontainerinterior=document.createElement('div');
 systemcontainerinterior.classList.add("systemcontainerinterior")
     ".systemcontainer".innerHTML = "";
